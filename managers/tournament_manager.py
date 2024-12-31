@@ -1,17 +1,7 @@
 import json
 import os
-from abc import ABC, abstractmethod
-from models import Tournament
-
-
-class Manager(ABC):
-    @abstractmethod
-    def load(self, *args, **kwargs):
-        pass
-
-    @abstractmethod
-    def save(self, *args, **kwargs):
-        pass
+from managers.manager import Manager
+from models.tournament import Tournament
 
 
 class TournamentManager(Manager):

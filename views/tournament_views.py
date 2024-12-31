@@ -1,4 +1,4 @@
-from models import Tournament
+from models.tournament import Tournament
 
 
 class TournamentView:
