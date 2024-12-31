@@ -1,6 +1,6 @@
-from controllers import TournamentController
-from managers import TournamentManager
-from views import TournamentView
+from controllers.tournament_controller import TournamentController
+from managers.tournament_manager import TournamentManager
+from views.tournament_views import TournamentView
 
 
 def main():
