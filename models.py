@@ -41,7 +41,8 @@ class Tournament:
         return cls(
             name=data["name"],
             location=data["location"],
-            date=data["date"],
+            starting_date=data["starting_date"],
+            ending_date=data["ending_date"],
             description=data.get("description", "A chess tournament"),
             rounds=[Round.from_dict(r) for r in data.get("rounds", [])],
             players=[Player.from_dict(p) for p in data.get("players", [])],

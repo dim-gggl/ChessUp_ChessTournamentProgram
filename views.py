@@ -30,7 +30,8 @@ class TournamentView:
     def show_tournament_details(tournament):
         print(f"=== Tournoi : {tournament.name} ===")
         print(f"Lieu : {tournament.location}")
-        print(f"Date : {tournament.date}")
+        print(f"Date de début : {tournament.starting_date}")
+        print(f"Date de fin : {tournament.ending_date}")
         print(f"Description : {tournament.description}")
         print("Rounds :")
         for round_ in tournament.rounds:
