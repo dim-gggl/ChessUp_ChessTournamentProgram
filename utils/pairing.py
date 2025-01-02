@@ -8,7 +8,8 @@ def generate_pairs(players):
     """
     shuffled = players[:]
     random.shuffle(shuffled)
-    # Si tu as un nb impair, gère éventuellement un "bye" pour le dernier
+
+    # Génération de pairs à partir de la liste shuffled
     return [(shuffled[i], shuffled[i+1]) for i in range(0, len(shuffled), 2)]
 
 def generate_pairs_by_points(players, previous_matches):
@@ -29,10 +30,7 @@ def generate_pairs_by_points(players, previous_matches):
                 del players_sorted[i]
                 paired = True
                 break
-        # Si on n'a pas pu trouver de partenaire, p1 est "solo"
-        # On peut soit lui attribuer un bye (ex: +1 point), soit le laisser en plan
+
         if not paired:
-            # Bye optionnel
             p1.points += 1
-            # On pourrait envisager pairs.append((p1, None)) selon la logique de ton app
     return pairs
