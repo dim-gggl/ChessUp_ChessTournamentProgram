@@ -17,7 +17,7 @@ class TournamentController:
         self.tournaments = self.load_tournaments()
 
     def load_tournaments(self):
-        """Charge les tournois depuis le fichier JSON et les reconstitue en objets Tournament."""
+        """Charge les tournois depuis le fichier JSON et les reconstitue en objets `Tournament`."""
         data = load_from_json(self.file_path)
         # On fait une dict pour accéder aux joueurs par leur chess_id
         all_players = {p.chess_id: p for p in self.player_controller.players}
@@ -31,14 +31,13 @@ class TournamentController:
         return tournaments
 
     def save_tournaments(self):
-        """
-        Sauvegarde la liste des tournois dans le fichier JSON (en écrasant l’existant).
-        """
+        print("DEBUG: Sauvegarde en cours...")  # Pour vérifier
         save_to_json(
             self.file_path,
             [t.to_dict() for t in self.tournaments],
             overwrite=True
         )
+        print("DEBUG: Sauvegarde terminée.")
 
     def create_tournament(self):
         """
