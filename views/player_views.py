@@ -1,41 +1,39 @@
-class PlayerView:
-    @staticmethod
-    def prompt_for_player_data():
-        print("=== Création d'un joueur ===")
-        last_name = input("Nom de famille : ")
-        first_name = input("Prénom : ")
-        birth_date = input("Date de naissance (YYYY-MM-DD) : ")
-        national_id = input("ID National (AB12345) : ")
-        rank = input("Classement (entier positif) : ")
-        return {
-            "last_name": last_name,
-            "first_name": first_name,
-            "birth_date": birth_date,
-            "national_id": national_id,
-            "rank": int(rank)
-        }
+from models.player import Player
+from views.player_views import PlayerView
+from utils.json_handler import load_from_json, save_to_json
 
-    @staticmethod
-    def show_player_list(players):
-        if not players:
-            print("Aucun joueur trouvé.")
-        else:
-            for player in players:
-                print(f"==={player.national_id}==="
-                      f" {player.first_name} {player.last_name} "
-                      f"(Classement : {player.rank})")
 
-    @staticmethod
-    def show_player_details(player):
-        print(f"=== Détails du joueur : {player.first_name} {player.last_name} ===")
-        print(f"ID National : {player.national_id}")
-        print(f"Date de naissance : {player.birth_date}")
-        print(f"Classement : {player.rank}")
+class PlayerController:
+    """
+    Gère la logique métier pour les joueurs : création, listing, sauvegarde, etc.
+    """
 
-    @staticmethod
-    def success_message(message):
-        print(f"Succès : {message}")
+    def __init__(self, file_path="data/players/players.json"):
+        self.file_path = file_path
+        self.view = PlayerView()
+        # On charge ici la liste des joueurs existants (depuis JSON si dispo)
+        self.players = self.load_players()
 
-    @staticmethod
-    def error_message(message):
-        print(f"Erreur : {message}")
+    def load_players(self):
+        """Charge la liste des joueurs depuis un fichier JSON."""
+        data = load_from_json(self.file_path)
+        return [Player.from_dict(player_data) for player_data in data]
+
+    def save_players(self):
+        """Sauvegarde la liste des joueurs dans le fichier JSON (en écrasant l’existant)."""
+        save_to_json(self.file_path, [p.to_dict() for p in self.players], overwrite=True)
+
+    def add_player(self):
+        """Demande à la vue les infos d'un nouveau joueur, puis l'ajoute s'il n'existe pas déjà."""
+        player_data = self.view.get_player_data()
+        if any(p.chess_id == player_data["chess_id"] for p in self.players):
+            self.view.show_error_message("Un joueur avec cet ID existe déjà.")
+            return
+        new_player = Player(**player_data)
+        self.players.append(new_player)
+        self.save_players()
+        self.view.show_success_message("Nouveau joueur ajouté avec succès !")
+
+    def view_all_players(self):
+        """Affiche la liste de tous les joueurs."""
+        self.view.display_players(self.players)

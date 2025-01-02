@@ -1,44 +1,27 @@
-import re
-from models.player import Player
-
-
 class Match:
-    def __init__(self, player1, player2, score_p1=0, score_p2=0):
-        """
-        Tuple of two lists, one for each player
-        and their respective scores.
-        :param player1: str = national ID of player 1
-        :param player2: str = national ID of player 2
-        """
-        if isinstance(player1, Player) and isinstance(player2, Player):
-            self.player1 = player1
-            self.player2 = player2
-        else:
-            raise TypeError("players must be of type Player")
-        self.score_p1 = score_p1
-        self.score_p2 = score_p2
-
-    def set_score(self):
-        if 0 > self.score_p1 > 1 or 0 > self.score_p2 > 1:
-            raise ValueError("Scores must be 0 and 1")
-        else:
-            match_results = (
-                [self.player1, self.score_p1],
-                [self.player2, self.score_p2]
-            )
-            return match_results
+    def __init__(self, player1, player2, score1=0, score2=0):
+        self.player1 = player1
+        self.player2 = player2
+        self.score1 = score1
+        self.score2 = score2
 
     def to_dict(self):
         return {
-            {'player_1': self.player1}: {'score_p1': self.score_p1},
-            {'player_2': self.player2}: {'score_p2': self.score_p2}
+            "player1": self.player1.chess_id,
+            "player2": self.player2.chess_id,
+            "score1": self.score1,
+            "score2": self.score2
         }
 
     @classmethod
-    def from_dict(cls, data):
+    def from_dict(cls, data, players_dict):
+        """
+        data est un dict contenant { 'player1': <chess_id>, 'player2': <chess_id>, 'score1': <float>, 'score2': <float> }
+        players_dict est un dict : { chess_id: Player }
+        """
         return cls(
-            player1=data["player_1"],
-            player2=data["player_2"],
-            score_p1=data["score_p1"],
-            score_p2=data["score_p2"]
+            player1=players_dict[data["player1"]],
+            player2=players_dict[data["player2"]],
+            score1=data.get("score1", 0),
+            score2=data.get("score2", 0)
         )

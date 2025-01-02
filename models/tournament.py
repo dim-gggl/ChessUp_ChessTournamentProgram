@@ -1,50 +1,48 @@
 from models.round import Round
-from models.player import Player
-
 
 class Tournament:
-    def __init__(self, **kwargs):
-        self.name = kwargs['name']
-        self.location = kwargs['location']
-        self.starting_date = kwargs['starting_date']
-        self.ending_date = kwargs['ending_date']
-        self.description = kwargs.get('description', 'A chess tournament')
+    def __init__(self, name, location, start_date, end_date, description, num_rounds=4):
+        self.name = name
+        self.location = location
+        self.start_date = start_date
+        self.end_date = end_date
+        self.description = description
+        self.num_rounds = num_rounds
+        self.current_round = 0
         self.rounds = []
         self.players = []
-        self.current_round_number = 1
-
-
-    def add_round(self, chess_round):
-        if isinstance(chess_round, Round):
-            self.rounds.append(chess_round)
-        else:
-            raise TypeError("round must be of type Round")
-
-    def add_player(self, player):
-        if isinstance(player, Player):
-            self.players.append(player)
-        else:
-            raise TypeError("player must be of type Player")
 
     def to_dict(self):
         return {
-            'name': self.name,
-            'location': self.location,
-            'starting_date': self.starting_date,
-            'ending_date': self.ending_date,
-            'description': self.description,
-            'rounds': [round.to_dict() for round in self.rounds],
-            'players': [player.to_dict() for player in self.players],
+            "name": self.name,
+            "location": self.location,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "description": self.description,
+            "num_rounds": self.num_rounds,
+            "current_round": self.current_round,
+            "rounds": [r.to_dict() for r in self.rounds],
+            "players": [p.chess_id for p in self.players]
         }
 
     @classmethod
-    def from_dict(cls, data):
-        return cls(
+    def from_dict(cls, data, players):
+        """
+        data: dict contenant les infos du tournoi (nom, location, etc.)
+        players: liste d'objets Player (ceux associés à ce tournoi)
+        """
+        t = cls(
             name=data["name"],
             location=data["location"],
-            starting_date=data["starting_date"],
-            ending_date=data["ending_date"],
-            description=data.get("description", "A chess tournament"),
-            rounds=[Round.from_dict(r) for r in data.get("rounds", [])],
-            players=[Player.from_dict(p) for p in data.get("players", [])],
+            start_date=data["start_date"],
+            end_date=data["end_date"],
+            description=data["description"],
+            num_rounds=data.get("num_rounds", 4)
         )
+        t.current_round = data.get("current_round", 0)
+        t.players = players
+
+        # On construit un dict {chess_id: Player} pour reconstruire les matchs
+        players_dict = {p.chess_id: p for p in players}
+        t.rounds = [Round.from_dict(r, players_dict) for r in data.get("rounds", [])]
+        return t

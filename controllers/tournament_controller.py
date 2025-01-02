@@ -1,24 +1,63 @@
 from models.tournament import Tournament
+from utils.json_handler import load_from_json, save_to_json
+from views.tournament_views import TournamentView
 
 
 class TournamentController:
-    def __init__(self, manager, view):
-        self.manager = manager
-        self.view = view
+    """
+    Gère la logique métier des tournois : chargement, création, sauvegarde,
+    et accès aux données depuis/vers le JSON.
+    """
+
+    def __init__(self, player_controller, file_path="data/tournaments/tournaments.json"):
+        self.file_path = file_path
+        self.player_controller = player_controller  # pour accéder à la liste de joueurs
+        self.view = TournamentView()
+        # On charge directement tous les tournois enregistrés
+        self.tournaments = self.load_tournaments()
+
+    def load_tournaments(self):
+        """Charge les tournois depuis le fichier JSON et les reconstitue en objets Tournament."""
+        data = load_from_json(self.file_path)
+        # On fait une dict pour accéder aux joueurs par leur chess_id
+        all_players = {p.chess_id: p for p in self.player_controller.players}
+
+        tournaments = []
+        for t_data in data:
+            # On reconstitue la liste de joueurs du tournoi
+            players = [all_players[cid] for cid in t_data["players"] if cid in all_players]
+            tournament = Tournament.from_dict(t_data, players)
+            tournaments.append(tournament)
+        return tournaments
+
+    def save_tournaments(self):
+        """
+        Sauvegarde la liste des tournois dans le fichier JSON (en écrasant l’existant).
+        """
+        save_to_json(
+            self.file_path,
+            [t.to_dict() for t in self.tournaments],
+            overwrite=True
+        )
 
     def create_tournament(self):
-        data = self.view.prompt_for_tournament_data()
-        tournament = Tournament(**data)
-        self.manager.save(tournament)
-        self.view.success_message()
+        """
+        Demande à la vue les infos d’un nouveau tournoi, vérifie s’il n’existe pas déjà,
+        puis l’ajoute si tout est OK.
+        """
+        data = self.view.get_tournament_data()
+        # On check si un tournoi avec le même nom et la même date existe déjà
+        if any(t.name == data["name"] and t.start_date == data["start_date"]
+               for t in self.tournaments):
+            self.view.show_error_message("Un tournoi avec ce nom et cette date existe déjà.")
+            return
 
-    def list_tournaments(self):
-        tournaments = self.manager.load_all()
-        self.view.show_tournament_list(tournaments)
+        # Création et ajout du tournoi à la liste
+        new_tournament = Tournament(**data)
+        self.tournaments.append(new_tournament)
+        self.save_tournaments()
+        self.view.show_success_message("Tournoi créé avec succès.")
 
-    def show_tournament(self, name):
-        tournament = self.manager.load_by_name(name)
-        if tournament:
-            self.view.show_tournament_details(tournament)
-        else:
-            self.view.failure_message()
+    def show_tournament_summary(self, tournament):
+        """Utilise la vue pour afficher un résumé du tournoi."""
+        self.view.display_tournament_summary(tournament)

@@ -1,27 +1,39 @@
 from models.player import Player
+from views.player_views import PlayerView
+from utils.json_handler import load_from_json, save_to_json
 
 
 class PlayerController:
-    def __init__(self, manager, view):
-        self.manager = manager
-        self.view = view
+    """
+    Gère la logique métier pour les joueurs : création, listing, sauvegarde, etc.
+    """
 
-    def create_player(self):
-        data = self.view.prompt_for_player_data()
-        try:
-            player = Player(**data)
-            self.manager.save(player)
-            self.view.success_message("Joueur ajouté avec succès.")
-        except ValueError as e:
-            self.view.error_message(str(e))
+    def __init__(self, file_path="data/players/players.json"):
+        self.file_path = file_path
+        self.view = PlayerView()
+        # On charge ici la liste des joueurs existants (depuis JSON si dispo)
+        self.players = self.load_players()
 
-    def list_players(self):
-        players = self.manager.load_all()
-        self.view.show_player_list(players)
+    def load_players(self):
+        """Charge la liste des joueurs depuis un fichier JSON."""
+        data = load_from_json(self.file_path)
+        return [Player.from_dict(player_data) for player_data in data]
 
-    def show_player(self, national_id):
-        player = self.manager.load_by_national_id(national_id)
-        if player:
-            self.view.show_player_details(player)
-        else:
-            self.view.error_message("Joueur introuvable.")
+    def save_players(self):
+        """Sauvegarde la liste des joueurs dans le fichier JSON (en écrasant l’existant)."""
+        save_to_json(self.file_path, [p.to_dict() for p in self.players], overwrite=True)
+
+    def add_player(self):
+        """Demande à la vue les infos d'un nouveau joueur, puis l'ajoute s'il n'existe pas déjà."""
+        player_data = self.view.get_player_data()
+        if any(p.chess_id == player_data["chess_id"] for p in self.players):
+            self.view.show_error_message("Un joueur avec cet ID existe déjà.")
+            return
+        new_player = Player(**player_data)
+        self.players.append(new_player)
+        self.save_players()
+        self.view.show_success_message("Nouveau joueur ajouté avec succès !")
+
+    def view_all_players(self):
+        """Affiche la liste de tous les joueurs."""
+        self.view.display_players(self.players)

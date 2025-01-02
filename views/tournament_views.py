@@ -1,46 +1,88 @@
-from models.tournament import Tournament
+from models.player import Player
 
 
 class TournamentView:
+    """
+    Gère tout l’affichage et la saisie d’infos spécifiques aux tournois
+    (création, résumé, menu de gestion, ajout de joueurs, etc.).
+    """
+
     @staticmethod
-    def prompt_for_tournament_data():
-        print("=== Création d'un tournoi ===")
-        name = input("Nom : ")
-        location = input("Lieu : ")
-        starting_date = input("Date de début (YYYY-MM-DD) : ")
-        ending_date = input("Date de fin (YYYY-MM-DD) : ")
-        description = input("Description (facultatif) : ")
+    def get_tournament_data():
+        print("=== Créer un nouveau tournoi ===")
+        name = input("Nom : ").strip()
+        location = input("Lieu : ").strip()
+        start_date = input("Date de début (YYYY-MM-DD) : ").strip()
+        end_date = input("Date de fin (YYYY-MM-DD) : ").strip()
+        description = input("Description : ").strip()
+
         return {
             "name": name,
             "location": location,
-            "starting_date": starting_date,
-            "ending_date": ending_date,
+            "start_date": start_date,
+            "end_date": end_date,
             "description": description
         }
 
     @staticmethod
-    def show_tournament_list(tournaments):
-        if not tournaments:
-            print("Aucun tournoi trouvé.")
-        for tournament in tournaments:
-            print(f"- {tournament.name} ({tournament.location}, "
-                  f"[{tournament.starting_date})-[{tournament.ending_date}]")
-
-    @staticmethod
-    def show_tournament_details(tournament):
-        print(f"=== Tournoi : {tournament.name} ===")
+    def display_tournament_summary(tournament):
+        """
+        Affiche un récap du tournoi : nom, dates, joueurs, rounds, etc.
+        """
+        print(f"\n=== Résumé du Tournoi : {tournament.name} ===")
         print(f"Lieu : {tournament.location}")
-        print(f"Date de début : {tournament.starting_date}")
-        print(f"Date de fin : {tournament.ending_date}")
+        print(f"Dates : {tournament.start_date} - {tournament.end_date}")
         print(f"Description : {tournament.description}")
-        print("Rounds :")
-        for round_ in tournament.rounds:
-            print(f"  - {round_.name}")
+        print(f"Nombre de rounds : {tournament.num_rounds}")
+        print(f"Round actuel : {tournament.current_round}/{tournament.num_rounds}")
+
+        print("\n--- Joueurs ---")
+        for p in sorted(tournament.players, key=lambda pl: (pl.last_name, pl.first_name)):
+            print(f"{p.last_name}, {p.first_name} (ID: {p.chess_id}, Points: {p.points})")
+
+        print("\n--- Rounds ---")
+        for rnd in tournament.rounds:
+            print(f"\n{rnd.name} (Début : {rnd.start_time}, Fin : {rnd.end_time or 'En cours'})")
+            for match in rnd.matches:
+                print(f"- {match.player1.last_name} vs {match.player2.last_name} "
+                      f"({match.score1} - {match.score2})")
 
     @staticmethod
-    def success_message():
-        print("Tournoi créé avec succès !")
+    def display_tournament_menu(tournament):
+        """
+        Affiche le menu d’options propre au tournoi en cours.
+        """
+        print(f"\n=== Gestion du Tournoi : {tournament.name} ===")
+        print("1. Ajouter des joueurs")
+        print("2. Démarrer le prochain round")
+        print("3. Entrer les résultats des matchs")
+        print("4. Voir le résumé du tournoi")
+        print("q. Quitter la gestion du tournoi")
+
+        return input("Choisissez une option : ")
 
     @staticmethod
-    def failure_message():
-        print("Impossible de créer le tournoi.")
+    def get_player_to_add():
+        """
+        Demande les infos d’un joueur à ajouter au tournoi.
+        Si c’est vide pour le first_name ou last_name, on considère que l’utilisateur veut annuler.
+        """
+        print("\n=== Ajouter un joueur au tournoi ===")
+        first_name = input("Prénom : ").strip()
+        last_name = input("Nom : ").strip()
+        birth_date = input("Date de naissance (YYYY-MM-DD) : ").strip()
+        chess_id = input("Identifiant national d'échecs : ").strip()
+
+        if first_name and last_name and chess_id:
+            return Player(first_name, last_name, birth_date, chess_id)
+        else:
+            print("[ERREUR] Saisie invalide ou annulée.")
+            return None
+
+    @staticmethod
+    def show_success_message(message):
+        print("[SUCCÈS] : " + message)
+
+    @staticmethod
+    def show_error_message(message):
+        print("[ERREUR] : " + message)
