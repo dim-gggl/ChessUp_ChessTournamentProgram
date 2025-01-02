@@ -31,13 +31,12 @@ class TournamentController:
         return tournaments
 
     def save_tournaments(self):
-        print("DEBUG: Sauvegarde en cours...")  # Pour vérifier
+        """Enregistre la totalité des tournois dans un fichier JSON."""
         save_to_json(
             self.file_path,
-            [t.to_dict() for t in self.tournaments],
+            [tournament.to_dict() for tournament in self.tournaments],
             overwrite=True
         )
-        print("DEBUG: Sauvegarde terminée.")
 
     def create_tournament(self):
         """
@@ -45,9 +44,8 @@ class TournamentController:
         puis l’ajoute si tout est OK.
         """
         data = self.view.get_tournament_data()
-        # On check si un tournoi avec le même nom et la même date existe déjà
-        if any(t.name == data["name"] and t.start_date == data["start_date"]
-               for t in self.tournaments):
+        if any(tournament.name == data["name"] and tournament.start_date == data["start_date"]
+               for tournament in self.tournaments):
             self.view.show_error_message("Un tournoi avec ce nom et cette date existe déjà.")
             return
 

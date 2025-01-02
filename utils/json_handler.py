@@ -22,7 +22,7 @@ def save_to_json(file_path, new_data, overwrite=False):
         existing_data.append(new_data)
 
     with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(existing_data, f, ensure_ascii=False, indent=4)
+        json.dump(existing_data, f, indent=4)
 
 def load_from_json(file_path):
     """
