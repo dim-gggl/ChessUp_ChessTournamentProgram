@@ -92,8 +92,8 @@ class TournamentManager:
             new_match = Match(p1, p2)
             new_round.matches.append(new_match)
 
-            self.tournament.current_round += 1
-            self.tournament.rounds.append(new_round)
+        self.tournament.current_round += 1
+        self.tournament.rounds.append(new_round.name)
         self.view.show_success_message(f"{round_name} démarré avec succès.")
 
         if self.tournament_controller:
@@ -104,7 +104,7 @@ class TournamentManager:
         Saisit les résultats (scores) du dernier round.
         Met à jour les points de chaque joueur.
         """
-        if not self.tournament.rounds or not self.tournament.rounds[-1].matches:
+        if  self.tournament.currend_round >= 0:
             self.view.show_error_message("Aucun match à mettre à jour.")
             return
 

@@ -22,15 +22,6 @@ class Round:
 
     @classmethod
     def from_dict(cls, data, players_dict):
-        """
-        data = {
-          'name': str,
-          'start_time': str (isoformat),
-          'end_time': str ou None,
-          'matches': [ {match_dict}, {match_dict} ... ]
-        }
-        players_dict = {chess_id: Player}
-        """
         round_ = cls(data["name"])
         round_.start_time = datetime.fromisoformat(data["start_time"])
         if data["end_time"]:

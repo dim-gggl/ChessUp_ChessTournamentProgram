@@ -29,7 +29,4 @@ class Player:
         )
 
     def __repr__(self):
-        return self.to_dict()
-
-    def __str__(self):
-        return [self.first_name, self.last_name, self.birth_date, self.chess_id]
+        return f"{self.first_name} {self.last_name} ({self.birth_date}), ID : {self.chess_id}"
