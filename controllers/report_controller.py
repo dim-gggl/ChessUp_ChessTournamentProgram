@@ -63,7 +63,9 @@ class ReportController:
             html_content += (f"\n<h2>{tournament.name}</h2> "
                              f"<p><strong>Dates :</strong>"
                              f"{tournament.start_date} - {tournament.end_date}</p>"
-                             f"<p><strong>Lieu :</strong> {tournament.location}</p>")
+                             f"<p><strong>Lieu :</strong> {tournament.location}</p>"
+                             f"<p><strong>Description :</strong> {tournament.description}</p>")
+
         self.exporter.export_to_html(
             "all_tournaments_list.html",
             "Liste de tous les tournois", html_content)

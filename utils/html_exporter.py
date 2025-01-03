@@ -15,7 +15,7 @@ class HTMLExporter:
         filepath = os.path.join(HTMLExporter.EXPORT_DIR, filename)
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(f"<html><head><title>{title}</title></head><body>")
-            f.write(f"<h1>RAPPORT : {title}</h1>")
+            f.write(f"<h1>{title}</h1>")
             f.write(content)
             f.write("</body></html>")
 
