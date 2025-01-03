@@ -1,5 +1,6 @@
 from models.round import Round
 
+
 class Tournament:
     def __init__(self, name, location, start_date, end_date, description, num_rounds=4):
         self.name = name
@@ -11,19 +12,33 @@ class Tournament:
         self.current_round = 0
         self.rounds = []
         self.players = []
+        self.rankings = {}
 
     def to_dict(self):
-        return {
-            "name": self.name,
-            "location": self.location,
-            "start_date": self.start_date,
-            "end_date": self.end_date,
-            "description": self.description,
-            "num_rounds": self.num_rounds,
-            "current_round": self.current_round,
-            "rounds": [r.to_dict() for r in self.rounds],
-            "players": [p.chess_id for p in self.players]
-        }
+        if not self.rankings:
+            return {
+                "name": self.name,
+                "location": self.location,
+                "start_date": self.start_date,
+                "end_date": self.end_date,
+                "description": self.description,
+                "num_rounds": self.num_rounds,
+                "current_round": self.current_round,
+                "rounds": [r.to_dict() for r in self.rounds],
+                "players": [p.chess_id for p in self.players],
+            }
+        else:
+            return {
+                'name': self.name,
+                'location': self.location,
+                'start_date': self.start_date,
+                'end_date': self.end_date,
+                'description': self.description,
+                'num_rounds': self.num_rounds,
+                'rounds': self.rounds,
+                'players': self.rankings,
+                'rankings': self.rankings,
+            }
 
     @classmethod
     def from_dict(cls, data, players):
@@ -37,7 +52,7 @@ class Tournament:
             start_date=data["start_date"],
             end_date=data["end_date"],
             description=data["description"],
-            num_rounds=data.get("num_rounds", 4)
+            num_rounds=data.get("num_rounds", 4),
         )
         t.current_round = data.get("current_round", 0)
         t.players = players

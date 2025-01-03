@@ -32,11 +32,7 @@ class TournamentController:
 
     def save_tournaments(self):
         """Enregistre la totalité des tournois dans un fichier JSON."""
-        save_to_json(
-            self.file_path,
-            [tournament.to_dict() for tournament in self.tournaments],
-            overwrite=True
-        )
+        save_to_json(self.file_path, [tournament.to_dict() for tournament in self.tournaments], overwrite=True)
 
     def create_tournament(self):
         """
@@ -44,8 +40,10 @@ class TournamentController:
         puis l’ajoute si tout est OK.
         """
         data = self.view.get_tournament_data()
-        if any(tournament.name == data["name"] and tournament.start_date == data["start_date"]
-               for tournament in self.tournaments):
+        if any(
+            tournament.name == data["name"] and tournament.start_date == data["start_date"]
+            for tournament in self.tournaments
+        ):
             self.view.show_error_message("Un tournoi avec ce nom et cette date existe déjà.")
             return
 
@@ -58,3 +56,12 @@ class TournamentController:
     def show_tournament_summary(self, tournament):
         """Utilise la vue pour afficher un résumé du tournoi."""
         self.view.display_tournament_summary(tournament)
+
+    def close_tournament(self, tournament):
+        raw_rankings = sorted(tournament.players, key=lambda p: p.points, reverse=True)
+        for i, player in raw_rankings:
+            player.rank = i + 1
+            final_results = {player.rank: [player.last_name, player.points]}
+            tournament.rankings.append(final_results)
+        self.view.show_rankings(tournament.rankings)
+        self.save_tournaments()

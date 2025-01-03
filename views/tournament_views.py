@@ -21,8 +21,18 @@ class TournamentView:
             "location": location,
             "start_date": start_date,
             "end_date": end_date,
-            "description": description
+            "description": description,
         }
+
+    @staticmethod
+    def display_tournaments_list(tournaments):
+        if not tournaments:
+            print("\n[INFO] Aucun tournoi enregistré")
+        else:
+            print("\n=== Liste des Tournois ===")
+            for i, t in enumerate(tournaments):
+                print(f"{i + 1}. {t.name} ({t.start_date} - {t.end_date})")
+            return input("Choisissez un tournoi par numéro : ")
 
     @staticmethod
     def display_tournament_summary(tournament):
@@ -44,8 +54,7 @@ class TournamentView:
         for rnd in tournament.rounds:
             print(f"\n{rnd.name} (Début : {rnd.start_time}, Fin : {rnd.end_time or 'En cours'})")
             for match in rnd.matches:
-                print(f"- {match.player1.last_name} vs {match.player2.last_name} "
-                      f"({match.score1} - {match.score2})")
+                print(str(match))
 
     @staticmethod
     def display_tournament_menu(tournament):
@@ -78,6 +87,11 @@ class TournamentView:
         else:
             print("[ERREUR] Saisie invalide ou annulée.")
             return None
+
+    @staticmethod
+    def show_rankings(rankings):
+        for i in range(len(rankings)):
+            print(rankings(i))
 
     @staticmethod
     def show_success_message(message):

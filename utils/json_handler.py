@@ -1,6 +1,7 @@
 import json
 import os
 
+
 def save_to_json(file_path, new_data, overwrite=False):
     """
     Sauvegarde les données dans un fichier JSON.
@@ -23,6 +24,7 @@ def save_to_json(file_path, new_data, overwrite=False):
 
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(existing_data, f, indent=4)
+
 
 def load_from_json(file_path):
     """

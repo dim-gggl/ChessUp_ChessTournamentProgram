@@ -1,6 +1,5 @@
 import re
 from datetime import datetime
-from models.player import Player
 
 
 class PlayerView:
@@ -52,8 +51,7 @@ class PlayerView:
             return
 
         for player in sorted(players, key=lambda p: (p.last_name, p.first_name)):
-            print(f"{player.last_name}, {player.first_name} "
-                  f"(ID: {player.chess_id}, Points: {player.points})")
+            print(f"{player.last_name}, {player.first_name} " f"(ID: {player.chess_id}, Points: {player.points})")
 
     @staticmethod
     def show_success_message(message):

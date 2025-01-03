@@ -1,12 +1,12 @@
 from utils.pairing import generate_pairs, generate_pairs_by_points
 from models.match import Match
 from models.round import Round
-from views.tournament_views import TournamentView
 
 
 class TournamentManager:
     """
-    Gère la “vie” d’un tournoi donné : ajout de joueurs, génération de rounds, saisie de résultats...
+    Gère la “vie” d’un tournoi donné : ajout de joueurs,
+    génération de rounds, saisie de résultats...
     On évite de faire la sauvegarde JSON directement ici,
     on délègue ça au TournamentController après chaque update.
     """
@@ -35,7 +35,7 @@ class TournamentManager:
             elif choice == "q":
                 break
             else:
-                print("[ERREUR] Choix invalide. Veuillez réessayer.")
+                self.view.show_error_message("Choix invalide.")
 
     def add_players(self):
         """
@@ -50,12 +50,13 @@ class TournamentManager:
                 break
 
             if any(p.chess_id == player.chess_id for p in self.tournament.players):
-                print("[ERREUR] Ce joueur est déjà dans le tournoi.")
+                self.view.show_error_message("Ce joueur est déjà dans le tournoi.")
             elif not any(p.chess_id == player.chess_id for p in self.player_controller.players):
-                print("[ERREUR] Ce joueur n'existe pas dans la liste principale.")
+                self.view.show_error_message("Ce joueur n'existe pas dans le fichier.")
             else:
                 self.tournament.players.append(player)
-                print(f"[SUCCÈS] Joueur ajouté : {player.first_name} {player.last_name} ({player.chess_id})")
+                self.view.show_success_message("Joueur ajouté : " 
+                      f"{player.first_name} {player.last_name} ({player.chess_id})")
 
         if self.tournament_controller:
             for i, t in enumerate(self.tournament_controller.tournaments):
@@ -69,30 +70,31 @@ class TournamentManager:
         Lance le prochain round. Pour le 1er round, on fait un random shuffle.
         Pour les rounds suivants, on appuie sur le ranking (points).
         """
-        if self.tournament.current_round >= self.tournament.num_rounds:
+        if (self.tournament.current_round >= self.tournament.num_rounds
+                and not self.tournament.current_round.matches):
+            print("Le tour actuel n'est pas terminé")
+        elif self.tournament.rankings is not None:
             print("[INFO] Le tournoi est déjà terminé.")
+            self.tournament_controller.close_tournament(self.tournament)
             return
 
         if self.tournament.current_round == 0:
             pairs = generate_pairs(self.tournament.players)
         else:
             # On collecte tous les matches passés pour éviter les répétitions
-            previous_matches = {
-                (m.player1, m.player2)
-                for rnd in self.tournament.rounds
-                for m in rnd.matches
-            }
+            previous_matches = {(m.player1, m.player2) for rnd in self.tournament.rounds for m in rnd.matches}
             pairs = generate_pairs_by_points(self.tournament.players, previous_matches)
 
         round_name = f"Round {self.tournament.current_round + 1}"
         new_round = Round(round_name)
 
         for p1, p2 in pairs:
-            new_round.matches.append(Match(p1, p2))
+            new_match = Match(p1, p2)
+            new_round.matches.append(new_match)
 
-        self.tournament.rounds.append(new_round)
-        self.tournament.current_round += 1
-        print(f"[SUCCÈS] {round_name} démarré avec succès.")
+            self.tournament.current_round += 1
+            self.tournament.rounds.append(new_round)
+        self.view.show_success_message(f"{round_name} démarré avec succès.")
 
         if self.tournament_controller:
             self.tournament_controller.save_tournaments()
@@ -103,18 +105,21 @@ class TournamentManager:
         Met à jour les points de chaque joueur.
         """
         if not self.tournament.rounds or not self.tournament.rounds[-1].matches:
-            print("[ERREUR] Aucun match à mettre à jour.")
+            self.view.show_error_message("Aucun match à mettre à jour.")
             return
 
         current_round = self.tournament.rounds[-1]
         for match in current_round.matches:
-            print(f"Match : {match.player1.last_name} vs {match.player2.last_name}")
-            score1 = self._get_score_for_player(match.player1)
-            score2 = self._get_score_for_player(match.player2)
+            print(f"Match : {str(match)}")
+            score1 = self.get_score_for_player(match.player1)
+            score2 = self.get_score_for_player(match.player2)
             match.score1 = score1
             match.score2 = score2
             match.player1.points += score1
             match.player2.points += score2
+
+            round_details = f"{current_round.name} :" + str(match)
+            self.tournament.rounds.append(round_details)
 
         current_round.end_round()
         print("[SUCCÈS] Résultats enregistrés.")
@@ -122,15 +127,16 @@ class TournamentManager:
         if self.tournament_controller:
             self.tournament_controller.save_tournaments()
 
-
-    def _get_score_for_player(self, player):
+    def get_score_for_player(self, player):
         """Demande à l'utilisateur de saisir un score float et gère les exceptions."""
         while True:
             try:
                 val = float(input(f"Score de {player.last_name} : "))
                 return val
             except ValueError:
-                print("[ERREUR] Veuillez entrer un score valide (0, 0.5 si match nul ou 1).")
+                self.view.show_error_message(
+                    "Score invalide : 0 ou 1 (0.5 si match nul)."
+                )
 
             if self.tournament_controller:
                 self.tournament_controller.save_tournaments()

@@ -1,5 +1,6 @@
 import random
 
+
 def generate_pairs(players):
     """
     Mélange les joueurs et génère des paires pour le premier round.
@@ -10,11 +11,12 @@ def generate_pairs(players):
     random.shuffle(shuffled)
 
     # Génération de pairs à partir de la liste shuffled
-    return [(shuffled[i], shuffled[i+1]) for i in range(0, len(shuffled), 2)]
+    return [(shuffled[i], shuffled[i + 1]) for i in range(0, len(shuffled), 2)]
+
 
 def generate_pairs_by_points(players, previous_matches):
     """
-    Trie les joueurs par score DESC et génère des paires
+    Trie les joueurs par score et génère des paires
     qui n'ont pas déjà joué ensemble.
     previous_matches : set de tuples (player1, player2) qui se sont déjà affrontés
     Retourne une liste de tuples (player1, player2).

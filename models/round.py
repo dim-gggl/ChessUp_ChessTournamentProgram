@@ -1,6 +1,7 @@
 from datetime import datetime
 from models.match import Match
 
+
 class Round:
     def __init__(self, name):
         self.name = name
@@ -16,7 +17,7 @@ class Round:
             "name": self.name,
             "start_time": self.start_time.isoformat(),
             "end_time": self.end_time.isoformat() if self.end_time else None,
-            "matches": [m.to_dict() for m in self.matches]
+            "matches": [m.to_dict() for m in self.matches],
         }
 
     @classmethod
@@ -35,6 +36,6 @@ class Round:
         if data["end_time"]:
             round_.end_time = datetime.fromisoformat(data["end_time"])
 
-        # Reconstitue les Match objets
+        # Reconstitue les instances de Match
         round_.matches = [Match.from_dict(m, players_dict) for m in data["matches"]]
         return round_
