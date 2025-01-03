@@ -17,7 +17,7 @@ class Round:
             "name": self.name,
             "start_time": self.start_time.isoformat(),
             "end_time": self.end_time.isoformat() if self.end_time else None,
-            "matches": [m.to_dict() for m in self.matches],
+            "matches": [str(match) for match in self.matches],
         }
 
     @classmethod
@@ -39,3 +39,9 @@ class Round:
         # Reconstitue les instances de Match
         round_.matches = [Match.from_dict(m, players_dict) for m in data["matches"]]
         return round_
+
+    def __repr__(self):
+        return self.to_dict()
+
+    def __str__(self):
+        return f"\n{self.name} ({len(self.matches)} matches)"

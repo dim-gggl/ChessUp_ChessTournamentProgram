@@ -7,8 +7,13 @@ def generate_pairs(players):
     players : liste d'objets Player
     Retourne une liste de tuples (player1, player2).
     """
+    print(players)
     shuffled = players[:]
     random.shuffle(shuffled)
+    if len(shuffled) % 2 != 0:
+        p1 = shuffled.pop(0)
+        p1.points += 1
+        print(f"{p1.first_name} {p1.last_name} n'a pas d'adversaire. 1 point pour le premier round !")
 
     # Génération de pairs à partir de la liste shuffled
     return [(shuffled[i], shuffled[i + 1]) for i in range(0, len(shuffled), 2)]
@@ -35,4 +40,5 @@ def generate_pairs_by_points(players, previous_matches):
 
         if not paired:
             p1.points += 1
+            print(f"{p1.first_name} {p1.last_name} n'a pas d'adversaire. 1 point !")
     return pairs

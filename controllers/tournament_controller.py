@@ -25,7 +25,7 @@ class TournamentController:
         tournaments = []
         for t_data in data:
             # On reconstitue la liste de joueurs du tournoi
-            players = [all_players[cid] for cid in t_data["players"] if cid in all_players]
+            players = [all_players[c_id] for c_id in t_data["players"] if c_id in all_players]
             tournament = Tournament.from_dict(t_data, players)
             tournaments.append(tournament)
         return tournaments
@@ -59,6 +59,7 @@ class TournamentController:
 
     def close_tournament(self, tournament):
         raw_rankings = sorted(tournament.players, key=lambda p: p.points, reverse=True)
+
         for i, player in raw_rankings:
             player.rank = i + 1
             final_results = {player.rank: [player.last_name, player.points]}

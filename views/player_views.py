@@ -14,12 +14,7 @@ class PlayerView:
         last_name = input("Nom de famille : ").strip()
         birth_date = self.get_valid_birth_date()
         chess_id = self.get_valid_chess_id()
-        return {
-            "first_name": first_name,
-            "last_name": last_name,
-            "birth_date": birth_date,
-            "chess_id": chess_id
-        }
+        return {"first_name": first_name, "last_name": last_name, "birth_date": birth_date, "chess_id": chess_id}
 
     @staticmethod
     def get_valid_birth_date():

@@ -25,5 +25,11 @@ class Player:
             birth_date=data["birth_date"],
             chess_id=data["chess_id"],
             points=data.get("points", 0),
-            rank=data.get("rank", 0)
+            rank=data.get("rank", 0),
         )
+
+    def __repr__(self):
+        return self.to_dict()
+
+    def __str__(self):
+        return [self.first_name, self.last_name, self.birth_date, self.chess_id]

@@ -1,4 +1,3 @@
-from models.tournament import Tournament
 from views.report_view import ReportView
 from utils.html_exporter import HTMLExporter
 
@@ -47,11 +46,7 @@ class ReportController:
                 f" <strong>ID</strong> : {player.chess_id}"
             )
             content += player_content
-        self.exporter.export_to_html(
-            "all_players_list.html",
-            "Liste de tous les Joueurs",
-            content
-        )
+        self.exporter.export_to_html("all_players_list.html", "Liste de tous les Joueurs", content)
 
     def export_all_tournaments(self):
         """
@@ -60,34 +55,33 @@ class ReportController:
         tournaments = self.tournament_controller.tournaments
         html_content = ""
         for tournament in tournaments:
-            html_content += (f"\n<h2>{tournament.name}</h2> "
-                             f"<p><strong>Dates :</strong>"
-                             f"{tournament.start_date} - {tournament.end_date}</p>"
-                             f"<p><strong>Lieu :</strong> {tournament.location}</p>"
-                             f"<p><strong>Description :</strong> {tournament.description}</p>")
+            html_content += (
+                f"\n<h2>{tournament.name}</h2> "
+                f"<p><strong>Dates :</strong>"
+                f"{tournament.start_date} - {tournament.end_date}</p>"
+                f"<p><strong>Lieu :</strong> {tournament.location}</p>"
+                f"<p><strong>Description :</strong> {tournament.description}</p>"
+            )
 
-        self.exporter.export_to_html(
-            "all_tournaments_list.html",
-            "Liste de tous les tournois", html_content)
+        self.exporter.export_to_html("all_tournaments_list.html", "Liste de tous les tournois", html_content)
 
     def export_tournament_details(self, tournament):
-            filename = f"{tournament.name.replace(' ', '_')}_details_report.html"
-            title = f"{tournament.name}"
-            players = []
-            if not tournament.rankings:
-                players.extend(
-                    sorted(tournament.players, key=lambda p:
-                    (p.last_name, p.first_name))
-                )
-            else:
-                for key, value in tournament.rankings:
-                    player = f"{int(key)} - {value[0]} - {value[1]} points"
-                    players.append(player)
-            content = (f"<h4>Lieu</h4><p> {tournament.location}</p>"
-                       f"<h4>Dates :</h4><p> {tournament.start_date} —— {tournament.end_date}<\p>\n"
-                       f"<h4>Description : </h4><p>{tournament.description}</p>"
-                       f"<h4>Joueurs :</h4>>\n <p>{tournament.players[:]}\n</p>")
-            self.exporter.export_to_html(filename, title, content)
+        filename = f"{tournament.name.replace(' ', '_')}_details_report.html"
+        title = f"{tournament.name}"
+        players = []
+        if not tournament.rankings:
+            players.extend(sorted(tournament.players, key=lambda p: (p.last_name, p.first_name)))
+        else:
+            for key, value in tournament.rankings:
+                player = f"{int(key)} - {value[0]} - {value[1]} points"
+                players.append(player)
+        content = (
+            f"<h4>Lieu</h4><p> {tournament.location}</p>"
+            f"<h4>Dates :</h4><p> {tournament.start_date} —— {tournament.end_date}<\p>"
+            f"<h4>Description : </h4><p>{tournament.description}</p>"
+            f"<h4>Joueurs :</h4><p>{tournament.players[:]}</p>"
+        )
+        self.exporter.export_to_html(filename, title, content)
 
     def export_tournament_rounds_and_matches(self, tournament):
         """

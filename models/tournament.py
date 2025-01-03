@@ -12,7 +12,7 @@ class Tournament:
         self.current_round = 0
         self.rounds = []
         self.players = []
-        self.rankings = {}
+        self.rankings = None
 
     def to_dict(self):
         if not self.rankings:
@@ -24,20 +24,20 @@ class Tournament:
                 "description": self.description,
                 "num_rounds": self.num_rounds,
                 "current_round": self.current_round,
-                "rounds": [r.to_dict() for r in self.rounds],
+                "rounds": [self.rounds],
                 "players": [p.chess_id for p in self.players],
             }
         else:
             return {
-                'name': self.name,
-                'location': self.location,
-                'start_date': self.start_date,
-                'end_date': self.end_date,
-                'description': self.description,
-                'num_rounds': self.num_rounds,
-                'rounds': self.rounds,
-                'players': self.rankings,
-                'rankings': self.rankings,
+                "name": self.name,
+                "location": self.location,
+                "start_date": self.start_date,
+                "end_date": self.end_date,
+                "description": self.description,
+                "num_rounds": self.num_rounds,
+                "rounds": self.rounds,
+                "players": self.rankings,
+                "rankings": self.rankings,
             }
 
     @classmethod

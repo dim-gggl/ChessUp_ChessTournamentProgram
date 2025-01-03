@@ -29,15 +29,6 @@ class PlayerController:
         if any(p.chess_id == player_data["chess_id"] for p in self.players):
             self.view.show_error_message("Un joueur avec cet ID existe déjà.")
             return
-        for p in self.players:
-            if  p.points is None:
-                p.points = 0,
-            else:
-                p.points = float(player_data["points"])
-            if  p.rank is None:
-                p.rank = 0,
-            else:
-                p.rank = int(player_data["rank"])
         new_player = Player(**player_data)
         self.players.append(new_player)
         self.save_players()

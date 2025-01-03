@@ -55,8 +55,9 @@ class TournamentManager:
                 self.view.show_error_message("Ce joueur n'existe pas dans le fichier.")
             else:
                 self.tournament.players.append(player)
-                self.view.show_success_message("Joueur ajouté : " 
-                      f"{player.first_name} {player.last_name} ({player.chess_id})")
+                self.view.show_success_message(
+                    "Joueur ajouté : " f"{player.first_name} {player.last_name} ({player.chess_id})"
+                )
 
         if self.tournament_controller:
             for i, t in enumerate(self.tournament_controller.tournaments):
@@ -70,9 +71,8 @@ class TournamentManager:
         Lance le prochain round. Pour le 1er round, on fait un random shuffle.
         Pour les rounds suivants, on appuie sur le ranking (points).
         """
-        if (self.tournament.current_round >= self.tournament.num_rounds
-                and not self.tournament.current_round.matches):
-            print("Le tour actuel n'est pas terminé")
+        if self.tournament.current_round >= self.tournament.num_rounds :
+            print("C'était le dernier tour !")
         elif self.tournament.rankings is not None:
             print("[INFO] Le tournoi est déjà terminé.")
             self.tournament_controller.close_tournament(self.tournament)
@@ -85,7 +85,7 @@ class TournamentManager:
             previous_matches = {(m.player1, m.player2) for rnd in self.tournament.rounds for m in rnd.matches}
             pairs = generate_pairs_by_points(self.tournament.players, previous_matches)
 
-        round_name = f"Round {self.tournament.current_round + 1}"
+        round_name = f"Round {int(self.tournament.current_round) + 1}"
         new_round = Round(round_name)
 
         for p1, p2 in pairs:
@@ -134,9 +134,7 @@ class TournamentManager:
                 val = float(input(f"Score de {player.last_name} : "))
                 return val
             except ValueError:
-                self.view.show_error_message(
-                    "Score invalide : 0 ou 1 (0.5 si match nul)."
-                )
+                self.view.show_error_message("Score invalide : 0 ou 1 (0.5 si match nul).")
 
             if self.tournament_controller:
                 self.tournament_controller.save_tournaments()

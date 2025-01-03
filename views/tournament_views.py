@@ -82,7 +82,7 @@ class TournamentView:
         birth_date = input("Date de naissance (YYYY-MM-DD) : ").strip()
         chess_id = input("Identifiant national d'échecs : ").strip()
 
-        if first_name and last_name and chess_id:
+        if first_name and last_name and birth_date:
             return Player(first_name, last_name, birth_date, chess_id)
         else:
             print("[ERREUR] Saisie invalide ou annulée.")

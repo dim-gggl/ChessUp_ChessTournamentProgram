@@ -29,8 +29,10 @@ class Match:
             score2=data.get("score2", 0),
         )
 
+    def __repr__(self):
+        return [[self.player1.last_name, self.score1], [self.player2.last_name, self.score2]]
+
     def __str__(self):
         return f"\n{
-        self.player1.last_name} [{self.score1}] -- [{
-        self.score2}] {self.player2.last_name
-        }"
+                self.player1.last_name} [{self.score1}] -- [{
+                self.score2}] {self.player2.last_name}"
