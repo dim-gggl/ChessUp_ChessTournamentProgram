@@ -44,6 +44,7 @@ class MainController:
                 self.report_controller.export_all_players()
             elif choice == "6":
                 self.report_controller.show_all_tournaments()
+                self.report_controller.export_all_tournaments()
             elif choice == "7":
                 tournament = self.select_tournament()
                 if isinstance(tournament, Tournament):
