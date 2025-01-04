@@ -82,13 +82,14 @@ class MainController:
         Permet de sélectionner un tournoi parmi la liste de tournois existants.
         """
         tournaments = self.tournament_controller.tournaments
+        choice = None
         try:
             choice = int(self.tournament_view.display_tournaments_list(tournaments)) - 1
-            if 0 <= choice < len(tournaments):
-                return tournaments[choice]
-            else:
-                self.tournament_view.show_error_message("Choix invalide.")
-                return None
         except ValueError:
             self.tournament_view.show_error_message("Numéro invalide.")
+            return None
+        if choice and (0 <= choice < len(tournaments)):
+            return tournaments[choice]
+        else:
+            self.tournament_view.show_error_message("Choix invalide.")
             return None

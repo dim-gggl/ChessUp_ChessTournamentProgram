@@ -10,8 +10,8 @@ class Tournament:
         self.description = description
         self.num_rounds = num_rounds
         self.current_round = 0
-        self.rounds = None
-        self.players = None
+        self.rounds = []
+        self.players = []
         self.rankings = None
 
     def to_dict(self):

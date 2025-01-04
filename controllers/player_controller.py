@@ -1,3 +1,6 @@
+from os import makedirs
+from os.path import dirname, exists
+
 from models.player import Player
 from views.player_views import PlayerView
 from utils.json_handler import load_from_json, save_to_json
@@ -20,6 +23,9 @@ class PlayerController:
 
     def save_players(self):
         """Sauvegarde la liste des joueurs dans le fichier JSON (en écrasant l’existant)."""
+        directory = dirname(self.file_path)
+        if directory and not exists(directory):
+            makedirs(directory)
         save_to_json(self.file_path, [p.to_dict() for p in self.players], overwrite=True)
 
     def add_player(self):

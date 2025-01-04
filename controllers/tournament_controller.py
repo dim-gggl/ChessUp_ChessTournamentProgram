@@ -1,3 +1,6 @@
+from os import makedirs
+from os.path import dirname, exists
+
 from models.tournament import Tournament
 from utils.json_handler import load_from_json, save_to_json
 from views.tournament_views import TournamentView
@@ -35,6 +38,9 @@ class TournamentController:
 
     def save_tournaments(self):
         """Enregistre la totalité des tournois dans un fichier JSON."""
+        directory = dirname(self.file_path)
+        if directory and not exists(directory):
+            makedirs(directory)
         save_to_json(self.file_path, [tournament.to_dict() for tournament in self.tournaments], overwrite=True)
 
     def create_tournament(self):

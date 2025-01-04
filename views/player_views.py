@@ -8,12 +8,13 @@ class PlayerView:
     (saisie de données, affichage de la liste de joueurs, etc.).
     """
 
-    def get_player_data(self):
+    @staticmethod
+    def get_player_data():
         print("=== Ajouter un nouveau joueur ===")
         first_name = input("Prénom : ").strip()
         last_name = input("Nom de famille : ").strip()
-        birth_date = self.get_valid_birth_date()
-        chess_id = self.get_valid_chess_id()
+        birth_date = PlayerView.get_valid_birth_date()
+        chess_id = PlayerView.get_valid_chess_id()
         return {"first_name": first_name, "last_name": last_name, "birth_date": birth_date, "chess_id": chess_id}
 
     @staticmethod
