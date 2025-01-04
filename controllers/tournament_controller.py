@@ -17,7 +17,10 @@ class TournamentController:
         self.tournaments = self.load_tournaments()
 
     def load_tournaments(self):
-        """Charge les tournois depuis le fichier JSON et les reconstitue en objets `Tournament`."""
+        """
+        Charge les tournois depuis le fichier JSON et les reconstitue en
+        instances de Tournament.
+        """
         data = load_from_json(self.file_path)
         # On fait une dict pour accéder aux joueurs par leur chess_id
         all_players = {p.chess_id: p for p in self.player_controller.players}
@@ -57,6 +60,12 @@ class TournamentController:
         """Utilise la vue pour afficher un résumé du tournoi."""
         self.view.display_tournament_summary(tournament)
 
+    def show_tournament_players(self, tournament):
+        """Utilise la vue pour afficher la liste des joueurs du tournoi."""
+        ABC_players = sorted(tournament.players, key=lambda p: p.last_name)
+        self.view.display_tournament_players(ABC_players, tournament.name)
+
+    """
     def close_tournament(self, tournament):
         raw_rankings = sorted(tournament.players, key=lambda p: p.points, reverse=True)
 
@@ -66,3 +75,4 @@ class TournamentController:
             tournament.rankings.append(final_results)
         self.view.show_rankings(tournament.rankings)
         self.save_tournaments()
+    """

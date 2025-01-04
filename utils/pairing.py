@@ -7,7 +7,6 @@ def generate_pairs(players):
     players : liste d'objets Player
     Retourne une liste de tuples (player1, player2).
     """
-    print(players)
     shuffled = players[:]
     random.shuffle(shuffled)
     if len(shuffled) % 2 != 0:

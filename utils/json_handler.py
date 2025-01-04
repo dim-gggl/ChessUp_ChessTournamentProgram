@@ -28,7 +28,7 @@ def save_to_json(file_path, new_data, overwrite=False):
 
 def load_from_json(file_path):
     """
-    Charge les données depuis un fichier JSON et renvoie un tableau de dicts.
+    Charge les données depuis un fichier JSON et renvoie une liste de dicts.
     Retourne une liste vide si le fichier n'existe pas ou est vide.
     """
     if not os.path.exists(file_path):
@@ -37,7 +37,7 @@ def load_from_json(file_path):
     with open(file_path, "r", encoding="utf-8") as f:
         try:
             data = f.read().strip()
-            if not data:  # fichier vide
+            if not data:
                 return []
             return json.loads(data)
         except json.JSONDecodeError as e:

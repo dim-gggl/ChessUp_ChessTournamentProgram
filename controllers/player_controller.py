@@ -11,7 +11,6 @@ class PlayerController:
     def __init__(self):
         self.file_path = "data/players/players.json"
         self.view = PlayerView()
-        # On charge ici la liste des joueurs existants (depuis JSON si dispo)
         self.players = self.load_players()
 
     def load_players(self):
@@ -24,7 +23,9 @@ class PlayerController:
         save_to_json(self.file_path, [p.to_dict() for p in self.players], overwrite=True)
 
     def add_player(self):
-        """Demande à la vue les infos d'un nouveau joueur, puis l'ajoute s'il n'existe pas déjà."""
+        """
+        Demande à la vue les infos d'un nouveau joueur, puis l'ajoute s'il n'existe pas déjà.
+        """
         player_data = self.view.get_player_data()
         if any(p.chess_id == player_data["chess_id"] for p in self.players):
             self.view.show_error_message("Un joueur avec cet ID existe déjà.")

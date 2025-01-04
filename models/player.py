@@ -8,6 +8,9 @@ class Player:
         self.rank = rank
 
     def to_dict(self):
+        """
+        Génère un dict contenant les infos du joueur.
+        """
         return {
             "first_name": self.first_name,
             "last_name": self.last_name,
@@ -19,6 +22,10 @@ class Player:
 
     @classmethod
     def from_dict(cls, data):
+        """
+        Génère yne instance de la classe Player à partir d'un dict passé
+        par la méthode load_players de la classe PlayerController.
+        """
         return cls(
             first_name=data["first_name"],
             last_name=data["last_name"],
@@ -27,6 +34,3 @@ class Player:
             points=data.get("points", 0),
             rank=data.get("rank", 0),
         )
-
-    def __repr__(self):
-        return f"{self.first_name} {self.last_name} ({self.birth_date}), ID : {self.chess_id}"

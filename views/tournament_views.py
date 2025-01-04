@@ -71,6 +71,28 @@ class TournamentView:
         return input("Choisissez une option : ")
 
     @staticmethod
+    def display_tournament_players(players, tournament_name):
+        print(f"\n=== Joueurs du tournoi {tournament_name} ===")
+        if not players:
+            print("[INFO] Aucun joueur dans ce tournoi.")
+            return
+
+        for player in players:
+            print(f"{player.last_name}, {player.first_name} (ID: {player.chess_id}, Points: {player.points})")
+
+    @staticmethod
+    def display_tournament_rounds_and_matches(tournament):
+        print(f"\n=== Rounds et matchs du tournoi : {tournament.name} ===")
+        if not tournament.rounds:
+            print("[INFO] Aucun round pour ce tournoi.")
+            return
+
+        for round_ in tournament.rounds:
+            print(f"\n{round_.name} (Début : {round_.start_time}, Fin : {round_.end_time or 'En cours'})")
+            for match in round_.matches:
+                print(str(match))
+
+    @staticmethod
     def get_player_to_add():
         """
         Demande les infos d’un joueur à ajouter au tournoi.

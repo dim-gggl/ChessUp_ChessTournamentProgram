@@ -71,7 +71,7 @@ class TournamentManager:
         Lance le prochain round. Pour le 1er round, on fait un random shuffle.
         Pour les rounds suivants, on appuie sur le ranking (points).
         """
-        if self.tournament.current_round >= self.tournament.num_rounds :
+        if self.tournament.current_round >= self.tournament.num_rounds:
             print("C'était le dernier tour !")
         elif self.tournament.rankings is not None:
             print("[INFO] Le tournoi est déjà terminé.")
@@ -93,7 +93,7 @@ class TournamentManager:
             new_round.matches.append(new_match)
 
         self.tournament.current_round += 1
-        self.tournament.rounds.append(new_round.name)
+        self.tournament.rounds.append(new_round)
         self.view.show_success_message(f"{round_name} démarré avec succès.")
 
         if self.tournament_controller:
@@ -101,25 +101,22 @@ class TournamentManager:
 
     def enter_results(self):
         """
-        Saisit les résultats (scores) du dernier round.
+        Saisit les scores du dernier round.
         Met à jour les points de chaque joueur.
         """
-        if  self.tournament.currend_round >= 0:
-            self.view.show_error_message("Aucun match à mettre à jour.")
+        if not self.tournament.rounds or not self.tournament.rounds[-1].matches:
+            print("[ERREUR] Aucun match à mettre à jour.")
             return
 
         current_round = self.tournament.rounds[-1]
         for match in current_round.matches:
-            print(f"Match : {str(match)}")
+            print(f"Match : {match.player1.last_name} vs {match.player2.last_name}")
             score1 = self.get_score_for_player(match.player1)
             score2 = self.get_score_for_player(match.player2)
             match.score1 = score1
             match.score2 = score2
             match.player1.points += score1
             match.player2.points += score2
-
-            round_details = f"{current_round.name} :" + str(match)
-            self.tournament.rounds.append(round_details)
 
         current_round.end_round()
         print("[SUCCÈS] Résultats enregistrés.")

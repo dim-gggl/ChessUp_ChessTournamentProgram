@@ -10,29 +10,29 @@ class Round:
         self.matches = []
 
     def end_round(self):
+        """
+        Génère l'heure de fin du round.
+        Méthode appelée dans la méthode enter_results de la classe TournamentManager.
+        """
         self.end_time = datetime.now()
 
     def to_dict(self):
+        """
+        Génère un dict contenant les infos du round.
+        """
         return {
             "name": self.name,
             "start_time": self.start_time.isoformat(),
             "end_time": self.end_time.isoformat() if self.end_time else None,
-            "matches": [str(match) for match in self.matches],
+            "matches": [m.to_dict() for m in self.matches],
         }
 
     @classmethod
     def from_dict(cls, data, players_dict):
+        """
+        Génère une instance de Round à partir d'un dict. passé par la méthode
+        from_dict de la classe Tournament.
+        """
         round_ = cls(data["name"])
-        round_.start_time = datetime.fromisoformat(data["start_time"])
-        if data["end_time"]:
-            round_.end_time = datetime.fromisoformat(data["end_time"])
-
-        # Reconstitue les instances de Match
-        round_.matches = [Match.from_dict(m, players_dict) for m in data["matches"]]
+        round_.matches = [Match.from_dict(m_data, players_dict) for m_data in data.get("matches", [])]
         return round_
-
-    def __repr__(self):
-        return self.to_dict()
-
-    def __str__(self):
-        return f"\n{self.name} ({len(self.matches)} matches)"

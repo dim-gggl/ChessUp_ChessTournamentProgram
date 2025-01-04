@@ -39,7 +39,9 @@ class PlayerView:
 
     @staticmethod
     def display_players(players):
-        """Affiche la liste des joueurs, classés par ordre alphabétique."""
+        """
+        Affiche la liste des joueurs, classés par ordre alphabétique.
+        """
         print("\n=== Liste des Joueurs ===")
         if not players:
             print("[INFO] Aucun joueur enregistré.")

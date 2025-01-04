@@ -6,6 +6,9 @@ class Match:
         self.score2 = score2
 
     def to_dict(self):
+        """
+        Génère un dict contenant les infos du match.
+        """
         return {
             "player1": self.player1.chess_id,
             "player2": self.player2.chess_id,
@@ -16,11 +19,8 @@ class Match:
     @classmethod
     def from_dict(cls, data, players_dict):
         """
-        data est un dict contenant {
-        'player1': <chess_id>, 'player2': <chess_id>,
-        'score1': <float>, 'score2': <float>
-        }
-        players_dict est un dict : { chess_id: Player }
+        Génère une instance de Match avec des données passées par
+        la méthode from_dict de la classe Round
         """
         return cls(
             player1=players_dict[data["player1"]],
@@ -30,9 +30,13 @@ class Match:
         )
 
     def __repr__(self):
-        return [[self.player1.last_name, self.score1], [self.player2.last_name, self.score2]]
+        """
+        Un Match est représenté par une liste de 2 tuples (player_id, score)
+        """
+        return [(self.player1.chess_id, self.score1), (self.player2.chess_id, self.score2)]
 
     def __str__(self):
-        return f"\n{
-                self.player1.last_name} [{self.score1}] -- [{
-                self.score2}] {self.player2.last_name}"
+        """
+        Affichage du match dans la console.
+        """
+        return f"\033[32m{self.player1.last_name}\033[0m ——\033[31m[{self.score1}]\033[0m—— vs ——\033[31m[{self.score2}]\033[0m—— \033[32m{self.player2.last_name}\033[0m"  # nqoa

@@ -10,11 +10,14 @@ class Tournament:
         self.description = description
         self.num_rounds = num_rounds
         self.current_round = 0
-        self.rounds = []
-        self.players = []
+        self.rounds = None
+        self.players = None
         self.rankings = None
 
     def to_dict(self):
+        """
+        Génère un dict contenant les infos du tournoi.
+        """
         if not self.rankings:
             return {
                 "name": self.name,
@@ -24,7 +27,7 @@ class Tournament:
                 "description": self.description,
                 "num_rounds": self.num_rounds,
                 "current_round": self.current_round,
-                "rounds": [self.rounds],
+                "rounds": [r.to_dict() for r in self.rounds],
                 "players": [p.chess_id for p in self.players],
             }
         else:
@@ -35,16 +38,17 @@ class Tournament:
                 "end_date": self.end_date,
                 "description": self.description,
                 "num_rounds": self.num_rounds,
-                "rounds": self.rounds,
-                "players": self.rankings,
+                "rounds": [r.to_dict() for r in self.rounds],
+                "players": [p.chess_id for p in self.players],
                 "rankings": self.rankings,
             }
 
     @classmethod
     def from_dict(cls, data, players):
         """
+        Génère une instance de Tournoi à partir d'un dict.
         data: dict contenant les infos du tournoi (nom, location, etc.)
-        players: liste d'objets Player (ceux associés à ce tournoi)
+        players: liste des instances de Player associées à ce tournoi
         """
         t = cls(
             name=data["name"],
@@ -59,5 +63,5 @@ class Tournament:
 
         # On construit un dict {chess_id: Player} pour reconstruire les matchs
         players_dict = {p.chess_id: p for p in players}
-        t.rounds = [Round.from_dict(r, players_dict) for r in data.get("rounds", [])]
+        t.rounds = [Round.from_dict(round_data, players_dict) for round_data in data.get("rounds", [])]
         return t
