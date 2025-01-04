@@ -50,7 +50,6 @@ class TournamentController:
             self.view.show_error_message("Un tournoi avec ce nom et cette date existe déjà.")
             return
 
-        # Création et ajout du tournoi à la liste
         new_tournament = Tournament(**data)
         self.tournaments.append(new_tournament)
         self.save_tournaments()
