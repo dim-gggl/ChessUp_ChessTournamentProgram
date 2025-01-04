@@ -88,6 +88,7 @@ class MainController:
         except ValueError:
             self.tournament_view.show_error_message("Numéro invalide.")
             return None
+        
         if choice and (0 <= choice < len(tournaments)):
             return tournaments[choice]
         else:
