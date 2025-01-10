@@ -32,12 +32,14 @@ def load_from_json(file_path):
     Retourne une liste vide si le fichier n'existe pas ou est vide.
     """
     if not os.path.exists(file_path):
+
         return []
 
     with open(file_path, "r", encoding="utf-8") as f:
         try:
             data = f.read().strip()
             if not data:
+                print(f"[INFO] Fichier vide {file_path}.")
                 return []
             return json.loads(data)
         except json.JSONDecodeError as e:

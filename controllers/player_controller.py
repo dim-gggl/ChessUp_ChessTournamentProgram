@@ -1,46 +1,57 @@
-from os import makedirs
-from os.path import dirname, exists
-
-from models.player import Player
 from views.player_views import PlayerView
-from utils.json_handler import load_from_json, save_to_json
+from models.player import Player
 
 
-class PlayerController:
-    """
-    Gère la logique métier pour les joueurs : création, listing, sauvegarde, etc.
-    """
+class PlayerController():
 
-    def __init__(self):
-        self.file_path = "data/players/players.json"
+    def __init__(self, manager=None):
         self.view = PlayerView()
-        self.players = self.load_players()
+        self.manager = manager
 
-    def load_players(self):
-        """Charge la liste des joueurs depuis un fichier JSON."""
-        data = load_from_json(self.file_path)
-        return [Player.from_dict(player_data) for player_data in data]
+    def player_menu(self):
+        selected = -1
+        while int(selected) != 0:
+            selected = self.view.display_players_menu()
+            if int(selected) == 1:
+                new_player_details = self.view.get_player_data()
+                new_player = Player(**new_player_details)
+                self.manager.players.append(new_player)
+                self.manager.save_all()
+            elif int(selected) == 2:
+                players = self.manager.players
+                player = self.view.select_player_to_edit(players)
+                self.edit_player_details(player)
+                self.manager.save_all()
+            elif int(selected) == 3:
+                sorted_players = sorted(self.manager.players, key=lambda p: (p.last_name, p.first_name))
+                self.view.display_players(sorted_players)
 
-    def save_players(self):
-        """Sauvegarde la liste des joueurs dans le fichier JSON (en écrasant l’existant)."""
-        directory = dirname(self.file_path)
-        if directory and not exists(directory):
-            makedirs(directory)
-        save_to_json(self.file_path, [p.to_dict() for p in self.players], overwrite=True)
 
-    def add_player(self):
-        """
-        Demande à la vue les infos d'un nouveau joueur, puis l'ajoute s'il n'existe pas déjà.
-        """
-        player_data = self.view.get_player_data()
-        if any(p.chess_id == player_data["chess_id"] for p in self.players):
-            self.view.show_error_message("Un joueur avec cet ID existe déjà.")
-            return
-        new_player = Player(**player_data)
-        self.players.append(new_player)
-        self.save_players()
-        self.view.show_success_message("Nouveau joueur ajouté avec succès !")
+            else:
+                selected = 0
 
-    def view_all_players(self):
-        """Affiche la liste de tous les joueurs."""
-        self.view.display_players(self.players)
+    def add_new_player(self):
+        new_player_details = self.view.get_player_data()
+        new_player = Player(**new_player_details)
+        self.manager.players.append(new_player)
+        self.manager.save_all()
+        return self.player_menu()
+
+    def edit_player_details(self, player):
+        selected = -1
+        while selected != 0:
+            selected = int(self.view.modify_player(player))
+            if selected == 1:
+                new_infos = self.view.get_player_data(edit=True, player=player)
+                player.update_player_info(**new_infos)
+                self.manager.save_all()
+                return self.player_menu()
+
+            elif selected == 2:
+                new_chess_id = self.view.enter_chess_id(player)
+                player.chess_id = new_chess_id
+                self.manager.save_all()
+                return self.player_menu()
+
+            else:
+                return self.player_menu()

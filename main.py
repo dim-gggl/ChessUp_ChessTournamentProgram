@@ -1,8 +1,8 @@
-from controllers.main_controller import MainController
+from controllers.main_controller import MainMenu
 
 
 def main():
-    controller = MainController()
+    controller = MainMenu()
     controller.run()
 
 

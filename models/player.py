@@ -1,36 +1,20 @@
 class Player:
-    def __init__(self, first_name, last_name, birth_date, chess_id, points=0, rank=0):
+    def __init__(self, first_name, last_name, birth_date, **kwargs):
         self.first_name = first_name
         self.last_name = last_name
         self.birth_date = birth_date
-        self.chess_id = chess_id
-        self.points = points
-        self.rank = rank
+        self.chess_id = kwargs.get("chess_id", "")
+        self.name = f"{self.first_name[0].upper()}.{self.last_name}"
+        self.points = kwargs.get("points", 0)
+        self.rank = kwargs.get("rank", 0)
 
-    def to_dict(self):
-        """
-        Génère un dict contenant les infos du joueur.
-        """
-        return {
-            "first_name": self.first_name,
-            "last_name": self.last_name,
-            "birth_date": self.birth_date,
-            "chess_id": self.chess_id,
-            "points": self.points,
-            "rank": self.rank,
-        }
+    def update_player_info(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        return self
 
-    @classmethod
-    def from_dict(cls, data):
-        """
-        Génère yne instance de la classe Player à partir d'un dict passé
-        par la méthode load_players de la classe PlayerController.
-        """
-        return cls(
-            first_name=data["first_name"],
-            last_name=data["last_name"],
-            birth_date=data["birth_date"],
-            chess_id=data["chess_id"],
-            points=data.get("points", 0),
-            rank=data.get("rank", 0),
-        )
+    def __repr__(self):
+        return f"{self.first_name} {self.last_name} ({self.birth_date}),  ID : ({self.chess_id})"
+
+    def __str__(self):
+        return f"{self.name} ~ ID: ({self.chess_id}) ~ Pts: ({self.points})"

@@ -1,96 +1,36 @@
-from views.main_menu_view import MenuView
 from controllers.player_controller import PlayerController
+from controllers.player_manager import PlayerManager
+from views.main_menu_view import MainMenuView
+from controllers.tournament_manager import TournamentManager
 from controllers.tournament_controller import TournamentController
 from controllers.report_controller import ReportController
-from controllers.tournament_manager import TournamentManager
-from views.player_views import PlayerView
-from views.tournament_views import TournamentView
-from models.tournament import Tournament
 
 
-class MainController:
-    """
-    Point d'entrée principal du programme, gère la navigation via le menu.
-    """
-
+class MainMenu:
     def __init__(self):
-        self.menu = MenuView()
-        self.player_controller = PlayerController()
-        self.player_view = PlayerView()
-        self.tournament_controller = TournamentController(self.player_controller)
-        self.tournament_view = TournamentView()
-        self.report_controller = ReportController(
-            self.player_controller,
-            self.tournament_controller,
-        )
-        self.tournament = None
-        self.manager = None
+        self.player_manager = PlayerManager()
+        self.tournament_manager = TournamentManager(self.player_manager)
+        self.tournament_manager.load_all()
+        self.player_manager.load_all()
 
     def run(self):
-        """
-        Boucle principale du programme, affiche le menu et réagit aux choix de l'utilisateur.
-        """
-        while True:
-            choice = self.menu.display_main_menu()
-
-            if choice == "1":
-                self.player_controller.add_player()
-            elif choice == "2":
-                self.player_controller.view_all_players()
-            elif choice == "3":
-                self.tournament_controller.create_tournament()
-            elif choice == "4":
-                self.tournament = self.select_tournament()
-                if self.tournament:
-                    self.manage_tournament(self.tournament)
-            elif choice == "5":
-                self.player_view.display_players()
-                self.report_controller.export_all_players()
-            elif choice == "6":
-                self.tournament_view.display_tournaments_list()
-                self.report_controller.export_all_tournaments()
-            elif choice == "7":
-                tournament = self.select_tournament()
-                if isinstance(tournament, Tournament):
-                    self.tournament_view.display_tournament_summary(tournament)
-                    self.report_controller.export_tournament_details(tournament)
-                else:
-                    self.tournament_view.show_error_message("Choix invalide.")
-            elif choice == "8":
-                tournament = self.select_tournament()
-                if tournament:
-                    self.tournament_controller.show_tournament_players(tournament)
-            elif choice == "9":
-                tournament = self.select_tournament()
-                if tournament:
-                    self.tournament_view.display_tournament_rounds_and_matches(tournament)
-            elif choice == "q":
-                print("Merci d'avoir utilisé le programme !")
+        selected = -1
+        MainMenuView.display_main_menu_intro()
+        while int(selected) != 0:
+            selected = MainMenuView().display_main_menu()
+            if int(selected) == 1:
+                TournamentController(self.tournament_manager,
+                                     self.player_manager).tournament_menu_selection()
+            elif int(selected) == 2:
+                PlayerController(self.player_manager).player_menu()
+            elif int(selected) == 3:
+                ReportController(self.player_manager, self.tournament_manager).report_menu()
+            elif int(selected) == 0:
+                self.player_manager.save_all()
+                self.tournament_manager.save_all()
                 break
             else:
-                print("Choix invalide. Veuillez réessayer.")
-
-    def manage_tournament(self, tournament):
-        """Permet la gestion d'un tournoi.'"""
-        self.manager = TournamentManager(
-            tournament, self.player_controller, self.tournament_view, self.tournament_controller
-        )
-        self.manager.manage()
-
-    def select_tournament(self):
-        """
-        Permet de sélectionner un tournoi parmi la liste de tournois existants.
-        """
-        tournaments = self.tournament_controller.tournaments
-        choice = None
-        try:
-            choice = int(self.tournament_view.display_tournaments_list(tournaments)) - 1
-        except ValueError:
-            self.tournament_view.show_error_message("Numéro invalide.")
-            return None
-        
-        if choice and (0 <= choice < len(tournaments)):
-            return tournaments[choice]
-        else:
-            self.tournament_view.show_error_message("Choix invalide.")
-            return None
+                self.player_manager.save_all()
+                self.tournament_manager.save_all()
+                MainMenuView().bye_message()
+                break
