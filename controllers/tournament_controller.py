@@ -44,6 +44,8 @@ class TournamentController:
 
         elif selected == "2":
             tournaments_to_handle = self.tournament_manager.running_tournaments + self.tournament_manager.holding_tournaments
+            print(f"DEBUG : t_control : 52 ~> running_tournaments ~>  {self.tournament_manager.running_tournaments}\n"
+                  f"DEBUG : t_control : 53 ~> holding_tournaments ~>  {self.tournament_manager.holding_tournaments}\n")
             tournament = self.view.select_tournament(tournaments_to_handle)
             self.handle_game_menu(tournament)
 

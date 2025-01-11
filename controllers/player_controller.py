@@ -28,11 +28,11 @@ class PlayerController():
                 self.manager.save_all()
             elif int(selected) == 0 or selected == "r":
                 self.manager.save_all()
-                return
+                return "-1"
 
 
             else:
-                selected = "q"
+                return "-1"
 
     def add_new_player(self):
         new_player_details = self.view.get_player_data()

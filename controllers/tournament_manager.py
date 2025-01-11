@@ -52,6 +52,7 @@ class TournamentManager:
                         closed=match_d.get("closed", False)
                     )
                     new_round.matches.append(new_match)
+                    new_tournament.rounds.append(new_round)
             self.all_tournaments.append(new_tournament)
 
         self.sort_out_unfinished_tournaments()

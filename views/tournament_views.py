@@ -144,7 +144,7 @@ class TournamentView:
         print("\n\n\n~~~~~~~~~~~~~~~  \033[1;96mRÉSULTATS DU TOURNOI\033[0m  ~~~~~~~~~~~~~~~")
         print(f"\033[1m {tournament.name}\033[0m")
         print(f"\033[1mLieu :\033[0m {tournament.location}")
-        return self.show_rankings(tournament)
+        return TournamentView.show_rankings(tournament)
 
     @staticmethod
     def show_rankings(tournament):
