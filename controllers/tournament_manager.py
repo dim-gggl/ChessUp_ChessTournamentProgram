@@ -9,9 +9,11 @@ class TournamentManager:
     """
     Gère les données des tournois et leur persistence.
     """
-
     def __init__(self, players_manager=None):
-        self.tournaments = []
+        self.holding_tournaments = []
+        self.running_tournaments = []
+        self.finished_tournaments = []
+        self.all_tournaments =[]
         self.file_path = "data/tournaments/tournaments.json"
         self.players_manager = players_manager
 
@@ -20,7 +22,7 @@ class TournamentManager:
         Charge les infos depuis un fichier JSON et recrée les objets.
         """
         data = load_from_json(self.file_path)
-        self.tournaments = []
+        self.all_tournaments = []
         for t_data in data:
             new_tournament = Tournament(
                 name=t_data["name"],
@@ -32,6 +34,8 @@ class TournamentManager:
                 current_round=t_data.get("current_round", 0),
                 rankings=t_data.get("rankings", None)
             )
+            players_data = t_data.get("players", [])
+            new_tournament.players = self.players_manager.recreate_players(players_data)
             rounds_data = t_data.get("rounds", [])
             for rd in rounds_data:
                 new_round = Round(
@@ -48,13 +52,15 @@ class TournamentManager:
                         closed=match_d.get("closed", False)
                     )
                     new_round.matches.append(new_match)
+            self.all_tournaments.append(new_tournament)
 
-            players_data = t_data.get("players", [])
-            new_tournament.players = self.players_manager.recreate_players(players_data)
-
-            self.tournaments.append(new_tournament)
-
-        return self.tournaments
+        self.sort_out_unfinished_tournaments()
+        self.sort_out_finished_tournaments()
+        print(f"TEST : running_tournaments ~> {self.running_tournaments}")
+        print(f"TEST : holding_tournaments ~> {self.holding_tournaments}")
+        print(f"TEST : finished_tournaments ~> {self.finished_tournaments}")
+        print(f"TEST : all_tournaments ~> {self.all_tournaments}")
+        return self.all_tournaments
 
     def save_all(self):
         """
@@ -64,7 +70,7 @@ class TournamentManager:
         if not os.path.exists(self.file_path):
             os.makedirs(os.path.dirname(self.file_path.rstrip(file_name)), exist_ok=True)
         all_tournaments_data = []
-        for t in self.tournaments:
+        for t in self.all_tournaments:
             t_data = {
                 "name": t.name,
                 "location": t.location,
@@ -109,4 +115,31 @@ class TournamentManager:
 
             all_tournaments_data.append(t_data)
 
+        self.sort_out_unfinished_tournaments()
+        self.sort_out_finished_tournaments()
         save_to_json(self.file_path, all_tournaments_data, overwrite=True)
+
+    def sort_out_unfinished_tournaments(self):
+        for tournament in self.all_tournaments:
+            if   0 < tournament.current_round and tournament.rankings is None:
+                self.running_tournaments.append(tournament)
+            else:
+                self.sort_out_holding_tournaments(tournament)
+        return self.running_tournaments
+
+    def sort_out_holding_tournaments(self, tournament):
+        if tournament.current_round == 0:
+            self.holding_tournaments.append(tournament)
+        return self.holding_tournaments
+
+    def sort_out_finished_tournaments(self):
+        for tournament in self.all_tournaments:
+            if tournament.current_round == tournament.num_rounds and tournament.rankings is not None:
+                self.finished_tournaments.append(tournament)
+        return self.finished_tournaments
+
+    def save_new_entry(self, tournament):
+        self.all_tournaments.append(tournament)
+        self.sort_out_unfinished_tournaments()
+        self.sort_out_finished_tournaments()
+        return tournament

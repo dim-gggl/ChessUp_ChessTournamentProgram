@@ -24,7 +24,7 @@ class ReportController:
                 return PlayerView().display_players(sorted_players)
 
             elif 1 < int(choice) <= 3:
-                tournament = TournamentView().select_tournament(self.tournaments_manager.tournaments)
+                tournament = TournamentView().select_tournament(self.tournaments_manager.running_tournaments)
                 if tournament:
                     return self.get_user_precisions(tournament)
             elif choice == 4:
@@ -58,7 +58,7 @@ class ReportController:
             elif selected == 2:
                 self.export_all_tournaments()
             elif selected == 3:
-                tournament = TournamentView().select_tournament(self.tournaments_manager.tournaments)
+                tournament = TournamentView().select_tournament(self.tournaments_manager.running_tournaments)
                 if tournament:
                     self.export_tournament_details(tournament)
             else:
@@ -85,7 +85,7 @@ class ReportController:
         """
         Exporte au format HTML la liste de tous les tournois.
         """
-        tournaments = self.tournaments_manager.tournaments
+        tournaments = self.tournaments_manager.running_tournaments
         html_content = "<ul class='all_tournaments'>"
         for tournament in tournaments:
             html_content += (

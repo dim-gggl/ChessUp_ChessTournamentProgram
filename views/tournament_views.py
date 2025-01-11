@@ -86,15 +86,21 @@ class TournamentView:
         print(f"\033[1mDescription :\033[0m {tournament.description}")
         print(f"\033[1mRound actuel :\033[0m {tournament.current_round}/{tournament.num_rounds}")
 
-        print("~~~~~~~~~~~~~~~ \033[1;93m✧Classement✧\033[0m ~~~~~~~~~~~~~~~")
-        for i, player in enumerate(players):
-            print(f" \033[1;93m{i + 1}\033[0m ~~ {player.last_name}, {player.first_name} (ID: {player.chess_id}, Points: {player.points})")
-        input()
+        if not tournament.rankings:
+            print("~~~~~~~~~~~~~~~ \033[1;93m✧ * ✧ Candidats ✧ * ✧\033[0m ~~~~~~~~~~~~~~~")
+            print("\n\033[38;5;243m Classement Provisoire \033[0m")
+            for i, player in enumerate(players):
+                print(f" \033[1;93m{i + 1}\033[0m ~~ {player.last_name}, {player.first_name} (ID: {player.chess_id}, Points: {player.points})")
+            input()
+            return
+        else:
+            TournamentView.show_rankings(tournament)
+            return
 
     @staticmethod
     def select_player(tournament, players):
         print("\n" * 100)
-        print("\n\n\n~~~~~~~~~~~~~~~  \033[1;96mJOUEURS INSCRITS\033[0m  ~~~~~~~~~~~~~~~\n")
+        print("\n\n\n      ~~~~~~~~~~    \033[1;96mJOUEURS INSCRITS\033[0m  ~~~~~~~~~~~\n")
         print(f"\033[1mNom du tournoi :\033[96m {tournament.name}\033[0m")
         print("\n\033[1mChoisissez un joueur :\033[0m")
         for i, player in enumerate(players):
@@ -122,10 +128,10 @@ class TournamentView:
     @staticmethod
     def get_match_scores(closing_round, match):
         print("\n" * 100)
-        print(f"\n\n\n~~~~~~~~~~~~~~~  \033[1;96m{closing_round.name}\033[0m  ~~~~~~~~~~~~~~~")
-        print("~~~~~~~~~~~~~~~~~~~~  \033[1;3;96m Qui a gagné ?\033[0m  ~~~~~~~~~~~~~~~~~~~~\n\n")
-        print(f"           ~~~~~  \033[1;96m[Match]\033[0m \n   "
-              f"         {match.player1.name} vs {match.player2.name}  ~~~~~")
+        print(f"\n\n\n      ~~~~~~~~~~  \033[1;96m{closing_round.name}\033[0m  ~~~~~~~~~~")
+        print("~~~~~~~~~~~~~~  \033[1;3;96m Qui a gagné ?\033[0m  ~~~~~~~~~~~~~~")
+        print(f"           ~~~~~  \033[1;96m[Match]\033[0m ~~~~\n   "
+              f"   ~~~~  {match.player1.name} \033[1;96mvs\033[0m {match.player2.name}  ~~~~~")
         print(f"\n\033[1;96m𝟭. \033[0m {match.player1.name} ~ {match.player1.chess_id} ?")
         print(f"\033[1;96m𝟮. \033[0m {match.player2.name} ~ {match.player2.chess_id} ?")
         print(f"\033[1;96m𝟯. \033[0m Match nul ?\n")
@@ -133,13 +139,29 @@ class TournamentView:
         return input("\nChoisissez une option : ").strip()
 
     @staticmethod
+    def display_tournament_results(tournament):
+        print("\n" * 100)
+        print("\n\n\n~~~~~~~~~~~~~~~  \033[1;96mRÉSULTATS DU TOURNOI\033[0m  ~~~~~~~~~~~~~~~")
+        print(f"\033[1m {tournament.name}\033[0m")
+        print(f"\033[1mLieu :\033[0m {tournament.location}")
+        return self.show_rankings(tournament)
+
+    @staticmethod
+    def show_rankings(tournament):
+        print("~~~~~~~~~~~~~~~ \033[1;93m✧ * ✧ Classement ✧ * ✧\033[0m ~~~~~~~~~~~~~~~")
+        for i, ranking in enumerate(tournament.rankings):
+            print(ranking)
+        input()
+        return
+
+    @staticmethod
     def show_closing_message(tournament):
         print("\n" * 100)
         print("      ~~~~~~~~~ \033[1;38;5;202m⏐ 𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎ ⏐\033[0m ~~~~~~~~~~\n\n")
         print(f"\n      ~~~~~~~~~ \033[1;38;5;202m{tournament.name}\033[0m ~~~~~~~~~~~~\n\n")
-        print(f"\n\033[1;96m     ~    [INFO]    ~\033[0m")
-        print("\n\033[2;3m     Derniers scores à renseigner avant "
-              "\n     l'affichage du classement. \033[0m")
+        print(f"\n\033[1;96m           ~    [INFO]    ~\033[0m")
+        print("\n\033[2;3m      Derniers scores à renseigner avant"
+              "\n      l'affichage du classement. \033[0m")
         print("\n")
         input()
 

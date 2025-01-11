@@ -4,6 +4,7 @@ from views.main_menu_view import MainMenuView
 from controllers.tournament_manager import TournamentManager
 from controllers.tournament_controller import TournamentController
 from controllers.report_controller import ReportController
+from views.tournament_views import TournamentView
 
 
 class MainMenu:
@@ -14,23 +15,23 @@ class MainMenu:
         self.player_manager.load_all()
 
     def run(self):
-        selected = -1
+
         MainMenuView.display_main_menu_intro()
+        selected = -1
         while int(selected) != 0:
-            selected = MainMenuView().display_main_menu()
-            if int(selected) == 1:
-                TournamentController(self.tournament_manager,
+            selected = MainMenuView().display_main_menu().strip()
+            if selected == "1":
+                return TournamentController(self.tournament_manager,
                                      self.player_manager).tournament_menu_selection()
-            elif int(selected) == 2:
-                PlayerController(self.player_manager).player_menu()
-            elif int(selected) == 3:
-                ReportController(self.player_manager, self.tournament_manager).report_menu()
-            elif int(selected) == 0:
+            elif selected == "2":
+                return PlayerController(self.player_manager).player_menu()
+            elif selected == "3":
+                return ReportController(self.player_manager, self.tournament_manager).report_menu()
+            elif selected == "0" or selected == "q" or selected == "r":
                 self.player_manager.save_all()
                 self.tournament_manager.save_all()
-                break
+                MainMenuView.bye_message()
+                return selected == 0
             else:
-                self.player_manager.save_all()
-                self.tournament_manager.save_all()
-                MainMenuView().bye_message()
-                break
+                TournamentView.wrong_menu_input()
+                selected = -1

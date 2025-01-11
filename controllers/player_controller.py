@@ -10,7 +10,7 @@ class PlayerController():
 
     def player_menu(self):
         selected = -1
-        while int(selected) != 0:
+        while selected != "q":
             selected = self.view.display_players_menu()
             if int(selected) == 1:
                 new_player_details = self.view.get_player_data()
@@ -25,10 +25,14 @@ class PlayerController():
             elif int(selected) == 3:
                 sorted_players = sorted(self.manager.players, key=lambda p: (p.last_name, p.first_name))
                 self.view.display_players(sorted_players)
+                self.manager.save_all()
+            elif int(selected) == 0 or selected == "r":
+                self.manager.save_all()
+                return
 
 
             else:
-                selected = 0
+                selected = "q"
 
     def add_new_player(self):
         new_player_details = self.view.get_player_data()

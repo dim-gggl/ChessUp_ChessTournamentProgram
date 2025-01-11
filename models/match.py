@@ -6,16 +6,16 @@ class Match:
         self.score2 = score2
         self.closed = False
 
-    def set_score(self, score1, score2):
+    def set_score_and_lock(self, score1, score2):
         self.score1 = score1
         self.score2 = score2
-        if self.score1 + self.score2 == 1:
+        if self.score1 != 0 or self.score2 != 0:
             self.closed = True
-            return self
+        return self
 
     def __repr__(self):
         return [self.player1.name, self.score1], [self.player2.name, self.score2]
 
     def __str__(self):
-        return (f"\n\033[1;96m  {self.player1.name}\033[0m ~~\033[1m[{self.score1}]\033[0m~~ "
-                f"\033[1;96mvs\033[0m ~~\033[1m[{self.score2}]\033[0m~~ \033[1;96m{self.player2.name}\033[0m")
+        return (f"\n\033[1;38;5;202m  {self.player1.name}\033[0m ~~\033[1m[{self.score1}]\033[0m~~ "
+                f"\033[1;38;5;202mvs\033[0m ~~\033[1m[{self.score2}]\033[0m~~ \033[1;38;5;202m{self.player2.name}\033[0m")

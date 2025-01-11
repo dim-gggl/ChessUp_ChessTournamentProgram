@@ -7,7 +7,7 @@ class PlayerView:
         print("\033[1;95m𝟭.\033[0m Ajouter un nouveau joueur")
         print("\033[1;95m𝟮.\033[0m Modifier les infos d'un joueur")
         print("\033[1;95m𝟯.\033[0m Lister les joueurs\n\n")
-        print("\n\033[1;38;5;202m𝟬. Quitter\033[0m")
+        print("\n\033[1;38;5;202m𝟬. Retour au menu principal\033[0m")
         return input("\nChoisissez une option : ").strip()
 
     @staticmethod
