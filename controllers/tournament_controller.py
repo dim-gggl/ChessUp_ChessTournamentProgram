@@ -97,9 +97,12 @@ class TournamentController:
             self.view.show_round_pairs(new_round)
             self.tournament_manager.save_all()
             self.player_manager.save_all()
+            return self.handle_game_menu(tournament)
 
         elif tournament.current_round == tournament.num_rounds:
             self.view.last_round_message()
+            return self.handle_game_menu(tournament)
+
 
         else:
             tournament.start_next_round()

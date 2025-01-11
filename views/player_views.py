@@ -34,10 +34,10 @@ class PlayerView:
             print("\n\n\n\n~~~~~~~~~~~~~  \033[1;95mMODIFICATIONS DE JOUEUR\033[0m  ~~~~~~~~~~~~~\n\n")
             print(f"\033[1;96   [INFO]\033[0m Si aucune information n'est saisie, les données de\n"
                   f"{player.first_name} {player.last_name.upper()} resteront inchangées !")
-            first_name = input("\n\n\033[1mPrénom : \033[0m" or player.first_name).strip()
-            last_name = input("\033[1mNom de Famille : \033[0m" or player.last_name).strip()
-            birth_date = input("\033[1mDate de naissance (JJ/MM/AAAA) : \033[0m" or player.birth_date).strip()
-            chess_id = input("\033[1mID : \033[0m" or player.chess_id).strip()
+            first_name = input("\n\n\033[1mPrénom : \033[0m").strip() or player.first_name
+            last_name = input("\033[1mNom de Famille : \033[0m").strip() or player.last_name
+            birth_date = input("\033[1mDate de naissance (JJ/MM/AAAA) : \033[0m").strip() or player.birth_date
+            chess_id = input("\033[1mID : \033[0m").strip() or player.chess_id
             print("\n" * 100)
             print("\n\n\n\n\n\n~~~~~~~~~~~~ \033[1;95m Joueur enregistré \033[0m  ~~~~~~~~~~~~\n\n\n")
             input("\n")

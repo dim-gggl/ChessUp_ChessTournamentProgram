@@ -36,6 +36,7 @@ class TournamentManager:
             )
             players_data = t_data.get("players", [])
             new_tournament.players = self.players_manager.recreate_players(players_data)
+            players_by_id = {p.chess_id: p for p in new_tournament.players}
             rounds_data = t_data.get("rounds", [])
             for rd in rounds_data:
                 new_round = Round(
@@ -44,15 +45,19 @@ class TournamentManager:
                     end_time=rd["end_time"],
                 )
                 for match_d in rd.get("matches", []):
+                    p1_id = match_d["player1"]
+                    p2_id = match_d["player2"]
+                    p1 = players_by_id.get(p1_id)
+                    p2 = players_by_id.get(p2_id)
                     new_match = Match(
-                        player1=match_d["player1"],
-                        player2=match_d["player2"],
+                        player1=p1,
+                        player2=p2,
                         score1=match_d["score1"],
                         score2=match_d["score2"],
                         closed=match_d.get("closed", False)
                     )
                     new_round.matches.append(new_match)
-                    new_tournament.rounds.append(new_round)
+                new_tournament.rounds.append(new_round)
             self.all_tournaments.append(new_tournament)
 
         self.sort_out_unfinished_tournaments()
