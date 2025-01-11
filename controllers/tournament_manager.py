@@ -138,7 +138,7 @@ class TournamentManager:
                 self.finished_tournaments.append(tournament)
         return self.finished_tournaments
 
-    def save_new_entry(self, tournament):
+    def register_new_entry(self, tournament):
         self.all_tournaments.append(tournament)
         self.sort_out_unfinished_tournaments()
         self.sort_out_finished_tournaments()
