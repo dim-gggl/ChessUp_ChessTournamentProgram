@@ -19,7 +19,7 @@ class Tournament:
     def start_first_round(self):
         self.current_round += 1
         open_round = Round(self.current_round)
-        shuffled = self.players[:]
+        shuffled = self.players
         random.shuffle(shuffled)
         if len(shuffled) % 2 != 0:
             exempt_player = shuffled.pop(0)
@@ -52,6 +52,10 @@ class Tournament:
                     del players_sorted[i]
                     paired = True
                     break
+                elif ((p1, p2) in previous_matches or (p2, p1) in previous_matches) and len(players_sorted) == 1:
+                    p2 = players_sorted.pop(0)
+                    new_round.matches.append(Match(p1, p2))
+                    paired = True
 
             if not paired:
                 p1.points += 1
