@@ -13,7 +13,7 @@ class TournamentManager:
         self.holding_tournaments = []
         self.running_tournaments = []
         self.finished_tournaments = []
-        self.all_tournaments =[]
+        self.all_tournaments = []
         self.file_path = "data/tournaments/tournaments.json"
         self.players_manager = players_manager
 
@@ -134,6 +134,7 @@ class TournamentManager:
         return self.running_tournaments
 
     def sort_out_holding_tournaments(self, tournament):
+        # return [tournament for tournament in self.all_tournaments if tournament.is_holding]
         if tournament.current_round == 0:
             self.holding_tournaments.append(tournament)
         return self.holding_tournaments

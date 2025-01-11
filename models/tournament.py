@@ -16,6 +16,10 @@ class Tournament:
         self.players = kwargs.get("players", [])
         self.rankings = kwargs.get("rankings", None)
 
+    @property
+    def is_holding(self):
+        return self.current_round == 0
+
     def start_first_round(self):
         self.current_round += 1
         open_round = Round(self.current_round)
