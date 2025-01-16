@@ -7,7 +7,7 @@ class HTMLExporter:
     @staticmethod
     def export_to_html(filename, title, content):
         """
-        Génère un fichier HTML dans le répertoire EXPORT_DIR.
+        Generates an HTML file in the EXPORT_DIR directory.
         """
         if not os.path.exists(HTMLExporter.EXPORT_DIR):
             os.makedirs(HTMLExporter.EXPORT_DIR)

@@ -1,6 +1,7 @@
-import random
 from models.round import Round
-from models.match import Match
+from utils.ansify import ansify
+from itertools import groupby
+import random
 
 
 class Tournament:
@@ -17,57 +18,63 @@ class Tournament:
         self.rankings = kwargs.get("rankings", None)
 
     @property
-    def is_holding(self):
-        return self.current_round == 0
+    def is_open_to_inscription(self):
+        """Returns True when the tournament has not started"""
+        return self.current_round == 0 and not self.is_finished
 
-    def start_first_round(self):
-        self.current_round += 1
-        open_round = Round(self.current_round)
-        shuffled = self.players
-        random.shuffle(shuffled)
-        if len(shuffled) % 2 != 0:
-            exempt_player = shuffled.pop(0)
-            exempt_player.points += 1
-            print(f"\n\033[1;33m[INFO]\033[0m {exempt_player.name} "
-                  f"n'a pas d'adversaire. 1 point pour le premier round !")
-        for i in range(0, len(shuffled), 2):
-            open_round.matches.append(Match(shuffled[i], shuffled[i + 1]))
-        self.rounds.append(open_round)
+    @property
+    def is_holding(self):
+        """Returns True when the tournament has not started and has enough players"""
+        return self.current_round == 0 and len(self.players) >= int(self.num_rounds) and not self.is_finished
+
+    @property
+    def is_running(self):
+        """Returns True when the tournament has started"""
+        return 0 < self.current_round <= int(self.num_rounds) and not self.rankings
+
+    @property
+    def is_finished(self):
+        """Returns True when the tournament has ended"""
+        return self.current_round == int(self.num_rounds) and self.rankings
+
+    def start_new_round(self):
+        """Opens a new round"""
+        if self.is_holding:
+            self.current_round += 1
+            open_round = Round(self.current_round, self)
+            open_round.match_players()
+            self.rounds.append(open_round)
+        elif self.current_round < int(self.num_rounds):
+            self.current_round += 1
+            self.rank_players()
+            open_round = Round(self.current_round, self)
+            open_round.match_players()
+            self.rounds.append(open_round)
+        else:
+            return input(ansify("ch_up([INFO]) bld(C'était le dernier tour ! )"
+                                "\nSouhaitez-vous ouvrir un round supplémentaire ?disc_it((y/n)) :  "))
         return open_round
 
     def rank_players(self):
+        """Ranks players by points"""
         self.players.sort(key=lambda p: p.points, reverse=True)
-        for i, player in enumerate(self.players):
-            player.rank = i + 1
+        new_list = []
+        for points, group_iterator in groupby(self.players, key=lambda p: p.points):
+            group_list = list(group_iterator)
+            random.shuffle(group_list)
+            new_list.extend(group_list)
+        current_rank = 1
+        previous_points = None
+        for i, player in enumerate(new_list):
+            if i == 0 or player.points != previous_points:
+                current_rank = i + 1
+            player.rank = current_rank
+            previous_points = player.points
         return self.players
 
-    def start_next_round(self):
-        self.current_round += 1
-        self.rank_players()
-        new_round = Round(int(self.current_round))
-        previous_matches = {(m.player1, m.player2) for rnd in self.rounds for m in rnd.matches}
-        players_sorted = self.players[:]
-        while players_sorted:
-            p1 = players_sorted.pop(0)
-            paired = False
-            for i, p2 in enumerate(players_sorted):
-                if (p1, p2) not in previous_matches and (p2, p1) not in previous_matches:
-                    new_round.matches.append(Match(p1, p2))
-                    del players_sorted[i]
-                    paired = True
-                    break
-                elif ((p1, p2) in previous_matches or (p2, p1) in previous_matches) and len(players_sorted) == 1:
-                    p2 = players_sorted.pop(0)
-                    new_round.matches.append(Match(p1, p2))
-                    paired = True
-
-            if not paired:
-                p1.points += 1
-                print(f"{p1.name} {p1.last_name} n'a pas d'adversaire. 1 point !")
-        self.rounds.append(new_round)
-        return self.rounds
 
     def set_final_rankings(self):
+        """Sets final rankings"""
         self.rank_players()
         self.rankings = []
         if len(self.players) >= 1:
@@ -90,6 +97,7 @@ class Tournament:
                     f"{player.rank} ~ {player.last_name} {player.first_name}"
                 )
                 self.rankings.append(other_str)
+        return self.rankings
 
     def __repr__(self):
         if not self.rankings:

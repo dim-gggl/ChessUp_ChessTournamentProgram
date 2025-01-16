@@ -1,56 +1,82 @@
-class ReportView:
+from utils.ansify import ansify
 
+
+class ReportView:
+    """Displays the report menu and submenus."""
     @staticmethod
     def display_report_menu():
+        """Displays the report menu."""
         print("\n" * 100)
-        print("\n\n\n\n~~~~~~~~~~~~~~~  \033[1;38;5;118m RAPPORTS DE DONNEES \033[0m  ~~~~~~~~~~~~~~~\n")
-        print("\n\033[1;38;5;118m1.\033[0m Afficher tous les joueurs")
-        print("\033[1;38;5;118m2.\033[0m Afficher tous les tournois")
-        print("\033[1;38;5;118m3.\033[0m Afficher les détails d'un tournoi")
-        print("\033[1;38;5;118m4.\033[0m Exporter des données en HTML")
-        print("\n\033[1;38;5;202m0. Retour au menu PRINCIPAL\033[0m")
-        return input("\nEntrez votre choix : ").strip()
+        print(ansify("\n       ~~~~~~~~~ rpt_gr( RAPPORTS DE DONNEES)  ~~~~~~~~~      \n"
+                     "\n\n      rpt_gr(1.) Afficher tous les joueurs"
+                     "\n      rpt_gr(2.) Afficher tous les tournois"
+                     "\n      rpt_gr(3.) Afficher les détails d'un tournoi"
+                     "\n      rpt_gr(4.) Exporter des données en HTML\n"
+                     "\n\n        ch_up(r. Retour)\n"))
+        return input("\n      Entrez votre choix : ").strip()
 
     @staticmethod
     def display_possible_options(tournament):
+        """Displays the list of details the user can choose from."""
         print("\n" * 100)
-        print("\n\n\n\n~~~~~~~~~~~~~~~  \033[1;38;5;118m DONNEES D'UN TOURNOI\033[0m  ~~~~~~~~~~~~~~~\n\n")
-        print(f"\n\033[1;38;5;118m1.\033[0m Afficher nom et dates.")
-        print(f"\033[1;38;5;118m2.\033[0m Afficher tous les joueurs ({len(tournament.players)} inscrits).")
-        print("\033[1;38;5;118m3.\033[0m Détails des Rounds et matchs.")
-        print("\n\033[1;38;5;202m0. Retour au menu PRINCIPAL\033[0m")
-        return input("\nEntrez votre choix : ").strip()
+        print(ansify(f"\n\n      ~~~~~~~  rpt_gr(DONNEES D'UN TOURNOI)  ~~~~~~~ \n\n\n"
+              f"\n      rpt_gr(1.) Afficher nom et dates."
+              f"\n      rpt_gr(2.) Afficher tous les joueurs ({len(tournament.players)} inscrits)."
+              f"\n      rpt_gr(3.) Détails des Rounds et matchs.\n"
+              "\n\n        ch_up(R. Retour)\n"))
+        return input("\n      Entrez votre choix : ").strip()
 
     @staticmethod
     def show_name_and_dates(tournament):
+        """Displays the tournament's name and dates."""
         print("\n" * 100)
-        print("\n\n\n\n~~~~~~~~~~~~~~~  \033[1;38;5;118m DONNEES D'UN TOURNOI\033[0m  ~~~~~~~~~~~~~~~\n\n")
-        print(f"\n        ——————[  \033[1;38;5;118m {tournament.name} \033[0m ]—————\n\n")
-        print(f"\033[1;38;5;118m    Ouverture ~~~>    \033[0m {tournament.start_date}")
-        print(f"\033[1;38;5;118m    Fin ~~~>    \033[0m {tournament.end_date}")
+        print(ansify(f"\n\n\n      ~~~~~~~~~  rpt_gr(DONNEES D'UN TOURNOI)  ~~~~~~~~~\n\n"
+              f"\n         ——————[   bld({tournament.name})   ]—————\n\n"
+              f"\n      rpt_gr(Ouverture ~~~>)     {tournament.start_date}"
+              f"\n      rpt_gr(Fin ~~~>)     {tournament.end_date}"))
         print("\n")
         input()
         return
 
     @staticmethod
     def show_rounds_and_matches(tournament):
+        """Displays the tournament's rounds and matches."""
         print("\n" * 100)
-        print("\n\n\n\n~~~~~~~~~~~~~~~  \033[1;38;5;118m DONNEES D'UN TOURNOI\033[0m  ~~~~~~~~~~~~~~~\n\n")
-        print(f"\n  ——————[  \033[1;38;5;118m {tournament.name} \033[0m ]—————")
-        for round in tournament.rounds:
-            print(f"\033[1;38;5;118m  {round.name} \033[0m~~~> ")
-            for i, match in round.matches:
-                print(f"\n\033[1;38;5;118m  Match {i +1} \033[0m ~~ {match.player1.name} [{match.score1}] vs [{match.scor2}] {match.player2.name}")
-                print("\n")
+        print(ansify("\n\n\n\n      ~~~~~~~  rpt_gr(DONNEES D'UN TOURNOI)  ~~~~~~~\n\n"))
+        print(ansify(f"\n      ——————[  rpt_gr({tournament.name})  ]——————"))
+        if tournament.rounds:
+            for round in tournament.rounds:
+                print(ansify(f"      ~~~bld(  {round.name} ) ~~~ "))
+                for i, match in round.matches:
+                    print(ansify(f"\n — rpt_gr(Match {i +1}) ~~ {match.player1.name} ["
+                                 f"{match.score1}] ch_up(vs) [{match.scor2}] {match.player2.name}"))
                 input()
 
     @staticmethod
     def display_export_options():
+        """Displays the export options."""
         print("\n" * 100)
-        print("\n\n\n\n~~~~~~~~~~~~~~~  \033[1;38;5;118m EXPORT DE DONNEES \033[0m  ~~~~~~~~~~~~~~~\n")
-        print("\n\033[1;38;5;118m1.\033[0m Exporter la liste de tous les joueurs")
-        print("\033[1;38;5;118mm2.\033[0m Exporter la liste de tous les tournois")
-        print("\033[1;38;5;118m3.\033[0m Exporter les détails d'un tournoi")
-        print("\n\n")
-        print("\n\033[1;38;5;202m0. Retour au menu PRINCIPAL\033[0m")
-        return input("\nEntrez votre choix : ").strip()
+        print(ansify("\n\n      ~~~~~~~  rpt_gr(EXPORT DE DONNEES)  ~~~~~~~ \n\n"
+                     "\n      rpt_gr(1.) Exporter la liste de tous les joueurs"
+                     "\n      rpt_gr(2.) Exporter la liste de tous les tournois"
+                     "\n      rpt_gr(3.) Exporter les détails d'un tournoi\n\n"
+                     "\n      ch_up(r. Retour)\n\n"))
+        return input("\n      Entrez votre choix : ")
+
+    @staticmethod
+    def export_success_msg():
+        """Displays the export success message."""
+        print("\n" * 100)
+        print(ansify("\n\n      ~~~~~  gld(Données exportées avec succès !)  ~~~~~\n\n)"))
+        input()
+
+    @staticmethod
+    def display_all_tournaments(tournaments):
+        """Displays the list of all tournaments."""
+        print("\n" * 100)
+        print(ansify("\n\n\n\n      ~~~~~~~  rpt_gr(TOURNOIS)  ~~~~~~~\n\n"))
+        for tournament in tournaments:
+            print(ansify(f"       ~~~~~~    rpt_gr({tournament.name})    ~~~~~~ \n"
+                         f"         ~ bld({tournament.location}) ~ ({tournament.start_date} - {tournament.end_date}) ~"))
+        input()
+        return

@@ -1,7 +1,9 @@
-body {
+html {
     background-color: #e6dcd4;
     font-family: 'Ubuntu', sans-serif;
     text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
 section {
@@ -18,6 +20,7 @@ h1 {
     font-weight: 400;
     font-size: 68px;
     color: #e6dcd4;
+
 }
 
 header {

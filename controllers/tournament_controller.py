@@ -1,136 +1,180 @@
 from datetime import datetime
 from models.tournament import Tournament
-from views.main_menu_view import MainMenuView
 from views.tournament_views import TournamentView
+from utils.validators import validate_date
 
 
 class TournamentController:
-    def __init__(self, tournament_manager, player_manager):
+    """
+    Manages the tournament menu and submenus service.
+    """
+    def __init__(self, tournament_manager, players):
         self.tournament_manager = tournament_manager
-        self.player_manager = player_manager
+        self.players = players
         self.view = TournamentView()
 
-    def tournament_menu_selection(self):
+    def tournament_menu(self):
         """
-        Gère les erreurs de saisies dans le menu des tournois.
+        Tournaments' main menu.
         """
-        selected = -1
-        while int(selected) != 0:
-            selected = self.view.display_tournament_main_menu().strip()
-            if int(selected) >= 4:
-                self.view.wrong_menu_input()
-            elif selected == "0" or selected == "q" or selected == "r":
-                self.view.bye_message()
-                self.tournament_manager.save_all()
-                return "-1"
+        menu_options = {
+            "1": self.create_new_tournament,
+            "2": self.manage_existing_tournament,
+            "3": self.add_player,
+            "4": self.list_tournaments,
+            "r": self.return_to_main_menu,
+        }
+        selected = self.view.display_tournament_main_menu()
+        return menu_options.get(selected, self.view.wrong_menu_input)()
 
-            elif 1 <= int(selected) <= 3:
-                self.handle_menu_choice(selected)
-            else:
-                self.view.wrong_menu_input()
-
-
-    def handle_menu_choice(self, selected):
+    def create_new_tournament(self):
         """
-        Gère les choix de l'utilisateur dans le menu des tournois.'
+        Creates a new tournament from user data.
         """
-        if selected == "1":
-            details = self.view.get_tournament_details()
-            new_tournament = Tournament(**details)
-            self.tournament_manager.register_new_entry(new_tournament)
-            self.tournament_manager.save_all()
-            self.tournament_menu_selection()
+        valid_data = False
+        while not valid_data:
+            raw_data = self.view.get_tournament_details()
+            name = raw_data["name"].strip()
+            location = raw_data["location"].strip()
+            start_date = validate_date(raw_data["start_date"])
+            end_date = validate_date(raw_data["end_date"])
+            description = raw_data["description"].strip()
+            num_rounds = raw_data.get("num_rounds", 4)
+
+            if all([name, location, start_date, end_date, description, num_rounds]):
+                valid_data = True
+
+            new_tournament = Tournament(
+                name=name,
+                location=location,
+                start_date=start_date,
+                end_date=end_date,
+                description=description,
+                num_rounds=num_rounds
+            )
+            self.tournament_manager.save_new_entry(new_tournament)
+
+            if self.view.ask_to_register_candidates().lower() == "y":
+                self.recruit_players(new_tournament)
+            return self.tournament_menu()
+
+    def manage_existing_tournament(self):
+        """
+        Allows user to manage an existing tournament (add players, start a round, etc.).
+        """
+        tournaments_to_manage = [
+            t for t in self.tournament_manager.tournaments if t.is_holding or t.is_running
+        ]
+        if not tournaments_to_manage:
+            self.view.no_tournament_ready_msg()
+            return self.tournament_menu()
+
+        selected_tournament = self.view.select_tournament(tournaments_to_manage)
+        if selected_tournament:
+            return self.handle_game_menu(selected_tournament)
+        return self.tournament_menu()
+
+    def add_player(self):
+        """
+        Allows user to add one player to a selected tournament.
+        """
+        selected_tournament = self.view.select_tournament(self.tournament_manager.tournaments)
+        if selected_tournament:
+            self.recruit_players(selected_tournament)
+
+    def list_tournaments(self):
+        """
+        Lists registered tournaments.
+        """
+        all_tournaments = self.tournament_manager.tournaments
+        self.view.select_tournament(all_tournaments)
+        return self.tournament_menu()
+
+    def recruit_players(self, tournament):
+        """
+        Register players for a tournament.
+        """
+        unregistered_players = [
+            player for player in self.players if player not in tournament.players
+        ]
+        if not unregistered_players:
+            self.view.no_players_on_file_msg()
             return
 
-        elif selected == "2":
-            tournaments_to_handle = self.tournament_manager.running_tournaments + self.tournament_manager.holding_tournaments
-            print(f"DEBUG : t_control : 52 ~> running_tournaments ~>  {self.tournament_manager.running_tournaments}\n"
-                  f"DEBUG : t_control : 53 ~> holding_tournaments ~>  {self.tournament_manager.holding_tournaments}\n")
-            tournament = self.view.select_tournament(tournaments_to_handle)
-            self.handle_game_menu(tournament)
+        selected_list = self.view.select_multiple_players(tournament, unregistered_players).strip().lower()
+        if selected_list == "r":
+            return
+        selected_idx = [item.strip() for item in selected_list.split(",") if item.strip()]
 
-        elif selected == "3":
-            tournament = self.view.select_tournament(self.tournament_manager.holding_tournaments)
-            players = self.player_manager.players
-            unregistered_players = []
-            for player in players:
-                if player not in tournament.players:
-                    unregistered_players.append(player)
-            registered_player = self.view.select_player(tournament, unregistered_players)
-            tournament.players.append(registered_player)
-            self.tournament_manager.save_all()
-            self.player_manager.save_all()
-            self.tournament_menu_selection()
-        elif selected == "0" or selected == "q" or selected == "r":
-            self.tournament_menu_selection()
-        else:
-            self.view.wrong_menu_input()
+        for candidate_idx in selected_idx:
+            try:
+                new_player = unregistered_players.pop(int(candidate_idx) - 1)
+                tournament.players.append(new_player)
+                self.tournament_manager.save_all()
+            except (ValueError, IndexError):
+                self.view.wrong_menu_input()
 
     def handle_game_menu(self, tournament):
         """
-        Gère l'organisation interne d'un tournoi.
+        Manages the internal menu of a tournament.
         """
-        selected = -1
-        while int(selected) != 0:
-            selected = self.view.display_game_menu(tournament)
+        game_menu_options = {
+            "1": self.start_new_round,
+            "2": self.close_current_round,
+            "3": self.show_game_status,
+            "R": self.return_to_main_menu,
+        }
+        selected = self.view.display_game_menu(tournament)
+        return game_menu_options.get(selected, self.view.wrong_menu_input)(tournament)
 
-            if selected == "1":
-                return self.start_new_round_conditions(tournament)
-
-            elif selected == "2":
-                return self.close_round(tournament)
-
-            elif selected == "3":
-                return self.game_status(tournament)
-
-            else:
-                self.view.wrong_menu_input()
-                break
-
-    def start_new_round_conditions(self, tournament):
+    def start_new_round(self, tournament):
         """
-        Prévoit les cas de figure lors du lancement d'un nouveau tour.
-
+        Starts a new round in a tournament.
         """
-        if tournament.current_round == 0:
-            new_round = tournament.start_first_round()
+        if int(tournament.current_round) < int(tournament.num_rounds):
+            new_round = tournament.start_new_round()
             self.view.show_round_pairs(new_round)
             self.tournament_manager.save_all()
-            self.player_manager.save_all()
-            return self.handle_game_menu(tournament)
-
-        elif tournament.current_round == tournament.num_rounds:
-            self.view.last_round_message()
-            return self.handle_game_menu(tournament)
-
-
         else:
-            tournament.start_next_round()
-            new_round = tournament.rounds[-1]
-            self.view.show_round_pairs(new_round)
-            self.tournament_manager.save_all()
-            self.player_manager.save_all()
+            self.view.last_round_message()
         return self.handle_game_menu(tournament)
 
-    def close_round(self, tournament):
+    def close_current_round(self, tournament):
         """
-        Gère toute la logique de fin de tour.
+        Closes the current round.
         """
-        if tournament.current_round == tournament.num_rounds:
+        if int(tournament.current_round) == int(tournament.num_rounds):
             return self.close_last_round(tournament)
-        else:
-            closing_round = tournament.rounds[-1]
-            closing_round.end_time = datetime.now().strftime("%x - %X")
-            self.enter_match_results(closing_round)
 
-            tournament.rank_players()
-            self.tournament_manager.save_all()
-            self.player_manager.save_all()
+        closing_round = tournament.rounds[-1]
+        closing_round.end_time = datetime.now().strftime("%x - %X")
+        self.enter_match_results(closing_round)
+
+        tournament.rank_players()
+        self.tournament_manager.save_all()
+        return self.handle_game_menu(tournament)
+
+    def close_last_round(self, tournament):
+        """
+        Closes the last round and displays the final results.
+        """
+        last_round = tournament.rounds[-1]
+        if not last_round.matches:
+            self.view.no_round_running_msg()
             return self.handle_game_menu(tournament)
 
-    def game_status(self, tournament):
+        self.view.show_closing_message(tournament)
+        last_round.end_time = datetime.now().strftime("%x - %X")
+        self.enter_match_results(last_round)
+
+        tournament.set_final_rankings()
+        self.view.display_tournament_results(tournament)
+        self.tournament_manager.save_all()
+        return self.tournament_menu()
+
+    def show_game_status(self, tournament):
         """
-        Génère un état des lieux du tournoi..
+        Displays the current status of a tournament.
         """
         ranked_players = tournament.rank_players()
         self.view.display_tournament_summary(tournament, ranked_players)
@@ -138,45 +182,34 @@ class TournamentController:
 
     def enter_match_results(self, closing_round):
         """
-        Gère la saisie des scores des matchs.
+        Manages the entry of match scores.
         """
         for match in closing_round.matches:
-            if not match.closed:
-                match_scores = self.view.get_match_scores(closing_round, match)
-                if match_scores == 1:
-                    match.player1.points += 1
-                    match.set_score_and_lock(1, 0)
-                elif match_scores == 2:
-                    match.player2.points += 1
-                    match.set_score_and_lock(0, 1)
-                elif match_scores == 3:
-                    match.set_score_and_lock(0.5, 0.5)
-                    match.player1.points += 0.5
-                    match.player2.points += 0.5
-                else:
-                    self.view.wrong_menu_input()
-            else:
-                self.view.success_match_entry()
+            if not match.is_over:
+                match_scores = self.view.get_match_results(closing_round, match)
+                self.update_match_scores(match, match_scores)
         self.view.complete_round_msg(closing_round)
         self.tournament_manager.save_all()
-        self.player_manager.save_all()
-        return closing_round
 
-    def close_last_round(self, tournament):
+    @staticmethod
+    def update_match_scores(match, scores):
         """
-        Gère la logique autour de la clôture du dernier tour.
+        Updates the scores for a given match.
         """
-        last_round = tournament.rounds[-1]
-        if len(tournament.rounds) == 0:
-            self.view.no_round_running_msg()
-            return self.handle_game_menu(tournament)
-        else:
-            self.view.show_closing_message(tournament)
-            last_round.end_time = datetime.now().strftime("%x - %X")
-            self.enter_match_results(last_round)
-            tournament.set_final_rankings()
-            self.view.display_tournament_results(tournament)
+        if scores == "1":
+            match.player1.points += 1
+            match.set_score_and_lock(1, 0)
+        elif scores == "2":
+            match.player2.points += 1
+            match.set_score_and_lock(0, 1)
+        elif scores == "3":
+            match.player1.points += 0.5
+            match.player2.points += 0.5
+            match.set_score_and_lock(0.5, 0.5)
 
-        self.tournament_manager.save_all()
-        self.player_manager.save_all()
-        return tournament
+    @staticmethod
+    def return_to_main_menu():
+        """
+        Back to the main menu.
+        """
+        return None

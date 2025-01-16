@@ -1,5 +1,5 @@
 class Player:
-    def __init__(self, first_name, last_name, birth_date, **kwargs):
+    def __init__(self, first_name, last_name, birth_date, chess_id: str=None, **kwargs):
         self.first_name = first_name
         self.last_name = last_name
         self.birth_date = birth_date
@@ -9,6 +9,7 @@ class Player:
         self.rank = kwargs.get("rank", 0)
 
     def update_player_info(self, **kwargs):
+        """Updates player info"""
         for key, value in kwargs.items():
             setattr(self, key, value)
         return self
