@@ -8,6 +8,7 @@ class ReportController:
     """
     Gère l'affichage et l'export des données statistiques
     """
+
     def __init__(self, players_manager=None, tournaments_manager=None):
         self.players_manager = players_manager
         self.tournaments_manager = tournaments_manager
@@ -21,7 +22,7 @@ class ReportController:
             "2": self.show_all_tournaments,
             "3": self.pick_one_tournament,
             "4": self.html_menu,
-            "r": self.back_to_main_menu
+            "r": self.back_to_main_menu,
         }
         selected = self.view.display_report_menu().strip().lower()
         return menu_options[selected]()
@@ -132,7 +133,9 @@ class ReportController:
             content += "<ul>"
             html_players = sorted(tournament.players, key=lambda p: (p.last_name, p.first_name))
             for player in html_players:
-                content += f"<li>{player.last_name} {player.first_name} ({player.birth_date}) ~~ ID: {player.chess_id}</li>"
+                content += (
+                    f"<li>{player.last_name} {player.first_name} ({player.birth_date}) ~~ ID: {player.chess_id}</li>"
+                )
         content += "</ul>"
         self.exporter.export_to_html(filename, title, content)
 

@@ -8,6 +8,7 @@ class TournamentController:
     """
     Manages the tournament menu and submenus service.
     """
+
     def __init__(self, tournament_manager, players):
         self.tournament_manager = tournament_manager
         self.players = players
@@ -50,7 +51,7 @@ class TournamentController:
                 start_date=start_date,
                 end_date=end_date,
                 description=description,
-                num_rounds=num_rounds
+                num_rounds=num_rounds,
             )
             self.tournament_manager.tournaments.append(new_tournament)
             self.tournament_manager.save_all()
@@ -63,9 +64,7 @@ class TournamentController:
         """
         Allows user to manage an existing tournament (add players, start a round, etc.).
         """
-        tournaments_to_manage = [
-            t for t in self.tournament_manager.tournaments if t.is_holding or t.is_running
-        ]
+        tournaments_to_manage = [t for t in self.tournament_manager.tournaments if t.is_holding or t.is_running]
         if not tournaments_to_manage:
             self.view.no_tournament_ready_msg()
             return self.tournament_menu()

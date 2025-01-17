@@ -60,10 +60,11 @@ def serialize_players(players: list[Player] or Player):
             "birth_date": player.birth_date,
             "chess_id": player.chess_id,
             "points": player.points,
-            "rank": player.rank
+            "rank": player.rank,
         }
         json_players.append(json_player)
     return json_players
+
 
 def serialize_tournaments(tournaments: list[Tournament]):
     """JSON serialization of Tournament objects."""
@@ -80,14 +81,14 @@ def serialize_tournaments(tournaments: list[Tournament]):
             "current_round": tournament_obj.current_round,
             "rounds": [],
             "players": players_data,
-            "rankings": tournament_obj.rankings
+            "rankings": tournament_obj.rankings,
         }
         for round_obj in tournament_obj.rounds:
             round_data = {
                 "number": round_obj.number,
                 "start_time": round_obj.start_time,
                 "end_time": round_obj.end_time,
-                "matches": []
+                "matches": [],
             }
             for match_obj in round_obj.matches:
                 match_data = {

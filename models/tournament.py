@@ -46,8 +46,12 @@ class Tournament:
             open_round.match_players()
             self.rounds.append(open_round)
         else:
-            return input(ansify("ch_up([INFO]) bld(C'était le dernier tour ! )"
-                                "\nSouhaitez-vous ouvrir un round supplémentaire ?disc_it((y/n)) :  "))
+            return input(
+                ansify(
+                    "ch_up([INFO]) bld(C'était le dernier tour ! )"
+                    "\nSouhaitez-vous ouvrir un round supplémentaire ?disc_it((y/n)) :  "
+                )
+            )
         return open_round
 
     def rank_players(self):
@@ -83,9 +87,7 @@ class Tournament:
                 f"whte({player.rank}nd) ~ whte(Vice-champion) : whte({player.last_name} {player.first_name}) ~"
             )
         for player in others:
-            self.rankings.append(
-                f"bld({player.rank}e) ~ bld({player.last_name} {player.first_name}) ~"
-            )
+            self.rankings.append(f"bld({player.rank}e) ~ bld({player.last_name} {player.first_name}) ~")
         for player in self.players:
             player.points = 0
             player.rank = 0
@@ -98,4 +100,4 @@ class Tournament:
             return f"[TERMINÉ] {self.name}, {self.start_date}, {self.end_date}"
 
     def __str__(self):
-            return f"{self.name} - {self.start_date} - {self.end_date}\n"
+        return f"{self.name} - {self.start_date} - {self.end_date}\n"

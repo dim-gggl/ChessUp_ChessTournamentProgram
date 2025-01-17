@@ -20,5 +20,7 @@ class Match:
         return self
 
     def __str__(self):
-        return (f"bld({self.player1.first_name} {self.player1.last_name}) ~ gld({self.score1}) ~~ ch_up(vs) "
-                f"~~ gld({self.score2}) ~ bld({self.player2.first_name} {self.player2.last_name})")
+        return (
+            f"bld({self.player1.first_name} {self.player1.last_name}) ~ gld({self.score1}) ~~ ch_up(vs) "
+            f"~~ gld({self.score2}) ~ bld({self.player2.first_name} {self.player2.last_name})"
+        )

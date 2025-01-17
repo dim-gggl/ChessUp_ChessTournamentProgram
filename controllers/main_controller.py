@@ -4,13 +4,12 @@ from views.main_menu_view import MainMenuView
 from controllers.tournament_manager import TournamentManager
 from controllers.tournament_controller import TournamentController
 from controllers.report_controller import ReportController
-from views.player_views import PlayerView
 from views.tournament_views import TournamentView
-from models.player import Player
 
 
 class MainMenu:
     """Manages the application's main menu service."""
+
     def __init__(self):
         self.player_manager = PlayerManager()
         self.tournament_manager = TournamentManager()
@@ -34,7 +33,7 @@ class MainMenu:
                 self.player_manager.save_all()
                 self.tournament_manager.save_all()
                 MainMenuView.bye_message()
-                return  0
+                return 0
             else:
                 TournamentView.wrong_menu_input()
                 selected = -1

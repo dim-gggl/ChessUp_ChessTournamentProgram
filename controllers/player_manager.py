@@ -10,19 +10,18 @@ class PlayerManager:
         self.file_path = file_path
         self.players = self.load_all()
 
-
     def load_all(self):
         """Loads information from a JSON file and recreates objects."""
         self.players = []
         players_data = load_from_json(self.file_path)
         for player_data in players_data:
             player_inst = Player(
-                first_name = player_data["first_name"],
-                last_name = player_data["last_name"],
-                birth_date = player_data["birth_date"],
-                chess_id = player_data["chess_id"],
-                points = player_data.get("points", 0),
-                rank = player_data.get("rank", 0)
+                first_name=player_data["first_name"],
+                last_name=player_data["last_name"],
+                birth_date=player_data["birth_date"],
+                chess_id=player_data["chess_id"],
+                points=player_data.get("points", 0),
+                rank=player_data.get("rank", 0),
             )
             self.players.append(player_inst)
         return self.players

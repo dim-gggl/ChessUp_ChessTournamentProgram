@@ -4,10 +4,11 @@ from views.player_views import PlayerView
 from models.player import Player
 
 
-class PlayerController():
+class PlayerController:
     """
     Manages the player menu and submenus service.
     """
+
     def __init__(self, manager=None):
         self.view = PlayerView()
         self.manager = manager
@@ -18,7 +19,7 @@ class PlayerController():
             "1": self.add_new_player,
             "2": self.select_player_to_edit,
             "3": self.view.display_players,
-            "r": self.back_to_main_menu
+            "r": self.back_to_main_menu,
         }
         selected = self.view.display_players_menu().strip().lower()
         if selected == "3":
@@ -62,11 +63,7 @@ class PlayerController():
 
     def edit_player_details(self, player):
         """Take care of the player's details editing process.'"""
-        menu_options = {
-            "1": self.update_all_info,
-            "2": self.view.enter_chess_id,
-            "r": self.player_menu
-        }
+        menu_options = {"1": self.update_all_info, "2": self.view.enter_chess_id, "r": self.player_menu}
         selected = self.view.modify_player(player).strip().lower()
         if selected != "r":
             updated_data = menu_options[selected](player)
@@ -77,8 +74,9 @@ class PlayerController():
             self.manager.save_all()
             return self.player_menu()
         except ValueError or AttributeError or TypeError as e:
-             raise e (ansify("      red_err([ERREUR])\n      Une erreur s'est produite"
-                             "pendant la mise à jour du joueur"))
+            raise e(
+                ansify("      red_err([ERREUR])\n      Une erreur s'est produite" "pendant la mise à jour du joueur")
+            )
 
     def update_all_info(self, player):
         new_names = self.view.get_new_player_names()
@@ -94,14 +92,13 @@ class PlayerController():
         proper_first_name = new_names.get("first_name", player.first_name).strip().capitalize()
         proper_last_name = new_names.get("last_name", player.last_name).strip().capitalize()
         updated_data = dict(
-            first_name = proper_first_name or player.first_name,
-            last_name = proper_last_name or player.last_name,
-            birth_date = new_birth_date or player.birth_date,
-            chess_id = new_chess_id or player.chess_id
+            first_name=proper_first_name or player.first_name,
+            last_name=proper_last_name or player.last_name,
+            birth_date=new_birth_date or player.birth_date,
+            chess_id=new_chess_id or player.chess_id,
         )
         self.view.data_updated_msg()
         return updated_data
-
 
     def back_to_main_menu(self):
         """

@@ -5,7 +5,7 @@ from utils.ansify import ansify
 
 
 class Round:
-    def __init__(self, number: int = 0, tournament = None, **kwargs):
+    def __init__(self, number: int = 0, tournament=None, **kwargs):
         self.number = number
         self.tournament = tournament
         self.previous_matches = kwargs.get("previous_matches", [])
@@ -44,9 +44,13 @@ class Round:
             exempt_player = shuffled.pop(0)
             exempt_player.points += 1
             print("\n" * 100)
-            print(ansify(f"\n\n\n\n                ch_up([INFO]) "
-                         f"\n      bld({exempt_player.name}) n'a pas d'adversaire. "
-                         f"\n      bld(1 point pour le premier round !)\n\n"))
+            print(
+                ansify(
+                    f"\n\n\n\n                ch_up([INFO]) "
+                    f"\n      bld({exempt_player.name}) n'a pas d'adversaire. "
+                    f"\n      bld(1 point pour le premier round !)\n\n"
+                )
+            )
             input()
 
         matches = []
@@ -69,8 +73,7 @@ class Round:
                     matches.append(Match(p1, p2))
                     paired = True
                     break
-                elif ((p1, p2) in previous_matches or (p2, p1) in previous_matches) and len(
-                        players_sorted) == 1:
+                elif ((p1, p2) in previous_matches or (p2, p1) in previous_matches) and len(players_sorted) == 1:
                     p2 = players_sorted.pop(i)
                     matches.append(Match(p1, p2))
                     paired = True
@@ -78,9 +81,13 @@ class Round:
             if not paired:
                 p1.points += 1
                 print("\n" * 100)
-                print(ansify(f"\n              ch_up([INFO]) "
-                             f"\n      bld({p1.name}) n'a pas d'adversaire. "
-                             f"\n      bld(1 point !)\n\n"))
+                print(
+                    ansify(
+                        f"\n              ch_up([INFO]) "
+                        f"\n      bld({p1.name}) n'a pas d'adversaire. "
+                        f"\n      bld(1 point !)\n\n"
+                    )
+                )
                 input()
 
         self.matches = matches
@@ -94,8 +101,7 @@ class Round:
                 description += f"\n      ttl_blu({i + 1}) ~ {str(match)}"
             return ansify(description)
         else:
-            description += (f"      b_blue({self.name}) en cours. "
-                             f"\n      En attente des résultats.\n\n")
+            description += f"      b_blue({self.name}) en cours. " f"\n      En attente des résultats.\n\n"
             for match in self.matches:
                 description += f"\n            ~ {str(match)}"
             return ansify(description)
