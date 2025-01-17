@@ -107,15 +107,20 @@ class TournamentController:
         if user_input == "r":
             return self.tournament_menu()
         selected_indices = [x.strip() for x in user_input.split(",") if x.strip()]
+        chosen_players = []
         for index_str in selected_indices:
             try:
                 idx = int(index_str)
-                new_player = unregistered_players.pop(idx - 1)
-                tournament.players.append(new_player)
-                self.tournament_manager.save_all()
+                chosen_players.append(unregistered_players[idx - 1])
             except (ValueError, IndexError):
                 self.view.wrong_menu_input()
                 return self.recruit_players(tournament)
+
+        for player in chosen_players:
+            if player not in tournament.players:
+                tournament.players.append(player)
+
+        self.tournament_manager.save_all()
         return self.tournament_menu()
 
     def handle_game_menu(self, tournament):
