@@ -14,20 +14,18 @@ class PlayerManager:
     def load_all(self):
         """Loads information from a JSON file and recreates objects."""
         self.players = []
-        for data in load_from_json(self.file_path):
-            try:
-                new_player = Player(
-                    first_name = data["name"],
-                    last_name = data["last_name"],
-                    birth_date = data["birth_date"],
-                    chess_id = data.get("chess_id", ""),
-                    points = data.get("points", 0),
-                    rank = data.get("rank", 0)
-                )
-                self.players.append(new_player)
-            except KeyError or FileNotFoundError as e:
-                print(f"[ERROR] {e}")
-            return self.players
+        players_data = load_from_json(self.file_path)
+        for player_data in players_data:
+            player_inst = Player(
+                first_name = player_data["first_name"],
+                last_name = player_data["last_name"],
+                birth_date = player_data["birth_date"],
+                chess_id = player_data["chess_id"],
+                points = player_data.get("points", 0),
+                rank = player_data.get("rank", 0)
+            )
+            self.players.append(player_inst)
+        return self.players
 
     def save_all(self):
         """Save all player data to a JSON file."""

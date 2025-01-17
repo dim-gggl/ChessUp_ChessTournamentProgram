@@ -74,7 +74,10 @@ class ReportController:
                 self.export_tournament_details(tournament)
                 self.view.export_success_msg()
                 return self.report_menu()
-        return menu_options[selected]()
+        try:
+            menu_options[selected]()
+        except KeyError:
+            return self.report_menu()
 
     def export_all_players(self):
         """
@@ -117,21 +120,36 @@ class ReportController:
             f"<h4>Lieu :</h4><p> {tournament.location}</p>"
             f"<h4>Dates :</h4><p> {tournament.start_date} —— {tournament.end_date}</p>"
             f"<h4>Description :</h4><p>{tournament.description}</p>"
-            f"<h4>Joueurs :</h4>"
         )
         if tournament.rankings:
-            content += "<ol class='rankings'>"
-            players_str = tournament.rankings
+            clear_rankings = self.clear_rankings(tournament.rankings)
+            content += "<h4 class='rankings title'>Classement :</h4>"
+            content += "<ul class='rankings list'>"
+            players_str = clear_rankings
             for player_str in players_str:
                 content += f"<li>{player_str}</li>"
-            content += "</ol>"
         else:
             content += "<ul>"
             html_players = sorted(tournament.players, key=lambda p: (p.last_name, p.first_name))
             for player in html_players:
                 content += f"<li>{player.last_name} {player.first_name} ({player.birth_date}) ~~ ID: {player.chess_id}</li>"
-            content += "</ul>"
+        content += "</ul>"
         self.exporter.export_to_html(filename, title, content)
+
+    @staticmethod
+    def clear_rankings(rankings):
+        """
+        Cleans up the results of ansify arguments for export to HTML.
+        """
+        clear_rankings = []
+        for ranking in rankings:
+            if ranking.startswith("gldn("):
+                clear_rankings.append(ranking.replace("gldn(", "").replace(")", ""))
+            elif ranking.startswith("whte("):
+                clear_rankings.append(ranking.replace("whte(", "").replace(")", ""))
+            elif ranking.startswith("bld("):
+                clear_rankings.append(ranking.replace("bld(", "").replace(")", ""))
+        return clear_rankings
 
     @staticmethod
     def back_to_main_menu():

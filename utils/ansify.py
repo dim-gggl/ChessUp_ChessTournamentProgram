@@ -24,12 +24,14 @@ def ansify(text):
         'bld_it': '1;3',            # Bold + Italic
         'blnk_': '5',               # Blinking
         'gld': '1;93',              # Gold
+        'gldn': '1;38;5;226',       # Gold "Champion Style"
         'whte': '1;97',             # White
         'fade_': '38;5;243',        # fading Grey
         'pnk': '1;95',              # Pink
         'disc_pnk': '2;95',         # Discreet Pink
         'it_pnk': '3;95',           # Italic Pink
-        'disc_it_pnk': '2;3;95'     # Discreet italic pink
+        'disc_it_pnk': '2;3;95',    # Discreet italic pink
+        'cppr': '1;38;5;208'        # Bright Copper Orange
     }
 
     i = 0

@@ -43,7 +43,8 @@ class Round:
         if len(shuffled) % 2 != 0:
             exempt_player = shuffled.pop(0)
             exempt_player.points += 1
-            print(ansify(f"\n\n\n\n            ch_up([INFO]) "
+            print("\n" * 100)
+            print(ansify(f"\n\n\n\n                ch_up([INFO]) "
                          f"\n      bld({exempt_player.name}) n'a pas d'adversaire. "
                          f"\n      bld(1 point pour le premier round !)\n\n"))
             input()
@@ -76,7 +77,8 @@ class Round:
 
             if not paired:
                 p1.points += 1
-                print(ansify(f"\n\n\n\n            ch_up([INFO]) "
+                print("\n" * 100)
+                print(ansify(f"\n              ch_up([INFO]) "
                              f"\n      bld({p1.name}) n'a pas d'adversaire. "
                              f"\n      bld(1 point !)\n\n"))
                 input()
@@ -85,13 +87,15 @@ class Round:
         return matches
 
     def __str__(self):
+        description = ""
         if self.is_finished:
-            description = f"      b_blue({self.name}) :\n         bld(Matches) : "
+            description += f"      ttl_blu({self.name}) :\n              bld_it(Matches) : \n"
             for i, match in enumerate(self.matches):
-                description += f"\n            b_blue({i + 1}) ~ {str(match)}"
+                description += f"\n      ttl_blu({i + 1}) ~ {str(match)}"
             return ansify(description)
-        elif self.is_last and not self.is_finished:
-            return ansify(f"      b_blue({self.name}) en cours. disc_b_blue([Dernier Round]) "
-                          f"\n      En attente des résultats.")
         else:
-            return ansify(f"      b_blue({self.name}) en cours. En attente des résultats.")
+            description += (f"      b_blue({self.name}) en cours. "
+                             f"\n      En attente des résultats.\n\n")
+            for match in self.matches:
+                description += f"\n            ~ {str(match)}"
+            return ansify(description)

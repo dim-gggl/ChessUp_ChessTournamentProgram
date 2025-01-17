@@ -13,13 +13,15 @@ def is_valid_date(date_str):
     except ValueError:
         return False
 
-def validate_date(date_str):
+def confirm_date_format(date_str):
     """
     Confirms the format of a date or prompts the user to re-enter it.
     """
     while not is_valid_date(date_str):
-        print(ansify("\n      red_err([ERREUR]) Date invalide. Format attendu : JJ/MM/AAAA."))
-        date_str = input(ansify("      bld(Entrez une date valide :) "))
+        print(ansify("\n            red_err([ERREUR]) \n"
+                     "      Date invalide. Format attendu : whte(JJ/MM/AAAA).\n\n"))
+        input()
+        date_str = input(ansify("\n\n      bld(Entrez une date valide :) "))
     return date_str
 
 def is_valid_chess_id(chess_id):
@@ -30,7 +32,7 @@ def is_valid_chess_id(chess_id):
         return True
     return bool(re.match(r"^[A-Z]{2}[0-9]{5}$", chess_id))
 
-def validate_chess_id(chess_id):
+def confirm_chess_id(chess_id):
     """
     Validates the format of a Chess ID or asks for it to be re-entered.
     """
@@ -40,5 +42,7 @@ def validate_chess_id(chess_id):
 
         if is_valid_chess_id(chess_id):
             return chess_id
-        print("\n      red_err([ERREUR]) Format invalide. L'I.N.E. doit contenir 2 lettres et 5 chiffres.")
+        print(ansify("\n            red_err([ERREUR]) \n"
+                     "      Format invalide. L'I.N.E. whte(doit) contenir pnk(2 lettres) et pnk(5 chiffres)."))
+        input()
         chess_id = input(ansify("      bld(Entrez un I.N.E. valide ou appuyez sur ENTRÉE pour passer :) "))

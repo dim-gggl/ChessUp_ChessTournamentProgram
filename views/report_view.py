@@ -12,7 +12,7 @@ class ReportView:
                      "\n      rpt_gr(2.) Afficher tous les tournois"
                      "\n      rpt_gr(3.) Afficher les détails d'un tournoi"
                      "\n      rpt_gr(4.) Exporter des données en HTML\n"
-                     "\n\n        ch_up(r. Retour)\n"))
+                     "\n\n       ch_up(R. Retour)\n"))
         return input("\n      Entrez votre choix : ").strip()
 
     @staticmethod
@@ -42,15 +42,13 @@ class ReportView:
     def show_rounds_and_matches(tournament):
         """Displays the tournament's rounds and matches."""
         print("\n" * 100)
-        print(ansify("\n\n\n\n      ~~~~~~~  rpt_gr(DONNEES D'UN TOURNOI)  ~~~~~~~\n\n"))
-        print(ansify(f"\n      ——————[  rpt_gr({tournament.name})  ]——————"))
+        print(ansify("\n\n\n\n      ~~~~~~~  rpt_gr(DONNEES D'UN TOURNOI)  ~~~~~~~\n"))
+        print(ansify(f"\n               rpt_gr({tournament.name})  \n\n"))
         if tournament.rounds:
             for round in tournament.rounds:
-                print(ansify(f"      ~~~bld(  {round.name} ) ~~~ "))
-                for i, match in round.matches:
-                    print(ansify(f"\n — rpt_gr(Match {i +1}) ~~ {match.player1.name} ["
-                                 f"{match.score1}] ch_up(vs) [{match.scor2}] {match.player2.name}"))
+                print(str(round))
                 input()
+        return
 
     @staticmethod
     def display_export_options():
@@ -60,14 +58,14 @@ class ReportView:
                      "\n      rpt_gr(1.) Exporter la liste de tous les joueurs"
                      "\n      rpt_gr(2.) Exporter la liste de tous les tournois"
                      "\n      rpt_gr(3.) Exporter les détails d'un tournoi\n\n"
-                     "\n      ch_up(r. Retour)\n\n"))
+                     "\n      ch_up(R. Retour)\n\n"))
         return input("\n      Entrez votre choix : ")
 
     @staticmethod
     def export_success_msg():
         """Displays the export success message."""
         print("\n" * 100)
-        print(ansify("\n\n      ~~~~~  gld(Données exportées avec succès !)  ~~~~~\n\n)"))
+        print(ansify("\n\n      ~~~~~  gld(Données exportées avec succès !)  ~~~~~\n\n"))
         input()
 
     @staticmethod

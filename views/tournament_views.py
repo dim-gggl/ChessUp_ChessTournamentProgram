@@ -8,15 +8,15 @@ class TournamentView:
         """Displays the tournaments' main menu."""
         print("\n" * 100)
         print(ansify("\n\n      ~~~~~~~~~  b_blue(MENU TOURNOIS)  ~~~~~~~~~\n\n"
-                     "\n      b_blue(𝟭.) Créer un nouveau tournoi"
-                     "\n      b_blue(𝟮.) Gérer un tournoi"
+                     "\n      b_blue(1.) Créer un nouveau tournoi"
+                     "\n      b_blue(2.) Gérer un tournoi"
                      "\n      b_blue(3.) Ajouter un joueur à un tournoi"
                      "\n      b_blue(4.) Consulter la liste des tournois\n\n"
                      "\n\n       ch_up(R. Retour)\n"))
         return input(ansify("\n      bld(Choisissez une option :) "))
 
     @staticmethod
-    def get_tournament_details(tournament=None):
+    def get_tournament_details():
         """Gather the details of a new tournament."""
         print("\n" * 100)
         print(ansify("\n\n      ~~~~~~~~~~~  b_blue(NOUVEAU TOURNOI)  ~~~~~~~~~~~~\n"))
@@ -40,8 +40,8 @@ class TournamentView:
         """Ask the user to pick a tournament from the list."""
         if not tournaments:
             print("\n" * 100)
-            print(ansify("         red_err([ERREUR]) \n"
-                         "      Aucun tournoi enregistré.\n"))
+            print(ansify("              red_err([ERREUR]) \n"
+                         "         Aucun tournoi enregistré.\n\n\n"))
             input()
             return None
 
@@ -65,7 +65,9 @@ class TournamentView:
                 return tournaments[i]
 
             else:
-                print(ansify("      red_err([ERREUR]) Sélection invalide.\n"))
+                print(ansify("          red_err([ERREUR]) \n"
+                             "        Sélection invalide.\n"))
+                input()
         except ValueError:
             print(ansify("      red_err([ERREUR]) Merci d'entrer un nombre valide.\n"))
         return None
@@ -78,7 +80,7 @@ class TournamentView:
         print("\n" * 100)
         print(ansify(
             "\n      ~~~~~~~  b_blue(Tournoi enregistré avec succès !)  ~~~~~~~\n"
-            "      Souhaitez-vous inscrire des joueurs ? (y/n)"
+            "      Souhaitez-vous inscrire des joueurs ? (y/n)\n\n\n"
         ))
         return input(ansify("      bld(Entrez votre choix :) ")).strip().lower()
 
@@ -110,12 +112,12 @@ class TournamentView:
         """
         print("\n" * 100)
         print(ansify(
-            f"\n\n      ~~~~~~~  b_blue(GESTION DU TOURNOI)  ~~~~~~~\n\n\n"
-            f"      bld(Tournoi :) b_blue({tournament.name})\n"
+            f"\n\n      ~~~~~~~  b_blue(GESTION DE TOURNOI)  ~~~~~~~\n\n\n"
+            f"             b_blue({tournament.name})\n\n"
             f"      b_blue(1.) Démarrer un nouveau round (b_blue({tournament.current_round})/{tournament.num_rounds})\n"
-            "       b_blue(2.) Entrer les scores des joueurs (clôturer le round en cours)\n"
-            "       b_blue(3.) Consulter les détails du tournoi\n\n\n"
-            "         ch_up(R. Retour)\n\n"
+            f"      b_blue(2.) Entrer les scores des joueurs (clôturer le round en cours)\n"
+            f"      b_blue(3.) Consulter les détails du tournoi\n\n\n"
+            f"        ch_up(R. Retour)\n\n"
         ))
         return input(ansify("      bld(Entrez une option :) ")).strip()
 
@@ -147,7 +149,7 @@ class TournamentView:
             f"      bld(Description) : {tournament.description}\n"
             f"      bld(Round actuel) : b_blue({tournament.current_round})/{tournament.num_rounds}\n"
         ))
-        print(ansify("      ~~~~~  b_blue(Joueurs inscrits)  ~~~~~ \n"))
+        print(ansify("        ~~~~~  b_blue(Joueurs inscrits)  ~~~~~ \n"))
         for idx, player in enumerate(players, start=1):
             print(ansify(
                 f"      b_blue({idx}.) bld({player.last_name.upper()}), {player.first_name} (bld(ID) : {player.chess_id}) - "
@@ -184,13 +186,13 @@ class TournamentView:
         """
         print("\n" * 100)
         print(ansify(
-            f"\n\n\nbld_it(      ~~~~~~~~~~)b_blue(  {closing_round.name})bld_it(  ~~~~~~~~~~)\n"
-            "bld_it(   ~~~~~~~~~~)  it_b_blue( Qui a gagné ?)bld_it(  ~~~~~~~~~~)\n"
-            "bld_it(           ~~~~~)  bld([Match])bld_it( ~~~~)\n"
-            f"bld_it(   ~~~~  ){match.player1.name} ch_up(vs) {match.player2.name}  bld_it(~~~~~)\n\n\n"
-            f"      b_blue(1.) {match.player1.name} ~ {match.player1.chess_id} ?\n"
-            f"      b_blue(2.) {match.player2.name} ~ {match.player2.chess_id} ?\n"
-            f"      b_blue(3.) Match nul ?\n"
+            f"\n\n\n      bld_it(~~~~~~~~~~)  b_blue({closing_round.name})  bld_it(~~~~~~~~~~)\n"
+            "                it_b_blue(Qui a gagné ?) \n"
+            "                   bld([Match])  \n"
+            f"               {match.player1.name} ch_up(vs) {match.player2.name} \n\n\n"
+            f"      b_blue(1.) whte({match.player1.name}) ~ {match.player1.chess_id} gldn(?)\n"
+            f"      b_blue(2.) whte({match.player2.name}) ~ {match.player2.chess_id} gldn(?)\n"
+            f"      b_blue(3.) cppr(Match nul ?)\n\n\n"
         ))
         return input("\nChoisissez une option : ").strip()
 
@@ -201,9 +203,9 @@ class TournamentView:
         """
         print("\n" * 100)
         print(ansify(
-            f"\n\n\nbld_it(      ~~~~~~~~~  )b_blue(RÉSULTATS DU TOURNOI)  bld_it(~~~~~~~~~      )\n"
-            f"      bld( {tournament.name})\n"
-            f"      bld(Lieu :) {tournament.location}\n"
+            f"\n\n\nbld_it(      ~~~~~~~~~  )b_blue(RÉSULTATS DU TOURNOI)  bld_it(~~~~~~~~~      )\n\n"
+            f"                cppr({tournament.name})\n"
+            f"      whte(Lieu :) cppr({tournament.location})\n"
         ))
         return TournamentView.show_rankings(tournament)
 
@@ -212,9 +214,9 @@ class TournamentView:
         """
         Displays the final ranking of a tournament.
         """
-        print(ansify("\n      ~~~~~~~~~  gld(✧ * ✧ Classement ✧ * ✧)  ~~~~~~~~~\n"))
+        print(ansify("\n      ~~~~~~~~~  gldn(✧ * ✧ Classement ✧ * ✧)  ~~~~~~~~~\n"))
         for i, rank_str in enumerate(tournament.rankings, start=1):
-            print(ansify(f"      gld({i}). {rank_str}"))
+            print(ansify(f"      {rank_str}"))
         input(ansify("\n      ch_up(Appuyez sur Entrée pour continuer.)"))
 
     @staticmethod
@@ -225,10 +227,10 @@ class TournamentView:
         print("\n" * 100)
         print(ansify(
             f"      ~~~~~~~~~ ch_up(⏐ 𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎ ⏐) ~~~~~~~~~~\n\n"
-            f"      ~~~~~~~~~ ch_up({tournament.name}) ~~~~~~~~~~~~\n\n"
-            "      bld(           ~    [INFO]    ~)\n"
-            "      bld_it(      Derniers scores à renseigner avant\n"
-            "       l'affichage du classement. )\n"
+            f"      ~~~~~~~~~ gld({tournament.name}) ~~~~~~~~~~~~\n\n"
+            "                  ch_up(~    [INFO]    ~)\n"
+            "            bld_it(Derniers scores à renseigner avant\n"
+            "            l'affichage du classement. )\n"
         ))
         input()
 
@@ -294,7 +296,8 @@ class TournamentView:
         Message indicating that the current round is the last.
         """
         print("\n" * 100)
-        print(ansify("\n\n\n\nch_up([INFO]) Ce round est le dernier\n"))
+        print(ansify("\n\n\n\n            ch_up([INFO]) \n"
+                     "         Ce round est le dernier\n\n\n"))
         input()
 
     @staticmethod
@@ -302,4 +305,6 @@ class TournamentView:
         """
         Invalid menu option error message.
         """
-        print(ansify("\n\n\n\nred_err([ERREUR]) Saisie incorrecte"))
+        print(ansify("\n\n\n\n            red_err([ERREUR]) \n"
+                     "          Saisie incorrecte\n\n\n"))
+        input()

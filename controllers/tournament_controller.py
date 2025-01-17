@@ -1,7 +1,7 @@
 from datetime import datetime
 from models.tournament import Tournament
 from views.tournament_views import TournamentView
-from utils.validators import validate_date
+from utils.validators import confirm_date_format, confirm_chess_id
 
 
 class TournamentController:
@@ -34,12 +34,12 @@ class TournamentController:
         valid_data = False
         while not valid_data:
             raw_data = self.view.get_tournament_details()
-            name = raw_data["name"].strip()
+            name = raw_data["name"].strip().capitalize()
             location = raw_data["location"].strip()
-            start_date = validate_date(raw_data["start_date"])
-            end_date = validate_date(raw_data["end_date"])
-            description = raw_data["description"].strip()
-            num_rounds = raw_data.get("num_rounds", 4)
+            start_date = confirm_date_format(raw_data["start_date"])
+            end_date = confirm_date_format(raw_data["end_date"])
+            description = raw_data["description"].strip() or "Aucune description disponible."
+            num_rounds = int(raw_data.get("num_rounds", 4))
 
             if all([name, location, start_date, end_date, description, num_rounds]):
                 valid_data = True
@@ -52,7 +52,8 @@ class TournamentController:
                 description=description,
                 num_rounds=num_rounds
             )
-            self.tournament_manager.save_new_entry(new_tournament)
+            self.tournament_manager.tournaments.append(new_tournament)
+            self.tournament_manager.save_all()
 
             if self.view.ask_to_register_candidates().lower() == "y":
                 self.recruit_players(new_tournament)
@@ -94,25 +95,29 @@ class TournamentController:
         """
         Register players for a tournament.
         """
-        unregistered_players = [
-            player for player in self.players if player not in tournament.players
-        ]
+        unregistered_players = [p for p in self.players if p not in tournament.players]
         if not unregistered_players:
             self.view.no_players_on_file_msg()
-            return
+            return self.tournament_menu()
 
-        selected_list = self.view.select_multiple_players(tournament, unregistered_players).strip().lower()
-        if selected_list == "r":
-            return
-        selected_idx = [item.strip() for item in selected_list.split(",") if item.strip()]
+        user_input = self.view.select_multiple_players(tournament, unregistered_players)
+        if not user_input:
+            return self.tournament_menu()
 
-        for candidate_idx in selected_idx:
+        user_input = user_input.strip().lower()
+        if user_input == "r":
+            return self.tournament_menu()
+        selected_indices = [x.strip() for x in user_input.split(",") if x.strip()]
+        for index_str in selected_indices:
             try:
-                new_player = unregistered_players.pop(int(candidate_idx) - 1)
+                idx = int(index_str)
+                new_player = unregistered_players.pop(idx - 1)
                 tournament.players.append(new_player)
                 self.tournament_manager.save_all()
             except (ValueError, IndexError):
                 self.view.wrong_menu_input()
+                return self.recruit_players(tournament)
+        return self.tournament_menu()
 
     def handle_game_menu(self, tournament):
         """
@@ -124,14 +129,20 @@ class TournamentController:
             "3": self.show_game_status,
             "R": self.return_to_main_menu,
         }
-        selected = self.view.display_game_menu(tournament)
-        return game_menu_options.get(selected, self.view.wrong_menu_input)(tournament)
+
+        selected = self.view.display_game_menu(tournament).strip().lower()
+        if selected == "r":
+            return self.tournament_menu()
+        return game_menu_options.get(selected, self.view.wrong_menu_input())(tournament)
 
     def start_new_round(self, tournament):
         """
         Starts a new round in a tournament.
         """
-        if int(tournament.current_round) < int(tournament.num_rounds):
+        if not tournament.rounds[-1].is_finished:
+            print(str(tournament.rounds[-1]))
+            return self.handle_game_menu(tournament)
+        elif tournament.current_round < tournament.num_rounds:
             new_round = tournament.start_new_round()
             self.view.show_round_pairs(new_round)
             self.tournament_manager.save_all()

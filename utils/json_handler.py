@@ -76,7 +76,7 @@ def serialize_tournaments(tournaments: list[Tournament]):
             "start_date": tournament_obj.start_date,
             "end_date": tournament_obj.end_date,
             "description": tournament_obj.description,
-            "num_rounds": tournament_obj.num_rounds,
+            "num_rounds": int(tournament_obj.num_rounds),
             "current_round": tournament_obj.current_round,
             "rounds": [],
             "players": players_data,
@@ -97,11 +97,6 @@ def serialize_tournaments(tournaments: list[Tournament]):
                     "score2": match_obj.score2,
                 }
                 round_data["matches"].append(match_data)
-            else:
-                round_data["matches"] = []
             t_data["rounds"].append(round_data)
-        else:
-            t_data["rounds"] = []
-
         all_tournaments_data.append(t_data)
     return all_tournaments_data

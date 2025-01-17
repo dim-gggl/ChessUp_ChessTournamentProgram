@@ -8,49 +8,55 @@ class PlayerView:
     def display_players_menu():
         """Displays the players' menu."""
         print("\n" * 100)
-        print(ansify("      ~~~~~~~~~  pnk(MENU JOUEURS)  ~~~~~~~~\n\n\n"
-              "      pnk(𝟭.) Ajouter un nouveau joueur\n"
-              "      pnk(𝟮.) Modifier les infos d'un joueur\n"
-              "      pnk(𝟯.) Lister les joueurs\n\n"
-              "\n        ch_up(R. Retour )"))
+        print(ansify("      ~~~~~~~~~  pnk(MENU JOUEURS)  ~~~~~~~~\n\n\n\n"
+              "      pnk(1.) Ajouter un nouveau joueur\n"
+              "      pnk(2.) Modifier les infos d'un joueur\n"
+              "      pnk(3.) Lister les joueurs\n\n"
+              "\n        ch_up(R. Retour )\n"))
         return input("\n      Choisissez une option : ")
 
+
     @staticmethod
-    def get_player_data(edit=False, player=None):
-        """Gather player data."""
-        if not edit:
-            print("\n" * 100)
-            print(ansify("\n      ~~~~~~~  pnk(NOUVEAU JOUEUR)  ~~~~~~~\n\n\n"))
-            first_name = input(ansify("\n\n\n      bld(Prénom) : "))
-            last_name = input(ansify("      bld(Nom de Famille) : "))
-            birth_date = input(ansify("      bld(Date de naissance) (JJ/MM/AAAA) : "))
-            chess_id = input(ansify("      bld(ID) : "))
-            print("\n" * 100)
-            print(ansify("\n\n\n\n\n         ~~~~~~~~~~~~~~~~~"
-                         "\n      ~~~~~~~  pnk(Joueur enregistré)  ~~~~~~~~    \n"
-                         "         ~~~~~~~~~~~~~~~~~\n\n\n\n\n"))
-            input()
-        else:
-            print("\n" * 100)
-            print(ansify(f"\n\n      ~~~~~~~  pnk(MODIFICATION DE JOUEUR)  ~~~~~~~\n\n"
-                         f"\n            pnk([INFO]) \n"
-                         f"      Si aucune information n'est saisie, les données de\n"
-                  f"      {player.first_name} pnk({player.last_name}) resteront inchangées !"))
-            first_name = input(ansify("\n\n      pnk(Prénom) : "))
-            last_name = input(ansify("      pnk(Nom de Famille) : "))
-            birth_date = input(ansify("      pnk(Date de naissance) (JJ/MM/AAAA) : "))
-            chess_id = input(ansify("      pnk(ID) : "))
-            print("\n" * 100)
-            print(ansify("\n\n\n\n\n                   ~~~~~~~~~~~~~~~~~"
-                         "\n      ~~~~~~~  pnk(Joueur enregistré)  ~~~~~~~~    \n"
-                         "                   ~~~~~~~~~~~~~~~~~\n\n\n\n\n"))
-            input()
+    def get_new_player_names():
+        print("\n" * 100)
+        print(ansify("\n      ~~~~~~~  pnk(NOUVEAU JOUEUR)  ~~~~~~~\n\n\n"
+                     "\n      whte(Informations obligatoires) :\n\n"))
+        first_name = input(ansify("\n      pnk(Prénom) : "))
+        last_name = input(ansify("      pnk(Nom de Famille) : "))
         return {
             "first_name": first_name,
-            "last_name": last_name,
-            "birth_date": birth_date,
-            "chess_id": chess_id
+            "last_name": last_name
         }
+
+    @staticmethod
+    def get_new_player_birth_date():
+        return input(ansify("      pnk(Date de naissance) (JJ/MM/AAAA) : "))
+
+    @staticmethod
+    def get_player_chess_id(edit=False):
+        """Ask the user to enter the player's chess ID."""
+        if not edit:
+            print(ansify("\n\n\n               ch_up([INFO])"
+                         "\n      L'Identifiant National d'Échecs peut être renseigné"
+                         "\n      ultérieurement. Mais s'il est saisi, merci de respecter\n"
+                         "      le format it_pnk(2 lettres suivies de 5 chiffres). \n\n"))
+            input()
+        else:
+            print(ansify("\n\n\n               ch_up([INFO]"
+                         "\n      Si vous n'êtes pas sûr du format, vous pouvez passer.\n\n\n"))
+        return input(ansify("      pnk(I.N.E.) ou ENTRÉE : "))
+
+    @staticmethod
+    def new_player_saved_msg():
+        print("\n" * 50)
+        print(ansify("\n            pnk([ NOUVEAU JOUEUR ENREGISTRÉ ! ])\n\n\n"))
+        input()
+
+    @staticmethod
+    def data_updated_msg():
+        print("\n" * 50)
+        print(ansify("\n            pnk([ Mises à jour enregistrées ! ])\n\n\n"))
+        input()
 
     @staticmethod
     def select_player_to_edit(players):
@@ -94,9 +100,9 @@ class PlayerView:
     def display_players(players):
         """Displays the players' list.'"""
         print("\n" * 100)
-        print("\n\n\n~~~~~~~~~~~~~~~  \033[1;95mTOUS LES JOUEURS\033[0m  ~~~~~~~~~~~~~~~\n")
+        print(ansify("\n\n\n      ~~~~~~~~~  pnk(TOUS LES JOUEURS)  ~~~~~~~~~      \n"))
         for player in players:
-            print(f" ~ \033[1;95m{player.last_name.upper()}\033[0m {player.first_name}"
-                  f" (\033[1;3;35mID:\033[0m {player.chess_id}) ~ \033[1;3;35mNé(e) le:\033[0m {player.birth_date} ~ ")
+            print(ansify(f"       ~ pnk({player.last_name.upper()}) {player.first_name}"
+                  f" (disc_it_pnk(ID:) {player.chess_id}) ~ disc_it_pnk(Né(e) le:) {player.birth_date} ~ "))
         input()
         return

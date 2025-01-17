@@ -18,11 +18,6 @@ class Tournament:
         self.rankings = kwargs.get("rankings", None)
 
     @property
-    def is_open_to_inscription(self):
-        """Returns True when the tournament has not started"""
-        return self.current_round == 0 and not self.is_finished
-
-    @property
     def is_holding(self):
         """Returns True when the tournament has not started and has enough players"""
         return self.current_round == 0 and len(self.players) >= int(self.num_rounds) and not self.is_finished
@@ -72,31 +67,28 @@ class Tournament:
             previous_points = player.points
         return self.players
 
-
     def set_final_rankings(self):
         """Sets final rankings"""
         self.rank_players()
         self.rankings = []
-        if len(self.players) >= 1:
-            champion_player = self.players[0]
-            champion_str = (
-                f"{champion_player.rank} ~ Champion : "
-                f"{champion_player.last_name} {champion_player.first_name}"
+        champions = [p for p in self.players if p.rank == 1]
+        vice_champions = [p for p in self.players if p.rank == 2]
+        others = [p for p in self.players if p.rank >= 3]
+        for player in champions:
+            self.rankings.append(
+                f"gldn({player.rank}er) ~ gldn(Champion) : gldn({player.last_name} {player.first_name}) ~"
             )
-            self.rankings.append(champion_str)
-            vice_player = self.players[1]
-            vice_str = (
-                f"{vice_player.rank} ~ Vice-champion : "
-                f"{vice_player.last_name} {vice_player.first_name}"
+        for player in vice_champions:
+            self.rankings.append(
+                f"whte({player.rank}nd) ~ whte(Vice-champion) : whte({player.last_name} {player.first_name}) ~"
             )
-            self.rankings.append(vice_str)
-
-        if len(self.players) > 2:
-            for player in self.players[2:]:
-                other_str = (
-                    f"{player.rank} ~ {player.last_name} {player.first_name}"
-                )
-                self.rankings.append(other_str)
+        for player in others:
+            self.rankings.append(
+                f"bld({player.rank}e) ~ bld({player.last_name} {player.first_name}) ~"
+            )
+        for player in self.players:
+            player.points = 0
+            player.rank = 0
         return self.rankings
 
     def __repr__(self):
