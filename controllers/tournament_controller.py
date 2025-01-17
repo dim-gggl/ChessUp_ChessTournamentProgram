@@ -138,7 +138,7 @@ class TournamentController:
         """
         Starts a new round in a tournament.
         """
-        if not tournament.rounds[-1].is_finished:
+        if len(tournament.rounds) > 0 and not tournament.rounds[-1].is_finished:
             print(str(tournament.rounds[-1]))
             return self.handle_game_menu(tournament)
         elif tournament.current_round < tournament.num_rounds:

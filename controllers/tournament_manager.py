@@ -72,8 +72,6 @@ class TournamentManager:
                 last_name=player_data["last_name"],
                 birth_date=player_data["birth_date"],
                 chess_id=player_data["chess_id"],
-                points=player_data.get("points", 0),
-                rank=player_data.get("rank", 0),
             )
             players_list.append(player_obj)
         return players_list

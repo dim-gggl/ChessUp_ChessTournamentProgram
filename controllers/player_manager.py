@@ -20,8 +20,6 @@ class PlayerManager:
                 last_name=player_data["last_name"],
                 birth_date=player_data["birth_date"],
                 chess_id=player_data["chess_id"],
-                points=player_data.get("points", 0),
-                rank=player_data.get("rank", 0),
             )
             self.players.append(player_inst)
         return self.players

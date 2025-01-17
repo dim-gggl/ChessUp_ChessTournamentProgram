@@ -70,6 +70,23 @@ class PlayerView:
         input()
 
     @staticmethod
+    def date_format_error_msg():
+        print(
+            ansify("\n            red_err([ERREUR]) \n" "      Date invalide. Format attendu : whte(JJ/MM/AAAA).\n\n")
+        )
+        input()
+
+    @staticmethod
+    def invalid_chess_id_msg():
+        print(
+            ansify(
+                "\n            red_err([ERREUR]) \n"
+                "      Format invalide. L'I.N.E. whte(doit) contenir pnk(2 lettres) et pnk(5 chiffres)."
+            )
+        )
+        input()
+
+    @staticmethod
     def select_player_to_edit(players):
         """Displays the players' list and returns the selected player's index."""
         if not players:
@@ -107,10 +124,13 @@ class PlayerView:
     @staticmethod
     def enter_chess_id(player):
         """Ask the user to enter the player's chess ID."""
-        print("\n" * 100)
-        print(f"\n            ~~~~~~~~  pnk({player.name})  ~~~~~~~~~\n\n")
-        print(f"\n      Saisissez l'Identifiant National d'Échecs de :\n")
-        print(f"      disc_it_pnk( ~ {player.first_name}) pnk({player.last_name.upper()})\n\n\n")
+        print(f"\n" * 100)
+        print(
+            ansify(
+                f"\n            ~~~~~~~~  pnk({player.name})  ~~~~~~~~~\n\n"
+                f"      disc_it_pnk( ~ {player.first_name}) pnk({player.last_name.upper()})\n\n\n"
+            )
+        )
         return input(ansify("\n\n      bld(Entrez l'I.N.E) : "))
 
     @staticmethod
@@ -121,8 +141,8 @@ class PlayerView:
         for player in players:
             print(
                 ansify(
-                    f"       ~ pnk({player.last_name.upper()}) {player.first_name}"
-                    f" (disc_it_pnk(ID:) {player.chess_id}) ~ disc_it_pnk(Né(e) le:) {player.birth_date} ~ "
+                    f"       ~ pnk({player.last_name.upper()}) whte({player.first_name})"
+                    f" it_pnk(ID:) {player.chess_id}) ~ it_pnk(Né(e)) le:) {player.birth_date} ~ "
                 )
             )
         input()

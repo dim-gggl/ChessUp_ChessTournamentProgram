@@ -3,9 +3,9 @@ class Player:
         self.first_name = first_name
         self.last_name = last_name
         self.birth_date = birth_date
-        self.chess_id = chess_id
+        self.chess_id = kwargs.get(chess_id, "")
         self.name = f"{self.first_name[0].upper()}.{self.last_name}"
-        self.points = kwargs.get("points", 0)
+        self.points = kwargs.get("points", 0.0)
         self.rank = kwargs.get("rank", 0)
 
     def update_player_info(self, **kwargs):
