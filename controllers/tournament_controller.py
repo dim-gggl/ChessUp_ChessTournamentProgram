@@ -98,6 +98,7 @@ class TournamentController:
         for tournament in self.tournament_manager.tournaments:
             if tournament.current_round == 0:
                 available_tournaments.append(tournament)
+
         if available_tournaments:
             sort_tournaments(available_tournaments)
             choice = self.view.display_tournament_list(available_tournaments, select_option=True).lower()

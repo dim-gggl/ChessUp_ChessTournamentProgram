@@ -26,10 +26,15 @@ class PlayerController:
             }
             selected = self.view.display_players_menu().strip().lower()
             action = menu_actions.get(selected)
-            if action:
-                action()
+            if not self.manager.players and selected != 1:
+                TournamentView.no_players_on_file_msg()
+                selected = ""
+
             else:
-                TournamentView.wrong_menu_input()
+                if action:
+                    action()
+                else:
+                    TournamentView.wrong_menu_input()
 
     def add_new_player(self):
         """Adds a new player to the database."""
