@@ -21,7 +21,7 @@ class MainMenuView:
                 "\n "
             )
         )
-        input(ansify("\033[5m          Appuyez sur ttl_blu(↵) pour continuer"))
+        input(ansify("\033[5m          Appuyez sur ↵ pour continuer"))
         return
 
     @staticmethod

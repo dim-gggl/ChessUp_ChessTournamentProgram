@@ -93,11 +93,12 @@ class Tournament:
             player.rank = 0
         return self.rankings
 
-    def __repr__(self):
-        if not self.rankings:
-            return f"{self.name}, {self.start_date}, {self.end_date}"
-        else:
-            return f"[TERMINÉ] {self.name}, {self.start_date}, {self.end_date}"
-
     def __str__(self):
-        return f"{self.name} - {self.start_date} - {self.end_date}\n"
+        if self.is_holding:
+            return f"ttl_blu([PRÊT]) ~ ttl_blu({self.name}), {self.start_date}, {self.end_date}"
+        if self.is_running and not self.rounds[-1].is_finished:
+            return f"red_err([EN COURS]) ~ {self.name} ~ Status :  Round {self.current_round} ouvert, en attente des résultats"
+        if self.is_running and self.rounds[-1].is_finished:
+            return f"red_err([EN COURS]) ~ {self.name} ~ Status : le Round {self.current_round + 1} peut être lancé !"
+        if self.is_finished:
+            return f"ch_up([TERMINÉ] {self.name}), ch_up({self.num_rounds}) rounds disputés, ch_up({len(self.players)}) joueurs ont participé"

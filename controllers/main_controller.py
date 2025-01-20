@@ -20,20 +20,28 @@ class MainMenu:
         Runs the application's main menu.'
         """
         MainMenuView.display_main_menu_intro()
-        selected = -1
-        while int(selected) != 0:
-            selected = MainMenuView().display_main_menu().strip()
-            if selected == "1":
-                self.tournament_controller.tournament_menu()
-            elif selected == "2":
-                PlayerController(self.player_manager).player_menu()
-            elif selected == "3":
-                ReportController(self.player_manager, self.tournament_manager).report_menu()
-            elif selected == "q":
-                self.player_manager.save_all()
-                self.tournament_manager.save_all()
-                MainMenuView.bye_message()
-                return 0
+        selected = ""
+        while selected != "q":
+            selected = MainMenuView().display_main_menu().strip().lower()
+
+            menu_actions = {
+                "1": self.tournament_controller.tournament_menu,
+                "2": lambda: PlayerController(self.player_manager).player_menu(),
+                "3": lambda: ReportController(self.player_manager, self.tournament_manager).report_menu(),
+                "q": self.quit_app,
+            }
+
+            action = menu_actions.get(selected)
+
+            if action:
+                action()
             else:
                 TournamentView.wrong_menu_input()
-                selected = -1
+
+    def quit_app(self):
+        """
+        Manages the application's own output.
+        """
+        self.player_manager.save_all()
+        self.tournament_manager.save_all()
+        MainMenuView.bye_message()

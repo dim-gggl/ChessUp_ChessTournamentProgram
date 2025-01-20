@@ -27,7 +27,7 @@ class Round:
     @property
     def is_finished(self):
         """Returns True when the round is finished"""
-        return self.end_time
+        return self.end_time and all(match.is_over for match in self.matches)
 
     def match_players(self):
         """Public method: simply delegates to private methods."""
@@ -51,7 +51,7 @@ class Round:
                     f"\n      bld(1 point pour le premier round !)\n\n"
                 )
             )
-            input()
+            input("Appuyez sur ENTRÉE pour continuer")
 
         matches = []
         for i in range(0, len(shuffled), 2):
@@ -88,7 +88,7 @@ class Round:
                         f"\n      bld(1 point !)\n\n"
                     )
                 )
-                input()
+                input("Appuyez sur ENTRÉE pour continuer")
 
         self.matches = matches
         return matches
