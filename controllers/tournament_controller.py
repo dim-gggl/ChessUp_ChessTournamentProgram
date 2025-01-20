@@ -30,6 +30,9 @@ class TournamentController:
             }
             selected = self.view.display_tournament_main_menu().strip().lower()
             action = menu_options.get(selected)
+            if selected == "r":
+                break
+
             if action:
                 action()
             else:
