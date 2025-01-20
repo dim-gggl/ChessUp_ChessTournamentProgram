@@ -26,7 +26,10 @@ class PlayerController:
             }
             selected = self.view.display_players_menu().strip().lower()
             action = menu_actions.get(selected)
-            if not self.manager.players and selected != 1:
+            if selected == "r":
+                break
+
+            if not self.manager.players and selected != "1":
                 TournamentView.no_players_on_file_msg()
                 selected = ""
 

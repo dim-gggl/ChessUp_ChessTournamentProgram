@@ -1,5 +1,6 @@
 from datetime import datetime
 from models.tournament import Tournament
+from utils.ansify import ansify
 from utils.sort_tournaments import sort_tournaments
 from views.tournament_views import TournamentView
 from utils.validators import confirm_date_format, confirm_name_format, confirm_location_format
@@ -100,8 +101,8 @@ class TournamentController:
                 available_tournaments.append(tournament)
 
         if available_tournaments:
-            sort_tournaments(available_tournaments)
-            choice = self.view.display_tournament_list(available_tournaments, select_option=True).lower()
+            sorted_tournaments = sort_tournaments(available_tournaments)
+            choice = self.view.display_tournament_list(sorted_tournaments, select_option=True).lower()
             if choice == "r":
                 return
 
@@ -121,7 +122,7 @@ class TournamentController:
         """
         Lists registered tournaments.
         """
-        all_tournaments = self.tournament_manager.tournaments
+        all_tournaments = sort_tournaments(self.tournament_manager.tournaments)
         if all_tournaments:
             sort_tournaments(all_tournaments)
             self.view.display_tournament_list(all_tournaments, select_option=False)
@@ -188,8 +189,8 @@ class TournamentController:
         Starts a new round in a tournament.
         """
         if len(tournament.rounds) > 0 and not tournament.rounds[-1].is_finished:
-            print(str(tournament.rounds[-1]))
-            input("Appuyez sur ENTRÉE pour continnuer")
+            TournamentView.clear_screen()
+            print(ansify(str(tournament)))
             return
 
         elif tournament.current_round < tournament.num_rounds:
@@ -221,7 +222,7 @@ class TournamentController:
         Closes the last round and displays the final results.
         """
         last_round = tournament.rounds[-1]
-        if not last_round.matches:
+        if not last_round.is_finished:
             self.view.no_round_running_msg()
             return
 

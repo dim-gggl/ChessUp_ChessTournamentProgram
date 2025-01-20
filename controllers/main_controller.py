@@ -26,8 +26,9 @@ class MainMenu:
 
             menu_actions = {
                 "1": self.tournament_controller.tournament_menu,
-                "2": lambda: PlayerController(self.player_manager).player_menu(),
-                "3": lambda: ReportController(self.player_manager, self.tournament_manager).report_menu(),
+                "2": PlayerController(self.player_manager).player_menu,
+                "3": ReportController(self.player_manager, self.tournament_manager).report_menu,
+                "4": self.save_all,
                 "q": self.quit_app,
             }
 
@@ -38,10 +39,14 @@ class MainMenu:
             else:
                 TournamentView.wrong_menu_input()
 
+    def save_all(self):
+        self.player_manager.save_all()
+        self.tournament_manager.save_all()
+        MainMenuView.data_saved_msg()
+
     def quit_app(self):
         """
         Manages the application's own output.
         """
-        self.player_manager.save_all()
-        self.tournament_manager.save_all()
+        self.save_all()
         MainMenuView.bye_message()

@@ -73,7 +73,7 @@ class TournamentView:
         if not tournaments:
             TournamentView().clear_screen()
             print(ansify("              red_err([ERREUR]) \n" "         Aucun tournoi enregistré.\n\n\n"))
-            input("Appuyez sur ENTRÉE pour continuer")
+            input("      Appuyez sur ENTRÉE pour continuer")
             return None
 
         TournamentView().clear_screen()
@@ -84,17 +84,18 @@ class TournamentView:
             print(ansify("\n      ch_up(R. Retour)\n"))
             return input(ansify("      bld(Entrez le numéro du tournoi :) "))
 
-        input("Appuyez sur ENTRÉE pour continuer")
+        input("      Appuyez sur ENTRÉE pour continuer")
 
     @staticmethod
     def invalid_selection():
         print(ansify("          red_err([ERREUR]) \n" "        Sélection invalide.\n"))
-        input("Appuyez sur ENTRÉE pour continuer")
+        input("      Appuyez sur ENTRÉE pour continuer")
 
     @staticmethod
     def wrong_number():
+        PlayerView.clean_screen()
         print(ansify("          red_err([ERREUR]) \n" "        Sélection invalide.\n"))
-        input("Appuyez sur ENTRÉE pour continuer")
+        input("      Appuyez sur ENTRÉE pour continuer")
 
     @staticmethod
     def select_multiple_players(tournament, unregistered_players):
@@ -170,11 +171,10 @@ class TournamentView:
         TournamentView().header("RÉCAPITULATIF DU TOURNOI")
         print(
             ansify(
-                f"      bld(Nom) : {tournament.name}\n"
+                f"      {str(tournament)}"
                 f"      bld(Lieu) : {tournament.location}\n"
                 f"      bld(Dates) : {tournament.start_date} à {tournament.end_date}\n"
                 f"      bld(Description) : {tournament.description}\n"
-                f"      bld(Round actuel) : b_blue({tournament.current_round})/{tournament.num_rounds}\n"
             )
         )
         print(ansify("        ~~~~~  b_blue(Joueurs inscrits)  ~~~~~ \n"))

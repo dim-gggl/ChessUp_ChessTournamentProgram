@@ -95,10 +95,13 @@ class Tournament:
 
     def __str__(self):
         if self.is_holding:
-            return f"ttl_blu([PRÊT]) ~ ttl_blu({self.name}), {self.start_date}, {self.end_date}"
+            return f" ttl_blu([PRÊT]) ~ ttl_blu({self.name}), {self.start_date}, {self.end_date}"
         if self.is_running and not self.rounds[-1].is_finished:
-            return f"red_err([EN COURS]) ~ {self.name} ~ Status :  Round {self.current_round} ouvert, en attente des résultats"
+            return f" red_err([EN COURS]) ~ red_err({self.name}) ~ Status :  ch_up(Round {self.current_round}) red_err(OUVERT), en attente des résultats"
         if self.is_running and self.rounds[-1].is_finished:
-            return f"red_err([EN COURS]) ~ {self.name} ~ Status : le Round {self.current_round + 1} peut être lancé !"
+            return f" red_err([EN COURS]) ~ red_err({self.name}) ~ Status : le ttl_blu(Round {self.current_round + 1}) peut être lancé !"
         if self.is_finished:
-            return f"ch_up([TERMINÉ] {self.name}), ch_up({self.num_rounds}) rounds disputés, ch_up({len(self.players)}) joueurs ont participé"
+            return f" ch_up([TERMINÉ]) ~ ch_up({self.name}), ch_up({self.num_rounds}) rounds disputés, ch_up({len(self.players)}) joueurs ont participé"
+        else:
+            return (f" pnk([BESOIN DE JOUEURS]) ~ whte({self.name}), red_err({len(self.players)}) joueur(s) inscrit(s) pour l'instant.\n"
+                    f"            Et  red_err({self.num_rounds}) rounds sont prévus !")

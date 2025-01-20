@@ -1,4 +1,5 @@
 from utils.ansify import ansify
+from views.tournament_views import TournamentView
 
 
 class MainMenuView:
@@ -29,28 +30,39 @@ class MainMenuView:
         """
         Displays the main menu.
         """
-        print("\n" * 100)
+        TournamentView.clear_screen()
         print(
             ansify(
                 "      bld_it(~~~~~~~~~) ttl_blu(⏐ 𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎ ⏐) bld_it(~~~~~~~~~~)\n\n\n\n"
                 "\n      ttl_blu(1.) Menu bld(TOURNOIS)"
                 "\n      ttl_blu(2.) Menu bld(JOUEURS)"
                 "\n      ttl_blu(3.) bld(RAPPORTS)\n\n"
+                "      rpt_gr(4. SAUVEGARDER)"
                 "\n       ch_up(Q. Quitter)\n"
             )
         )
         return input(ansify("\n      bld(Choisissez une option :) ")).strip()
 
     @staticmethod
+    def data_saved_msg():
+        TournamentView.clear_screen()
+        print(
+            ansify(
+                "\n\n            gld(DONNÉES ENREGISTRÉES)\n\n\n"
+            )
+        )
+        input("\n\n      Appuyez sur ENTRÉE pour continuer.")
+
+    @staticmethod
     def bye_message():
         """
         Exit message.
         """
-        print("\n" * 100)
+        TournamentView.clear_screen()
         print(
             ansify(
                 "\n\nbld(      ~~~~~   ])  ch_up( * 𝐵𝑦𝑒𝐵𝑦𝑒 * )  bld([  ~~~~\n\n)"
-                "\n\nbld_it(      ~~~~~~~~~ )ch_up(⏐ 𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎ ⏐)bld_it( ~~~~~~~~~~)\n\n"
+                "\n\nbld_it(      ~~~~~~~~~ )ch_up(⏐ 𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎ ⏐)bld_it( ~~~~~~~~~~)\n\n\n\n"
             )
         )
         input()
