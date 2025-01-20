@@ -48,7 +48,7 @@ class PlayerController:
         birth_date = confirm_date_format(birth_date_input)
         chess_input = self.view.get_player_chess_id().strip().upper()
         if chess_input:
-            chess_id = chess_input
+            chess_id = confirm_chess_id(chess_input)
         else:
             chess_id = ""
         new_player = Player(
