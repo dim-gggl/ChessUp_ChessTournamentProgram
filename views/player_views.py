@@ -10,8 +10,7 @@ class PlayerView:
 
     @staticmethod
     def header(prompt):
-        print(ansify(f"      ~~~~~~~~~  pnk({prompt})  ~~~~~~~~\n\n\n\n"))
-
+        print(ansify(f"\t~~~~~~~~~  pnk({prompt})  ~~~~~~~~\n\n"))
 
     @staticmethod
     def display_players_menu():
@@ -20,60 +19,52 @@ class PlayerView:
         PlayerView.header("MENU JOUEURS")
         print(
             ansify(
-                "      pnk(1.) Ajouter un nouveau joueur\n"
-                "      pnk(2.) Modifier les infos d'un joueur\n"
-                "      pnk(3.) Lister les joueurs\n\n"
-                "\n        ch_up(R. Retour )\n"
+                "\tpnk(1.) Ajouter un nouveau joueur\n"
+                "\tpnk(2.) Modifier les infos d'un joueur\n"
+                "\tpnk(3.) Lister les joueurs\n\n"
+                "\n\tch_up(R. Retour )\n"
             )
         )
-        return input("\n      Choisissez une option : ")
+        return input("\n\tChoisissez une option : ")
 
     @staticmethod
     def get_new_player_names():
         PlayerView.clean_screen()
         PlayerView.header("NOUVEAU JOUEUR")
-        print(ansify("\n      whte(*Informations obligatoires) :\n\n"))
-        first_name = input(ansify("\n      pnk(Prénom*) : "))
-        last_name = input(ansify("      pnk(Nom de Famille*) : "))
+        print(ansify("\n\twhte(*Informations obligatoires) :\n\n"))
+        first_name = input(ansify("\n\tpnk(Prénom *) : "))
+        last_name = input(ansify("\tpnk(Nom de Famille *) : "))
         return {"first_name": first_name, "last_name": last_name}
 
     @staticmethod
     def get_new_player_birth_date():
-        return input(ansify("      pnk(Date de naissance*) (JJ/MM/AAAA) : "))
+        return input(ansify("\tpnk(Date de naissance *) (JJ/MM/AAAA) : "))
 
     @staticmethod
     def get_player_chess_id(edit=False):
         """Ask the user to enter the player's chess ID."""
-        if not edit:
-            print(
-                ansify(
-                    "\n\n\n               ch_up([INFO])"
-                    "\n      L'Identifiant National d'Échecs peut être renseigné"
-                    "\n      ultérieurement. Mais s'il est saisi, merci de respecter\n"
-                    "      le format it_pnk(2 lettres suivies de 5 chiffres). \n\n"
-                )
+        print(
+            ansify(
+                "\n\n\n\t\t\tch_up([INFO])"
+                "\n\t\tL'Identifiant National d'Échecs peut être renseigné"
+                "\n\t\tultérieurement. Mais s'il est saisi, merci de respecter\n"
+                "\t\tle format it_pnk(2 lettres suivies de 5 chiffres). \n\n"
             )
-            input("Appuyez sur ENTRÉE pour continuer")
-        else:
-            print(
-                ansify(
-                    "\n\n\n               ch_up([INFO]"
-                    "\n      Si vous n'êtes pas sûr du format, vous pouvez passer.\n\n\n"
-                )
-            )
-        return input(ansify("      pnk(I.N.E.) ou ENTRÉE : "))
+        )
+        input("\tAppuyez sur ENTRÉE pour continuer")
+        return input(ansify("\tpnk(I.N.E.) ou ENTRÉE : "))
 
     @staticmethod
     def new_player_saved_msg():
         PlayerView.clean_screen()
-        print(ansify("\n            pnk([ NOUVEAU JOUEUR ENREGISTRÉ ! ])\n\n\n"))
-        input("Appuyez sur ENTRÉE pour continuer")
+        print(ansify("\n\t\t\tpnk([ NOUVEAU JOUEUR ENREGISTRÉ ! ])\n\n\n"))
+        input("\tAppuyez sur ENTRÉE pour continuer")
 
     @staticmethod
     def data_updated_msg():
         PlayerView.clean_screen()
-        print(ansify("\n            pnk([ Mises à jour enregistrées ! ])\n\n\n"))
-        input("      Appuyez sur ENTRÉE pour continuer")
+        print(ansify("\n\t\tpnk([ Mises à jour enregistrées ! ])\n\n\n"))
+        input("\tAppuyez sur ENTRÉE pour continuer")
 
 
     @staticmethod
@@ -81,17 +72,17 @@ class PlayerView:
         """Displays the players' list and returns the selected player's index."""
         if not players:
             PlayerView.clean_screen()
-            print(ansify("\n            ch_up([INFO])\n" "      Aucun Joueurs enregistré !\n\n"))
+            print(ansify("\n\t\t\tch_up([INFO])\n\t\tAucun Joueurs enregistré !\n\n"))
             input("\n")
         else:
             PlayerView.clean_screen()
             PlayerView.header("MODIFIER UN JOUEUR")
             for i, player in enumerate(players, start=1):
-                print(ansify(f"      pnk({i}.) bld({player.last_name}) {player.first_name}, ({player.chess_id})"))
+                print(ansify(f"\tpnk({i}.) bld({player.last_name}) {player.first_name}, ({player.chess_id})"))
 
-            print(ansify("\n\n      ch_up(R. Retour)\n"))
+            print(ansify("\n\n\tch_up(R. Retour)\n"))
 
-            return input(ansify("\n\n      bld(Entrez votre choix) :\033[0m "))
+            return input(ansify("\n\n\tbld(Entrez votre choix) :\033[0m "))
 
     @staticmethod
     def edition_options(player):
@@ -100,12 +91,12 @@ class PlayerView:
         PlayerView.header(player.name)
         print(
             ansify(
-                f"      pnk(𝟭.) Tout modifier\n"
-                f"      pnk(𝟮.) Mettre à jour l'I.N.E\n\n\n"
-                f"      ch_up(R.) Retour\n\n"
+                f"\tpnk(𝟭.) Tout modifier\n"
+                f"\tpnk(𝟮.) Mettre à jour l'I.N.E\n\n\n"
+                f"\tch_up(R.) Retour\n\n"
             )
         )
-        return input(ansify("\n\n      bld(Entrez votre choix) : "))
+        return input(ansify("\n\n\tbld(Entrez votre choix) : "))
 
     @staticmethod
     def enter_chess_id(player):
@@ -115,10 +106,10 @@ class PlayerView:
         print(
             ansify(
 
-                f"      disc_it_pnk( ~ {player.first_name}) pnk({player.last_name.upper()})\n\n\n"
+                f"\t~ pnk({player.first_name}) pnk({player.last_name.upper()})\n\n\n"
             )
         )
-        return input(ansify("\n\n      bld(Entrez l'I.N.E) : "))
+        return input(ansify("\n\n\tbld(Entrez l'I.N.E) : "))
 
     @staticmethod
     def display_players(players):
@@ -128,9 +119,9 @@ class PlayerView:
         for player in players:
             print(
                 ansify(
-                    f"       ~ pnk({player.last_name.upper()}) whte({player.first_name})"
-                    f" it_pnk(ID:) {player.chess_id}) ~ it_pnk(Né(e)) le:) {player.birth_date} ~ "
+                    f"  ~ pnk({player.last_name.upper()}) whte({player.first_name})"
+                    f" pnk(ID:) whte({player.chess_id}) ~ pnk(Né.e) le {player.birth_date} ~ "
                 )
             )
-        input("      Appuyez sur ENTRÉE pour continuer")
+        input("\tAppuyez sur ENTRÉE pour continuer")
         return

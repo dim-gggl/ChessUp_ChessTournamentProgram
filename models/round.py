@@ -46,12 +46,12 @@ class Round:
             print("\n" * 100)
             print(
                 ansify(
-                    f"\n\n\n\n                ch_up([INFO]) "
-                    f"\n      bld({exempt_player.name}) n'a pas d'adversaire. "
-                    f"\n      bld(1 point pour le premier round !)\n\n"
+                    f"\n\n\n\n\t\t\tch_up([INFO]) "
+                    f"\n\t\tbld({exempt_player.name}) n'a pas d'adversaire. "
+                    f"\n\t\tbld(1 point pour le premier round !)\n\n"
                 )
             )
-            input("Appuyez sur ENTRÉE pour continuer")
+            input("\tAppuyez sur ENTRÉE pour continuer")
 
         matches = []
         for i in range(0, len(shuffled), 2):
@@ -83,12 +83,12 @@ class Round:
                 print("\n" * 100)
                 print(
                     ansify(
-                        f"\n              ch_up([INFO]) "
-                        f"\n      bld({p1.name}) n'a pas d'adversaire. "
-                        f"\n      bld(1 point !)\n\n"
+                        f"\n\t\t\tch_up([INFO]) "
+                        f"\n\t\tbld({p1.name}) n'a pas d'adversaire. "
+                        f"\n\t\tbld(1 point !)\n\n"
                     )
                 )
-                input("Appuyez sur ENTRÉE pour continuer")
+                input("\tAppuyez sur ENTRÉE pour continuer")
 
         self.matches = matches
         return matches
@@ -96,12 +96,12 @@ class Round:
     def __str__(self):
         description = ""
         if self.is_finished:
-            description += f"      ttl_blu({self.name}) :\n              bld_it(Matches) : \n"
+            description += f"\t\t\tttl_blu({self.name}) :\n\t\tbld_it(Matches) : \n"
             for i, match in enumerate(self.matches):
-                description += f"\n      ttl_blu({i + 1}) ~ {str(match)}"
+                description += f"\n\tttl_blu({i + 1}) ~ {str(match)}"
             return ansify(description)
         else:
-            description += f"      b_blue({self.name}) en cours. " f"\n      En attente des résultats.\n\n"
+            description += f"\tb_blue({self.name}) en cours. " f"\n\tEn attente des résultats.\n\n"
             for match in self.matches:
-                description += f"\n            ~ {str(match)}"
+                description += f"\n\t~ {str(match)}"
             return ansify(description)

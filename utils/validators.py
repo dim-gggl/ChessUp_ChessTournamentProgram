@@ -29,18 +29,18 @@ def confirm_name_format(name, digits_ok=False):
         if digits_ok:
             print(
                 ansify(
-                    "\n            red_err([ERREUR]) \n" "      Format de nom vide ou invalide.\n\n"
+                    "\n\t\t\tred_err([ERREUR]) \n" "\t\tFormat de nom vide ou invalide.\n\n"
                 )
             )
         else:
             print(
                 ansify(
-                    "\n            red_err([ERREUR]) \n" 
-                    "      Saisie incorrecte (nom vide ou au format inhabituel).\n\n"
+                    "\n\t\t\tred_err([ERREUR]) \n" 
+                    "\t\tSaisie incorrecte (nom vide ou au format inhabituel).\n\n"
                 )
             )
-        input("Appuie sur ENTRÉE pour continuer...")
-        name = input(ansify("\n\n      bld(Entrez un nom valide) : "))
+        input("\tAppuie sur ENTRÉE pour continuer...")
+        name = input(ansify("\n\n\tbld(Entrez un nom valide) : "))
     return name
 
 
@@ -68,12 +68,12 @@ def confirm_location_format(location):
     while not is_valid_location(location):
         print(
             ansify(
-                "\n            red_err([ERREUR]) \n"
-                "Le lieu doit être composé de lettres, espaces, tirets, virgules, points ou apostrophes."
+                "\n\t\t\tred_err([ERREUR]) \n"
+                "\t\tLe lieu doit être composé de lettres, espaces, tirets, virgules, points ou apostrophes."
             )
         )
-        input("Appuie sur ENTRÉE pour continuer...")
-        location = input("Entre un lieu valide : ")
+        input("\tAppuie sur ENTRÉE pour continuer...")
+        location = input("\tEntre un lieu valide : ")
     return location
 
 
@@ -95,12 +95,12 @@ def confirm_date_format(date_str):
     while not is_valid_date(date_str):
         print(
             ansify(
-                "\n            red_err([ERREUR]) \n" 
-                "      Date invalide. Format attendu : whte(JJ/MM/AAAA).\n\n"
+                "\n\t\t\tred_err([ERREUR]) \n" 
+                "\t\tDate invalide. Format attendu : whte(JJ/MM/AAAA).\n\n"
             )
         )
-        input("Appuie sur ENTRÉE pour continuer...")
-        date_str = input(ansify("\n\n      bld(Entrez une date valide :) "))
+        input("\tAppuie sur ENTRÉE pour continuer...")
+        date_str = input(ansify("\n\n\tbld(Entrez une date valide :) "))
     return date_str
 
 
@@ -125,9 +125,9 @@ def confirm_chess_id(chess_id):
             return chess_id
         print(
             ansify(
-                "\n            red_err([ERREUR]) \n"
-                "      Format invalide. L'I.N.E. whte(doit) contenir pnk(2 lettres) et pnk(5 chiffres)."
+                "\n\t\t\tred_err([ERREUR]) \n"
+                "\t\tFormat invalide. L'I.N.E. whte(doit) contenir pnk(2 lettres) et pnk(5 chiffres)."
             )
         )
-        input("Appuie sur ENTRÉE pour continuer...")
-        chess_id = input(ansify("      bld(Entrez un I.N.E. valide ou appuyez sur ENTRÉE pour passer :) "))
+        input("\tAppuie sur ENTRÉE pour continuer...")
+        chess_id = input(ansify("\tbld(Entrez un I.N.E. valide ou appuyez sur ENTRÉE pour passer :) "))

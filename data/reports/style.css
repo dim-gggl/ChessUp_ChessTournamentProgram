@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -7,90 +6,84 @@
 
 
 body {
-  font-family: 'Ubuntu', sans-serif;
-  background-color: #1e1e1e;
-  color: #dad0d0;
+  font-family: Arial, sans-serif;
+  color: #f0f0f0;
+  background-color: #1e1e21;
   line-height: 1.4;
+}
+
+.header-banner {
+  background-color: #f5eccf;
+  padding: 1rem 2rem;
+  border-bottom: 3px solid #222;
+}
+
+.header-banner h1 {
+  font-family: 'Special Elite', monospace;
+  color: #222;
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+}
+
+.main-content {
+  display: flex;
+  justify-content: space-between;
   padding: 2rem;
 }
 
-section {
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-    flex-direction: unset ;
-  gap: 2rem;
+.left-col,
+.right-col {
+  flex: 1;
+  padding: 0 1rem;
 }
 
-.left-col {
-  flex: 2 2 500px;
+.separator {
+  width: 1px;
+  background-color: #444;
+  margin: 0 1rem;
 }
 
-header {
-    min-inline-size: 100%;
-  margin-bottom: 2rem;
-    margin-top: 2rem;
-  text-align: center;
-    width: 300px;
-}
-
-header h1 {
-  font-family: 'Manuale', serif;
+.section-title {
+  margin-bottom: 0.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-    text-transform: uppercase;
-  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Special Elite', monospace;
 }
 
-.left-col h4 {
-  font-family: 'Manuale', serif;
-  font-size: 1rem;
-  margin: 1.5rem 0 0.25rem;
-  color: #aaa; 
-  text-transform: full-size-kana;
-  letter-spacing: 0.05em;
+.blue {
+  color: #1ea7fd;
+}
+
+.yellow {
+  color: #ffd700
 }
 
 .left-col p {
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-  color: #ddd;
-}
-
-.right-col {
-  flex: 1 1 400px;
-}
-
-.rankings.title {
-  font-family: 'Manuale', serif;
-  font-weight: 700;
-  font-size: 1.2rem;
-  margin-top: 0;
   margin-bottom: 1rem;
-  color: #eee;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
-ul.rankings.list {
+.ranking-list {
   list-style: none;
-  padding-left: 0;
-  margin-top: 1rem;
 }
-
-ul.rankings.list li {
-  background-color: #2d2d2d; 
-  border-left: 4px solid #f45d06;
-  padding: 0.75rem 1rem;
+.ranking-list li {
   margin-bottom: 0.5rem;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #f5f5f5;
+  color: #fff;
 }
 
-ul.rankings.list li:hover {
-  background-color: #3a3a3a;
+.ranking-list li.highlight {
+  color: #ffd700;
+  font-weight: bold;
 }
+
+.footer-brand {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  color: #999;
+  font-size: 0.9rem;
+  font-family: 'Special Elite', monospace;
+  letter-spacing: 1px;
+}
+

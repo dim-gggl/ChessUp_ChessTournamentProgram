@@ -8,7 +8,7 @@ def sort_tournaments(tournaments):
     """
 
     def status_rank(tournament, reverse=False):
-        if tournament.current_round == 0 and not tournament.is_holding or tournament.is_finished:
+        if tournament.current_round == 0 and not (tournament.is_holding or tournament.is_finished):
             return 0
         elif tournament.is_holding:
             return 1

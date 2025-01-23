@@ -1,6 +1,3 @@
-from utils.ansify import ansify
-
-
 class Match:
     def __init__(self, player1, player2, score1=0, score2=0):
         self.player1 = player1
@@ -21,6 +18,6 @@ class Match:
 
     def __str__(self):
         return (
-            f"bld({self.player1.first_name} {self.player1.last_name}) ~ gld({self.score1}) ~~ ch_up(vs) "
-            f"~~ gld({self.score2}) ~ bld({self.player2.first_name} {self.player2.last_name})"
+            f"\tbld({self.player1.first_name} {self.player1.last_name}) ~ gld({self.score1}) ~~ \tch_up(vs) "
+            f"\t~~ gld({self.score2}) ~ bld({self.player2.first_name} {self.player2.last_name})"
         )

@@ -11,7 +11,7 @@ class TournamentView:
 
     @staticmethod
     def header(prompt):
-        print(ansify(f"\n\n      ~~~~~~~~~  b_blue({prompt})  ~~~~~~~~~\n\n"))
+        print(ansify(f"\n\n\t~~~~~~~~~  b_blue({prompt})  ~~~~~~~~~\n\n"))
 
     @staticmethod
     def display_tournament_main_menu():
@@ -20,29 +20,29 @@ class TournamentView:
         TournamentView().header("MENU TOURNOIS")
         print(
             ansify(
-                "\n      b_blue(1.) Créer un nouveau tournoi"
-                "\n      b_blue(2.) Gérer un tournoi"
-                "\n      b_blue(3.) Ajouter un joueur à un tournoi"
-                "\n      b_blue(4.) Consulter la liste des tournois\n\n"
-                "\n\n       ch_up(R. Retour)\n"
+                "\n\tb_blue(1.) Créer un nouveau tournoi"
+                "\n\tb_blue(2.) Gérer un tournoi"
+                "\n\tb_blue(3.) Ajouter un joueur à un tournoi"
+                "\n\tb_blue(4.) Consulter la liste des tournois\n\n"
+                "\n\n\tch_up(R. Retour)\n"
             )
         )
-        return input(ansify("\n      bld(Choisissez une option :) "))
+        return input(ansify("\n\tbld(Choisissez une option :) "))
 
     @staticmethod
     def get_tournament_name():
         """Gather the details of a new tournament."""
         TournamentView().clear_screen()
         TournamentView().header("NOUVEAU TOURNOI")
-        return input(ansify("\n\n\n\n      bld(Nom du tournoi) : "))
+        return input(ansify("\n\n\n\n\tbld(Nom du tournoi) : "))
 
     @staticmethod
     def get_tournament_location():
-        return input(ansify("      bld(Lieu) : "))
+        return input(ansify("\tbld(Lieu) : "))
 
     @staticmethod
     def get_tournament_description():
-        return input(ansify("      bld(Description) : "))
+        return input(ansify("\tbld(Description) : "))
 
     @staticmethod
     def get_tournament_date(prompt):
@@ -50,52 +50,65 @@ class TournamentView:
         Takes a prompt to distinguish between start and end date.
         For example: "DD/MM/YYYY (start)" or "DD/MM/YYYY (end)".
         """
-        return input(ansify(f"      bld(Date {prompt}) : "))
+        return input(ansify(f"\tbld(Date {prompt}) : "))
 
     @staticmethod
     def get_tournament_num_rounds():
-        return input(ansify("      bld(Nombre de Rounds, par défaut 4) : "))
+        return input(ansify("\tbld(Nombre de Rounds, par défaut 4) : "))
 
     @staticmethod
     def ask_to_register_candidates():
         TournamentView().clear_screen()
         print(
             ansify(
-                "\n      ~~~~~~~  b_blue(Tournoi enregistré avec succès !)  ~~~~~~~\n"
-                "      Souhaitez-vous inscrire des joueurs ? (y/n)\n\n\n"
+                "\n\t~~~~~~~  b_blue(Tournoi enregistré avec succès !)  ~~~~~~~\n"
+                "\tSouhaitez-vous inscrire des joueurs ? (y/n)\n\n\n"
             )
         )
-        return input(ansify("      bld(Entrez votre choix :) "))
+        return input(ansify("\tbld(Entrez votre choix :) "))
 
     @staticmethod
     def display_tournament_list(tournaments=None, select_option=True):
         """Ask the user to pick a tournament from the list."""
         if not tournaments:
             TournamentView().clear_screen()
-            print(ansify("              red_err([ERREUR]) \n" "         Aucun tournoi enregistré.\n\n\n"))
-            input("      Appuyez sur ENTRÉE pour continuer")
+            print(ansify("\t\tred_err([ERREUR]) \n" "\tAucun tournoi enregistré.\n\n\n"))
+            input("\tAppuyez sur ENTRÉE pour continuer")
             return None
 
         TournamentView().clear_screen()
         TournamentView().header("LISTE DES TOURNOIS")
         for i, tournament in enumerate(tournaments, start=1):
-            print(ansify(f"    b_blue({i}.)" + str(tournament)))
+            print(ansify(f"whte({i}.)" + str(tournament)))
         if select_option:
-            print(ansify("\n      ch_up(R. Retour)\n"))
-            return input(ansify("      bld(Entrez le numéro du tournoi :) "))
+            print(ansify("\n\tch_up(R. Retour)\n"))
+            return input(ansify("\tbld(Entrez le numéro du tournoi :) "))
+        else:
+            input()
 
-        input("      Appuyez sur ENTRÉE pour continuer")
+        input("\tAppuyez sur ENTRÉE pour continuer")
+
+    @staticmethod
+    def no_open_round_msg():
+        TournamentView.clear_screen()
+        print(ansify("\n\t\tred_err([INFO])\n\tIl n'y a pas encore de round à clôturer\n"))
+        input("\n\n\tAppuyer sur ENTRÉE pour continuer")
 
     @staticmethod
     def invalid_selection():
-        print(ansify("          red_err([ERREUR]) \n" "        Sélection invalide.\n"))
-        input("      Appuyez sur ENTRÉE pour continuer")
+        print(ansify("\n\t\tred_err([ERREUR])\n\tSélection invalide.\n"))
+        input("\tAppuyez sur ENTRÉE pour continuer")
 
     @staticmethod
     def wrong_number():
         PlayerView.clean_screen()
-        print(ansify("          red_err([ERREUR]) \n" "        Sélection invalide.\n"))
-        input("      Appuyez sur ENTRÉE pour continuer")
+        print(ansify("\t\tred_err([ERREUR])\n\tSélection invalide.\n"))
+        input("\tAppuyez sur ENTRÉE pour continuer")
+
+    @staticmethod
+    def wrong_match_score():
+        print(ansify("\t\tred_err([ERREUR])\n\tChoix incorrect. Réponses valides : 1, 2 ou 3"))
+        input()
 
     @staticmethod
     def select_multiple_players(tournament, unregistered_players):
@@ -108,25 +121,25 @@ class TournamentView:
         TournamentView().header("Inscription de joueurs")
         print(
             ansify(
-                f"\n      bld(Nom du tournoi :) whte({tournament.name})\n\n"
-                "      Joueurs disponibles :\n"
+                f"\n\t\twhte({tournament.name})\n\n"
+                "\t\tJoueurs disponibles :\n"
             )
         )
         for idx, player in enumerate(unregistered_players, start=1):
             print(
                 ansify(
-                    f"      b_blue({idx}.) bld({player.last_name.upper()}) {player.first_name} (bld(ID): {player.chess_id})"
+                    f"\tb_blue({idx}.)\tb_blue({player.last_name.upper()}) {player.first_name} b_blue(ID): whte({player.chess_id})"
                 )
             )
 
-        print(ansify("\n      bld(Entrez les numéros séparés par des virgules, ou tapez 'r' pour annuler.)\n"))
-        return input(ansify("      bld(Choisissez des joueurs (ex: 1,2,3) :) "))
+        print(ansify("\n\tbld(Entrez les numéros séparés par des virgules, ou tapez 'r' pour annuler.)\n"))
+        return input(ansify("\tbld(Choisissez des joueurs [ex: 1,2,3] :) "))
 
     @staticmethod
     def registration_succeed():
         PlayerView.clean_screen()
-        print(ansify("            gld([INSCRIPTION(S) ENREGISTRÉ(S)])\n\n\n"))
-        input("      Appuyez sur ENTRÉE pour continuer")
+        print(ansify("\tgld([INSCRIPTIONS ENREGISTRÉES])\n\n\n"))
+        input("\n\n\n\tAppuyez sur ENTRÉE pour continuer")
 
     @staticmethod
     def display_game_menu(tournament):
@@ -137,14 +150,14 @@ class TournamentView:
         TournamentView().header("GESTION DE TOURNOI")
         print(
             ansify(
-                f"             b_blue({tournament.name})\n\n"
-                f"      b_blue(1.) Démarrer un nouveau round (b_blue({tournament.current_round})/{tournament.num_rounds})\n"
-                f"      b_blue(2.) Entrer les scores des joueurs (clôturer le round en cours)\n"
-                f"      b_blue(3.) Consulter les détails du tournoi\n\n\n"
-                f"        ch_up(R. Retour)\n\n"
+                f"\t\tb_blue({tournament.name})\n\n"
+                f"\tb_blue(1.) Démarrer un nouveau round (b_blue({tournament.current_round})/{tournament.num_rounds})\n"
+                f"\tb_blue(2.) Entrer les scores des joueurs (clôturer le round en cours)\n"
+                f"\tb_blue(3.) Consulter les détails du tournoi\n\n\n"
+                f"\tch_up(R. Retour)\n\n"
             )
         )
-        return input(ansify("      bld(Entrez une option :) ")).strip()
+        return input(ansify("\tbld(Entrez une option :) ")).strip()
 
     @staticmethod
     def show_round_pairs(tournament_round):
@@ -155,12 +168,12 @@ class TournamentView:
         TournamentView().header(tournament_round.name)
         print(
             ansify(
-                "         Appariements des joueurs :\n"
+                "\t\twhte(Appariements des joueurs) \n"
             )
         )
         for i, match in enumerate(tournament_round.matches, start=1):
-            print(ansify(f"      b_blue(Match {i} :) {match.player1.name} ch_up(vs) {match.player2.name}"))
-        input(ansify("\n\n\n      ch_up(Appuyez sur Entrée pour continuer.)"))
+            print(ansify(f"\t\t    b_blue(Match {i})\n\t whte({match.player1.name})\t ch_up( vs ) \twhte({match.player2.name})"))
+        input(ansify("\n\tch_up(Appuyez sur Entrée pour continuer.)"))
 
     @staticmethod
     def display_tournament_summary(tournament, players):
@@ -171,21 +184,20 @@ class TournamentView:
         TournamentView().header("RÉCAPITULATIF DU TOURNOI")
         print(
             ansify(
-                f"      {str(tournament)}"
-                f"      bld(Lieu) : {tournament.location}\n"
-                f"      bld(Dates) : {tournament.start_date} à {tournament.end_date}\n"
-                f"      bld(Description) : {tournament.description}\n"
+                f"{str(tournament)}\n"
+                f"\tb_blue(Dates) : {tournament.start_date} b_blue(~) {tournament.end_date}\n"
+                f"\tb_blue(Description) : {tournament.description}\n"
             )
         )
-        print(ansify("        ~~~~~  b_blue(Joueurs inscrits)  ~~~~~ \n"))
+        print(ansify("\t\t~~~~~  b_blue(Joueurs inscrits)  ~~~~~ \n"))
         for idx, player in enumerate(players, start=1):
             print(
                 ansify(
-                    f"      b_blue({idx}.) bld({player.last_name.upper()}), {player.first_name} (bld(ID) : {player.chess_id}) - "
-                    f"bld(Points) : {player.points}"
+                    f"\tb_blue(|)whte({player.last_name.upper()}), {player.first_name}    \tb_blue(ID) : whte({player.chess_id}) - "
+                    f"\tb_blue(Points) : gldn({player.points})"
                 )
             )
-        input(ansify("\n      bld(Appuyez sur Entrée pour continuer.)"))
+        input(ansify("\n\tbld(Appuyez sur Entrée pour continuer.)"))
 
     @staticmethod
     def show_tournament_players(tournament):
@@ -196,23 +208,23 @@ class TournamentView:
         TournamentView().clear_screen()
         print(
             ansify(
-                f"\n      bld_it(~~~~~~) ttl_blu(Joueurs du tournoi :) \n\n\n"
-                f"      bld_it(~~~~~~) whte({tournament.name})\n\n"
+                f"\n\t\t\tttl_blu(Joueurs du tournoi :) \n\n\n"
+                f"\t\t whte({tournament.name})\n\n"
             )
         )
         if not tournament_players:
-            print(ansify("           ch_up([INFO]) \n      disc_b_blue(Aucun joueur dans ce tournoi.)"))
-            input("Appuyez sur ENTRÉE pour continuer")
+            print(ansify("\t\t\tch_up([INFO]) \n\tdisc_b_blue(Aucun joueur dans ce tournoi.)"))
+            input("\tAppuyez sur ENTRÉE pour continuer")
             return
 
         for p in tournament_players:
             print(
                 ansify(
-                    f"      b_blue({p.last_name.upper()},) {p.first_name} "
-                    f"(b_blue(ID: {p.chess_id},) Points: {p.points})"
+                    f"\tb_blue({p.last_name.upper()},) {p.first_name} "
+                    f"b_blue(ID: {p.chess_id}) \tPoints: gldn({p.points})"
                 )
             )
-        input("Appuyez sur ENTRÉE pour continuer")
+        input("\tAppuyez sur ENTRÉE pour continuer")
 
     @staticmethod
     def get_match_results(closing_round, match):
@@ -223,15 +235,15 @@ class TournamentView:
         TournamentView().header(closing_round.name)
         print(
             ansify(
-                "                it_b_blue(Qui a gagné ?) \n"
+                "\t      whte(Qui a gagné ?) \n"
                 "\n"
-                f"            {match.player1.name} ch_up(vs) {match.player2.name} \n\n\n"
-                f"      b_blue(1.) whte({match.player1.name}) a gagné gldn(?)\n"
-                f"      b_blue(2.) whte({match.player2.name}) a gagné gldn(?)\n"
-                f"      b_blue(3.) cppr(Ou match nul ?)\n\n\n"
+                f"\t{match.player1.name} \tch_up(vs) \t{match.player2.name} \n\n\n"
+                f"\tb_blue(1.) whte({match.player1.name}) a gagné gldn(?)\n"
+                f"\tb_blue(2.) whte({match.player2.name}) a gagné gldn(?)\n"
+                f"\tb_blue(3.) cppr(Ou match nul ?)\n\n\n"
             )
         )
-        return input("\nChoisissez une option : ")
+        return input("\n\tChoisissez une option : ")
 
     @staticmethod
     def display_tournament_results(tournament):
@@ -242,8 +254,8 @@ class TournamentView:
         TournamentView().header("RÉSULTATS DU TOURNOI")
         print(
             ansify(
-                f"                cppr({tournament.name})\n"
-                f"      whte(Lieu :) cppr({tournament.location})\n"
+                f"\tcppr({tournament.name})\n"
+                f"\tcppr({tournament.location})\n"
             )
         )
         return TournamentView.show_rankings(tournament)
@@ -253,10 +265,10 @@ class TournamentView:
         """
         Displays the final ranking of a tournament.
         """
-        print(ansify("\n      ~~~~~~~~~  gldn(✧ * ✧ Classement ✧ * ✧)  ~~~~~~~~~\n"))
+        print(ansify("\n\t~~~~~~~~~ gldn(✧ * ✧ Classement ✧ * ✧)  ~~~~~~~~~\n"))
         for i, rank_str in enumerate(tournament.rankings, start=1):
-            print(ansify(f"      {rank_str}"))
-        input(ansify("\n      ch_up(Appuyez sur Entrée pour continuer.)"))
+            print(ansify(f"\t{rank_str}"))
+        input(ansify("\n\tch_up(Appuyez sur Entrée pour continuer.)"))
 
     @staticmethod
     def show_closing_message(tournament):
@@ -266,23 +278,14 @@ class TournamentView:
         TournamentView().clear_screen()
         print(
             ansify(
-                f"      ~~~~~~~~~ ch_up(⏐ 𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎ ⏐) ~~~~~~~~~~\n\n"
-                f"      ~~~~~~~~~ gld({tournament.name}) ~~~~~~~~~~~~\n\n"
-                "                  ch_up(~    [INFO]    ~)\n"
-                "            bld_it(Derniers scores à renseigner avant\n"
-                "            l'affichage du classement. )\n"
+                f"\t\t\tch_up(⏐ 𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎ ⏐)\n\n"
+                f"\t\twhte({tournament.name})\n\n"
+                "\t\t\tch_up(~[INFO]~)\n"
+                "\t\twhte(Derniers scores à renseigner avant\n"
+                "\t\tl'affichage du classement. )\n"
             )
         )
-        input("Appuyez sur ENTRÉE pour continuer")
-
-    @staticmethod
-    def success_match_entry():
-        """
-        Displays a confirmation message after a score has been recorded.
-        """
-        TournamentView.clear_screen()
-        print(ansify("\n\n\n\n~~~~~~~~~ b_blue(SCORE ENREGISTRÉ) ~~~~~~~~~~~~\n\n"))
-        input("Appuyez sur ENTRÉE pour continuer")
+        input("\tAppuyez sur ENTRÉE pour continuer")
 
     @staticmethod
     def no_tournament_ready_msg():
@@ -290,15 +293,15 @@ class TournamentView:
         Displays an error message if there are no tournaments ready to be managed.
         """
         TournamentView.clear_screen()
-        print(ansify("\n\n\n      red_err([ERREUR]) Aucun tournoi en cours\n\n\n"))
+        print(ansify("\n\n\n\t\t\tred_err([ERREUR])\n\t\t Aucun tournoi en cours\n\n\n"))
         print(
             ansify(
-                "\n      disc_it(Ici, s'afficheront les tournois à gérer"
-                "\n       — qui ont suffisamment de joueurs inscrits ou"
-                "\n      qui ont déjà commencé )\n\n"
+                "\n\t\tIci, s'afficheront les tournois à gérer"
+                "\n\t\t— qui ont suffisamment de joueurs inscrits ou"
+                "\n\t\tqui ont déjà commencé\n\n"
             )
         )
-        input("Appuyez sur ENTRÉE pour continuer")
+        input("\tAppuyez sur ENTRÉE pour continuer")
 
     @staticmethod
     def no_players_on_file_msg():
@@ -308,12 +311,12 @@ class TournamentView:
         TournamentView.clear_screen()
         print(
             ansify(
-                "\n\n      ch_up([INFO])  Il n'y pas de joueur disponible dans le fichier. \n"
-                "\n\n      Rendez-vous dans le menu JOUEURS, "
-                "\n      pour en ajouter de nouveaux.\n\n "
+                "\n\n\t\t\tch_up([INFO])\n\t\tIl n'y pas de joueur disponible dans le fichier. \n"
+                "\n\n\tRendez-vous dans le menu JOUEURS, "
+                "\n\tpour en ajouter de nouveaux.\n\n "
             )
         )
-        input("Appuyez sur ENTRÉE pour continuer")
+        input("\tAppuyez sur ENTRÉE pour continuer")
 
     @staticmethod
     def no_tournament_on_file_msg():
@@ -323,12 +326,12 @@ class TournamentView:
         TournamentView.clear_screen()
         print(
             ansify(
-                "\n\n      ch_up([INFO])\n  "
-                "      Il n'y pas de tournoi dans le fichier. \n"
+                "\n\n\t\t\tch_up([INFO])\n  "
+                "\t\tIl n'y pas de tournoi dans le fichier. \n"
                 "\n\n "
             )
         )
-        input("Appuyez sur ENTRÉE pour continuer")
+        input("\tAppuyez sur ENTRÉE pour continuer")
 
     @staticmethod
     def complete_round_msg(closing_round):
@@ -338,20 +341,12 @@ class TournamentView:
         TournamentView.clear_screen()
         print(
             ansify(
-                f"\n      ~~~~~~~~~ ch_up({closing_round.name} CLÔTURÉ) ~~~~~~~~~\n"
-                f"\n\n      ~~~~~~~~~ ch_up({closing_round.end_time}) ~~~~~~~~~\n\n\n"
+                f"\n\t\tch_up({closing_round.name} CLÔTURÉ)\n"
+                f"\n\n\t\tch_up({closing_round.end_time})\n\n\n"
             )
         )
-        input("Appuyez sur ENTRÉE pour continuer")
+        input("\tAppuyez sur ENTRÉE pour continuer")
 
-    @staticmethod
-    def no_round_running_msg():
-        """
-        Error message if no round is in progress.
-        """
-        TournamentView.clear_screen()
-        print(ansify("\n\n\nred_err([ERREUR]) Aucun round en cours"))
-        input("Appuyez sur ENTRÉE pour continuer")
 
     @staticmethod
     def last_round_message():
@@ -359,8 +354,8 @@ class TournamentView:
         Message indicating that the current round is the last.
         """
         TournamentView.clear_screen()
-        print(ansify("\n\n\n\n            ch_up([INFO]) \n" "         Ce round est le dernier\n\n\n"))
-        input("Appuyez sur ENTRÉE pour continuer")
+        print(ansify("\n\n\n\n\t\t\tch_up([INFO]) \n" "\t\tCe round est le dernier\n\n\n"))
+        input("\tAppuyez sur ENTRÉE pour continuer")
 
     @staticmethod
     def wrong_menu_input():
@@ -368,5 +363,5 @@ class TournamentView:
         Invalid menu option error message.
         """
         TournamentView.clear_screen()
-        print(ansify("\n\n\n\n            red_err([ERREUR]) \n" "          Saisie incorrecte\n\n\n"))
-        input("Appuyez sur ENTRÉE pour continuer")
+        print(ansify("\n\n\n\n\t\t\tred_err([ERREUR]) \n" "\t\tSaisie incorrecte\n\n\n"))
+        input("\tAppuyez sur ENTRÉE pour continuer")

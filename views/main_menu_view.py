@@ -15,14 +15,14 @@ class MainMenuView:
         print("\n" * 100)
         print(
             ansify(
-                "bld_it(    ~~~~~~~~~~~) it_ttl( 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 ) bld_it(~~~~~~~~~~~~)"
-                "\nbld_it(           ~~~~    )  disc_it( 𝙩𝙤   )bld_it(    ~~~~      )"
-                "\nbld_it(     ~~~~~~~~~~)ttl_blu(⏐𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎⏐)bld_it(~~~~~~~~~~~~)\n\n\n"
-                "\n\n\n\n       bld_it(~~~~~~)  ch_up(𝙿𝚁𝙴𝚂𝚂 𝙴𝙽𝚃𝙴𝚁)  bld_it(~~~~~~~)\n"
+                "\t\t  it_ttl( 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 ) \n"
+                "\t\t\twhte(𝙩𝙤)"             
+                "\n\t\t  ttl_blu(⏐𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎⏐)\n\n\n"
+                "\n\n\n"
                 "\n "
             )
         )
-        input(ansify("\033[5m          Appuyez sur ↵ pour continuer"))
+        input(ansify("\tAppuyez sur ↵ pour continuer"))
         return
 
     @staticmethod
@@ -33,25 +33,25 @@ class MainMenuView:
         TournamentView.clear_screen()
         print(
             ansify(
-                "      bld_it(~~~~~~~~~) ttl_blu(⏐ 𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎ ⏐) bld_it(~~~~~~~~~~)\n\n\n\n"
-                "\n      ttl_blu(1.) Menu bld(TOURNOIS)"
-                "\n      ttl_blu(2.) Menu bld(JOUEURS)"
-                "\n      ttl_blu(3.) bld(RAPPORTS)\n\n"
-                "      rpt_gr(4. SAUVEGARDER)"
-                "\n       ch_up(Q. Quitter)\n"
+                "\tbld_it(~~~~~~~~~) ttl_blu(⏐ 𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎ ⏐) bld_it(~~~~~~~~~~)\n\n"
+                "\n\tttl_blu(1.) Menu bld(TOURNOIS)"
+                "\n\tttl_blu(2.) Menu bld(JOUEURS)"
+                "\n\tttl_blu(3.) bld(RAPPORTS)\n\n"
+                "\tttl_blu(4.) Sauvegarder\n\n"
+                "\n\tch_up(Q. Quitter)\n"
             )
         )
-        return input(ansify("\n      bld(Choisissez une option :) ")).strip()
+        return input(ansify("\n\tbld(Choisissez une option :) ")).strip()
 
     @staticmethod
     def data_saved_msg():
         TournamentView.clear_screen()
         print(
             ansify(
-                "\n\n            gld(DONNÉES ENREGISTRÉES)\n\n\n"
+                "\n\n\t\tgld(DONNÉES ENREGISTRÉES)\n\n\n"
             )
         )
-        input("\n\n      Appuyez sur ENTRÉE pour continuer.")
+        input("\n\n\tAppuyez sur ENTRÉE pour continuer.")
 
     @staticmethod
     def bye_message():
@@ -61,8 +61,8 @@ class MainMenuView:
         TournamentView.clear_screen()
         print(
             ansify(
-                "\n\nbld(      ~~~~~   ])  ch_up( * 𝐵𝑦𝑒𝐵𝑦𝑒 * )  bld([  ~~~~\n\n)"
-                "\n\nbld_it(      ~~~~~~~~~ )ch_up(⏐ 𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎ ⏐)bld_it( ~~~~~~~~~~)\n\n\n\n"
+                "\n\n\t\t\tch_up(*𝐵𝑦𝑒𝐵𝑦𝑒*)\n\n"
+                "\n\n\t\t\tch_up(𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎)\n\n\n\n"
             )
         )
         input()

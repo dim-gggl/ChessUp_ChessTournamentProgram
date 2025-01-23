@@ -14,27 +14,32 @@ class TournamentController:
     def __init__(self, tournament_manager, players):
         self.tournament_manager = tournament_manager
         self.players = players
-        self.view = TournamentView()
+        self.view = TournamentView
 
     def tournament_menu(self):
         """
         Tournaments' main menu.
         """
         selected = ""
+
         while selected != "r":
+
             menu_options = {
                 "1": self.create_new_tournament,
                 "2": self.manage_existing_tournament,
                 "3": self.pick_tournament_for_new_players,
                 "4": self.list_tournaments
             }
+
             selected = self.view.display_tournament_main_menu().strip().lower()
-            action = menu_options.get(selected)
             if selected == "r":
                 break
 
+            action = menu_options.get(selected)
+
             if action:
                 action()
+
             else:
                 self.view.wrong_menu_input()
 
@@ -47,20 +52,21 @@ class TournamentController:
         name_input = self.view.get_tournament_name().strip()
         tournament_data["name"] = confirm_name_format(name_input, digits_ok=True).capitalize()
 
-        location = self.view.get_tournament_location().strip()
-        tournament_data["location"] = confirm_location_format(location)
+        location_input = self.view.get_tournament_location().strip()
+        tournament_data["location"] = confirm_location_format(location_input)
 
-        start_date = self.view.get_tournament_date("de début (JJ/MM/AAAA)").strip()
-        tournament_data["start_date"] = confirm_date_format(start_date)
-        end_date = self.view.get_tournament_date("de fin (JJ/MM/AAAA)").strip()
-        tournament_data["end_date"] = confirm_date_format(end_date)
+        start_date_input = self.view.get_tournament_date("de début (JJ/MM/AAAA)").strip()
+        tournament_data["start_date"] = confirm_date_format(start_date_input)
 
-        description = self.view.get_tournament_description().strip()
-        tournament_data["description"] = description if description else "Aucune description disponible"
+        end_date_input = self.view.get_tournament_date("de fin (JJ/MM/AAAA)").strip()
+        tournament_data["end_date"] = confirm_date_format(end_date_input)
 
-        num_rounds = self.view.get_tournament_num_rounds().strip()
+        description_input = self.view.get_tournament_description().strip()
+        tournament_data["description"] = description_input if description_input else "Aucune description disponible"
+
+        num_rounds_input = self.view.get_tournament_num_rounds().strip()
         try:
-            tournament_data["num_rounds"] = int(num_rounds)
+            tournament_data["num_rounds"] = int(num_rounds_input)
         except ValueError:
             tournament_data["num_rounds"] = 4
 
@@ -70,13 +76,13 @@ class TournamentController:
 
         if self.view.ask_to_register_candidates().lower() == "y":
             self.recruit_players(new_tournament)
-        return
 
     def manage_existing_tournament(self):
         """
         Allows user to manage an existing tournament (add players, start a round, etc.).
         """
         tournaments_to_manage = []
+
         for tournament in self.tournament_manager.tournaments:
             if tournament.is_holding or tournament.is_running:
                 tournaments_to_manage.append(tournament)
@@ -87,10 +93,12 @@ class TournamentController:
         choice_index = self.view.display_tournament_list(tournaments_to_manage, select_option=True).strip().lower()
         if choice_index == "r":
             return
+
         try:
             i = int(choice_index) - 1
             selected_tournament = tournaments_to_manage[i]
             return self.handle_game_menu(selected_tournament)
+
         except ValueError:
             self.view.wrong_number()
 
@@ -111,8 +119,8 @@ class TournamentController:
 
             try:
                 i = int(choice) - 1
-                if 0 <= i < len(available_tournaments):
-                    self.recruit_players(available_tournaments[i])
+                if 0 <= i < len(sorted_tournaments):
+                    self.recruit_players(sorted_tournaments[i])
 
                 else:
                     self.view.invalid_selection()
@@ -127,7 +135,6 @@ class TournamentController:
         """
         all_tournaments = sort_tournaments(self.tournament_manager.tournaments)
         if all_tournaments:
-            sort_tournaments(all_tournaments)
             self.view.display_tournament_list(all_tournaments, select_option=False)
         else:
             self.view.no_tournament_on_file_msg()
@@ -137,24 +144,25 @@ class TournamentController:
         """
         Register players for a tournament.
         """
-        unregistered_players = [p for p in self.players if p not in tournament.players]
-        if not unregistered_players:
+        unregistered = [p for p in self.players if p not in tournament.players]
+        if not unregistered:
             self.view.no_players_on_file_msg()
             return
 
-        user_input = self.view.select_multiple_players(tournament, unregistered_players)
-        if not user_input:
+        user_input = self.view.select_multiple_players(tournament, unregistered)
+        user_input = user_input.strip().lower()
+
+        if not user_input or user_input == "r":
             return
 
-        user_input = user_input.strip().lower()
-        if user_input == "r":
-            return
-        selected_indices = [x.strip() for x in user_input.split(",") if x.strip()]
         chosen_players = []
-        for index_str in selected_indices:
+        for idx_str in user_input.split(","):
+            idx_str = idx_str.strip()
+            if not idx_str:
+                continue
             try:
-                idx = int(index_str)
-                chosen_players.append(unregistered_players[idx - 1])
+                idx = int(idx_str) - 1
+                chosen_players.append(unregistered[idx])
             except (ValueError, IndexError):
                 self.view.wrong_menu_input()
                 return
@@ -164,9 +172,7 @@ class TournamentController:
                 tournament.players.append(player)
 
         self.view.registration_succeed()
-
         self.tournament_manager.save_all()
-        return
 
     def handle_game_menu(self, tournament):
         """
@@ -174,6 +180,7 @@ class TournamentController:
         """
         selected = ""
         while selected != "r" and selected != "q":
+
             game_menu_options = {
                 "1": lambda : self.start_new_round(tournament),
                 "2": lambda : self.close_current_round(tournament),
@@ -181,7 +188,12 @@ class TournamentController:
             }
 
             selected = self.view.display_game_menu(tournament).strip().lower()
+            if selected == "r":
+                self.tournament_manager.save_all()
+                break
+
             action = game_menu_options.get(selected)
+
             if action:
                 action()
             else:
@@ -212,6 +224,10 @@ class TournamentController:
         if tournament.current_round == tournament.num_rounds:
             return self.close_last_round(tournament)
 
+        elif not tournament.rounds:
+            self.view.no_open_round_msg()
+            return
+
         closing_round = tournament.rounds[-1]
         closing_round.end_time = datetime.now().strftime("%x - %X")
         self.enter_match_results(closing_round)
@@ -225,18 +241,15 @@ class TournamentController:
         Closes the last round and displays the final results.
         """
         last_round = tournament.rounds[-1]
-        if not last_round.is_finished:
-            self.view.no_round_running_msg()
-            return
-
-        self.view.show_closing_message(tournament)
         last_round.end_time = datetime.now().strftime("%x - %X")
+
         self.enter_match_results(last_round)
+        self.view.show_closing_message(tournament)
 
         tournament.set_final_rankings()
         self.view.display_tournament_results(tournament)
         self.tournament_manager.save_all()
-        return "r"
+        return self.tournament_menu()
 
     def show_game_status(self, tournament):
         """
@@ -254,10 +267,11 @@ class TournamentController:
             while not match.is_over:
                 match_scores = self.view.get_match_results(closing_round, match).strip().lower()
                 try:
-                    1 <= int(match_scores) <=3
-                    self.update_match_scores(match, match_scores)
+                    if 1 <= int(match_scores) <=3:
+                        self.update_match_scores(match, match_scores)
                 except ValueError:
-                    self.view.wrong_number()
+                    self.view.wrong_match_score()
+
         self.view.complete_round_msg(closing_round)
         self.tournament_manager.save_all()
 

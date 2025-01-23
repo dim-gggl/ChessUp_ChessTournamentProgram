@@ -31,7 +31,7 @@ def ansify(text):
         "disc_pnk": "2;95",  # Discreet Pink
         "it_pnk": "3;95",  # Italic Pink
         "disc_it_pnk": "2;3;95",  # Discreet italic pink
-        "cppr": "1;38;5;208",  # Bright Copper Orange
+        "cppr": "1;38;5;208"  # Bright Copper Orange
     }
 
     i = 0
@@ -54,6 +54,7 @@ def ansify(text):
                 if i >= length:
                     result += style_name + "(" + text[start_arg:]
                     break
+
                 argument = text[start_arg:i]
                 i += 1
                 if style_name in styles:
