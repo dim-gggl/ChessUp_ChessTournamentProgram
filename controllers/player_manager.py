@@ -25,13 +25,12 @@ class PlayerManager:
                     birth_date=player_data["birth_date"],
                     chess_id=player_data["chess_id"],
                     points=player_data["points"],
-                    rank=player_data["rank"]
+                    rank=player_data["rank"],
                 )
 
                 self.players.append(player_inst)
         else:
-            print("\n" * 50 + ansify(
-                "\t\tch_up([INFO]) \n\tAucune info joueur enregistrée"))
+            print("\n" * 50 + ansify("\t\tch_up([INFO]) \n\tAucune info joueur enregistrée"))
 
         return self.players
 

@@ -16,14 +16,14 @@ class PlayerController:
 
     def player_menu(self):
         """Manages the players' main menu."""
-        sorted_players = sorted(self.manager.players, key= lambda p : [p.last_name, p.first_name])
+        sorted_players = sorted(self.manager.players, key=lambda p: [p.last_name, p.first_name])
         selected = ""
         while selected != "r":
 
             menu_actions = {
                 "1": self.add_new_player,
                 "2": self.edit_selected_player,
-                "3": lambda: self.view.display_players(sorted_players)
+                "3": lambda: self.view.display_players(sorted_players),
             }
 
             selected = self.view.display_players_menu().strip().lower()
@@ -122,10 +122,10 @@ class PlayerController:
             updated_chess_id = confirm_chess_id(chess_input)
 
         updated_data = dict(
-            first_name = updated_first_name,
-            last_name = updated_last_name,
-            birth_date = updated_birth_date,
-            chess_id = updated_chess_id
+            first_name=updated_first_name,
+            last_name=updated_last_name,
+            birth_date=updated_birth_date,
+            chess_id=updated_chess_id,
         )
         self.view.data_updated_msg()
         updated_player = player.update_player_info(**updated_data)

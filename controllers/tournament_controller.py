@@ -28,7 +28,7 @@ class TournamentController:
                 "1": self.create_new_tournament,
                 "2": self.manage_existing_tournament,
                 "3": self.pick_tournament_for_new_players,
-                "4": self.list_tournaments
+                "4": self.list_tournaments,
             }
 
             selected = self.view.display_tournament_main_menu().strip().lower()
@@ -128,7 +128,6 @@ class TournamentController:
                 self.view.wrong_number()
             return
 
-
     def list_tournaments(self):
         """
         Lists registered tournaments.
@@ -182,9 +181,9 @@ class TournamentController:
         while selected != "r" and selected != "q":
 
             game_menu_options = {
-                "1": lambda : self.start_new_round(tournament),
-                "2": lambda : self.close_current_round(tournament),
-                "3": lambda : self.show_game_status(tournament)
+                "1": lambda: self.start_new_round(tournament),
+                "2": lambda: self.close_current_round(tournament),
+                "3": lambda: self.show_game_status(tournament),
             }
 
             selected = self.view.display_game_menu(tournament).strip().lower()
@@ -267,7 +266,7 @@ class TournamentController:
             while not match.is_over:
                 match_scores = self.view.get_match_results(closing_round, match).strip().lower()
                 try:
-                    if 1 <= int(match_scores) <=3:
+                    if 1 <= int(match_scores) <= 3:
                         self.update_match_scores(match, match_scores)
                 except ValueError:
                     self.view.wrong_match_score()
@@ -291,4 +290,3 @@ class TournamentController:
             match.player2.points += 0.5
             match.set_score_and_lock(0.5, 0.5)
         return match
-

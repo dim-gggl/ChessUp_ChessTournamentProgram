@@ -90,9 +90,9 @@ class ReportController:
         while selected != "r":
 
             menu_options = {
-                "1": lambda : self.view.show_name_and_dates(tournament),
-                "2": lambda : TournamentView().show_tournament_players(tournament),
-                "3": lambda : self.view.show_rounds_and_matches(tournament)
+                "1": lambda: self.view.show_name_and_dates(tournament),
+                "2": lambda: TournamentView().show_tournament_players(tournament),
+                "3": lambda: self.view.show_rounds_and_matches(tournament),
             }
 
             selected = self.view.display_possible_options(tournament).strip().lower()
@@ -103,7 +103,7 @@ class ReportController:
             if action:
                 action()
 
-            else :
+            else:
                 TournamentView().wrong_menu_input()
             return menu_options[selected]
 
@@ -118,15 +118,14 @@ class ReportController:
 
             menu_options = {
                 "1": self.export_all_players,
-                "2": lambda : self.export_all_tournaments(all_tournaments),
-                "3": lambda : self.export_tournament_details(self.pick_one_tournament(export_option=True))
+                "2": lambda: self.export_all_tournaments(all_tournaments),
+                "3": lambda: self.export_tournament_details(self.pick_one_tournament(export_option=True)),
             }
 
             selected = self.view.display_export_options().strip().lower()
 
             if selected == "r":
                 return
-
 
             action = menu_options.get(selected)
             if action:
@@ -177,31 +176,37 @@ class ReportController:
         """
         filename = f"{tournament.name.lower().replace(' ', '_')}_details_report.html"
         title = f"{tournament.name}"
-        content = (f"<div class='left-col'>\n"
+        content = (
+            f"<div class='left-col'>\n"
             f"<h2 class='section-title blue'>Lieu :</h2>\n<p>\n {tournament.location}\n</p>\n"
             f"<h2 class='section-title blue'>Dates :</h2>\n<p>\n {tournament.start_date} —— {tournament.end_date}\n</p>\n"
             f"<h2 class='section-title blue'>Description :</h2>\n<p>\n{tournament.description}\n</p>\n"
-                   f"</div>"
+            f"</div>"
         )
         if tournament.rankings:
-            content += ("<div class='separator'></div>\n"
-                        "<div class='right-col'><h2 class='section-title yellow'>CLASSEMENT</h2>")
+            content += (
+                "<div class='separator'></div>\n"
+                "<div class='right-col'>\n<h2 class='section-title yellow'>\nCLASSEMENT\n</h2>"
+            )
             clear_rankings = self.clear_rankings(tournament.rankings)
             content += "<ul class='ranking-list'>"
             players_str = clear_rankings
             for player_str in enumerate(players_str):
-                content += f"<li class='highlight'>{players_str[0]}</li>"
-                content += f"<li>{player_str}</li>"
+                if player_str == players_str[0]:
+                    content += f"\n<li class='highlight'>{player_str}</li>"
+                else:
+                    content += f"\n<li>{player_str}</li>"
         else:
-            content += "<ul>"
+            content += (
+                "\n<div class='players'>\n<h2 class='section-title>Joueurs inscrits</h2>\n<ul>"
+            )
             html_players = sorted(tournament.players, key=lambda p: (p.last_name, p.first_name))
             for player in html_players:
                 content += (
-                    f"<li>{player.last_name} {player.first_name} ({player.birth_date}) ~~ ID: {player.chess_id}</li>"
+                    f"\n<li>{player.last_name} {player.first_name} ({player.birth_date}) ~~ ID: {player.chess_id}</li>"
                 )
-        content += "</ul>"
+        content += "\n</ul>\n</div>"
         self.exporter.export_to_html(filename, title, content)
-
 
     @staticmethod
     def clear_rankings(rankings):
@@ -217,21 +222,3 @@ class ReportController:
             elif ranking.startswith("bld("):
                 clear_rankings.append(ranking.replace("bld(", "").replace(")", ""))
         return clear_rankings
-
-    @staticmethod
-    def clear_str(tournament):
-        raw_text = str(tournament)
-        data_dust = ["ttl_blu(", ")", "whte(", "ch_up(", "red_err(", "pnk("]
-        clear_text = ""
-        for i, i1, i2, char in enumerate(raw_text) :
-            if not char[i] in data_dust and not (char[i] + char[i1]) in data_dust[:]:
-                clear_text += char[i]
-                clear_text += char[i1]
-            elif (char[i]+char[i1]) in data_dust[:] and not (char[i]+char[i1]+char[i2]) in data_dust:
-                clear_text += char[i]+char[i1]+char[2]
-            elif i == len(raw_text):
-                status = clear_text.lstrip(" [").split("]")[0]
-
-    @staticmethod
-    def back_to_main_menu():
-        return
