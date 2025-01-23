@@ -66,7 +66,6 @@ class PlayerView:
         print(ansify("\n\t\tpnk([ Mises à jour enregistrées ! ])\n\n\n"))
         input("\tAppuyez sur ENTRÉE pour continuer")
 
-
     @staticmethod
     def select_player_to_edit(players):
         """Displays the players' list and returns the selected player's index."""
@@ -91,9 +90,9 @@ class PlayerView:
         PlayerView.header(player.name)
         print(
             ansify(
-                f"\tpnk(𝟭.) Tout modifier\n"
-                f"\tpnk(𝟮.) Mettre à jour l'I.N.E\n\n\n"
-                f"\tch_up(R.) Retour\n\n"
+                "\tpnk(𝟭.) Tout modifier\n"
+                "\tpnk(𝟮.) Mettre à jour l'I.N.E\n\n\n"
+                "\tch_up(R.) Retour\n\n"
             )
         )
         return input(ansify("\n\n\tbld(Entrez votre choix) : "))

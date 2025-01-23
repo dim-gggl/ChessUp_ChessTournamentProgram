@@ -4,7 +4,6 @@ from models.round import Round
 from utils.ansify import ansify
 
 
-
 class Tournament:
 
     def __init__(self, name, location, start_date, end_date, description, num_rounds=4, current_round=0, **kwargs):

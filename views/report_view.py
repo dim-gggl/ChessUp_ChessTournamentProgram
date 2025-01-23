@@ -98,7 +98,7 @@ class ReportView:
         """Displays the list of all tournaments."""
         ReportView.clear_screen()
         ReportView.header("TOURNOIS")
-        for i,tournament in enumerate(tournaments):
+        for i, tournament in enumerate(tournaments):
             print(ansify("\t||" + str(tournament) + "\n"))
         input("\tAppuyez sur ENTRÉE pour continuer")
         return

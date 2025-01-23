@@ -128,7 +128,8 @@ class TournamentView:
         for idx, player in enumerate(unregistered_players, start=1):
             print(
                 ansify(
-                    f"\tb_blue({idx}.)\tb_blue({player.last_name.upper()}) {player.first_name} b_blue(ID): whte({player.chess_id})"
+                    f"\tb_blue({idx}.)\tb_blue({player.last_name.upper()}) "
+                    f"{player.first_name} b_blue(ID): whte({player.chess_id})"
                 )
             )
 
@@ -151,7 +152,8 @@ class TournamentView:
         print(
             ansify(
                 f"\t\tb_blue({tournament.name})\n\n"
-                f"\tb_blue(1.) Démarrer un nouveau round (b_blue({tournament.current_round})/{tournament.num_rounds})\n"
+                f"\tb_blue(1.) Démarrer un nouveau round "
+                f"(b_blue({tournament.current_round})/{tournament.num_rounds})\n"
                 f"\tb_blue(2.) Entrer les scores des joueurs (clôturer le round en cours)\n"
                 f"\tb_blue(3.) Consulter les détails du tournoi\n\n\n"
                 f"\tch_up(R. Retour)\n\n"
@@ -172,7 +174,8 @@ class TournamentView:
             )
         )
         for i, match in enumerate(tournament_round.matches, start=1):
-            print(ansify(f"\t\t    b_blue(Match {i})\n\t whte({match.player1.name})\t ch_up( vs ) \twhte({match.player2.name})"))
+            print(ansify(f"\t\t    b_blue(Match {i})\n\t whte({match.player1.name})"
+                         f"\t ch_up( vs ) \twhte({match.player2.name})"))
         input(ansify("\n\tch_up(Appuyez sur Entrée pour continuer.)"))
 
     @staticmethod
@@ -193,7 +196,8 @@ class TournamentView:
         for idx, player in enumerate(players, start=1):
             print(
                 ansify(
-                    f"\tb_blue(|)whte({player.last_name.upper()}), {player.first_name}    \tb_blue(ID) : whte({player.chess_id}) - "
+                    f"\tb_blue(|)whte({player.last_name.upper()}), {player.first_name}    "
+                    f"\tb_blue(ID) : whte({player.chess_id}) - "
                     f"\tb_blue(Points) : gldn({player.points})"
                 )
             )
@@ -346,7 +350,6 @@ class TournamentView:
             )
         )
         input("\tAppuyez sur ENTRÉE pour continuer")
-
 
     @staticmethod
     def last_round_message():

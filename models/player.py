@@ -1,5 +1,5 @@
 class Player:
-    def __init__(self, first_name, last_name, birth_date, chess_id: str = "", points=0.0, rank=0):
+    def __init__(self, first_name, last_name, birth_date, chess_id: str = "", points: float=0.0, rank: int=0):
         self.first_name = first_name
         self.last_name = last_name
         self.birth_date = birth_date

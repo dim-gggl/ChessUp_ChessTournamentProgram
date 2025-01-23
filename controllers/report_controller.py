@@ -164,7 +164,8 @@ class ReportController:
             html_content += (
                 f"\n<li><strong>{tournament.name}</strong>, "
                 f"Ouverture : {tournament.start_date}. Fin: {tournament.end_date}."
-                f"Lieu :{tournament.location}, {tournament.num_rounds} rounds au total, {len(tournament.players)} participants\n"
+                f"Lieu :{tournament.location}, {tournament.num_rounds} "
+                f"rounds au total, {len(tournament.players)} participants\n"
                 f"État : {str(tournament)}</li>\n"
             )
         html_content += "\n</ul>\n</div>\n"
@@ -178,8 +179,10 @@ class ReportController:
         title = f"{tournament.name}"
         content = (
             f"<div class='left-col'>\n"
-            f"<h2 class='section-title blue'>Lieu :</h2>\n<p>\n {tournament.location}\n</p>\n"
-            f"<h2 class='section-title blue'>Dates :</h2>\n<p>\n {tournament.start_date} —— {tournament.end_date}\n</p>\n"
+            f"<h2 class='section-title blue'>Lieu :</h2>\n<p>\n "
+            f"{tournament.location}\n</p>\n"
+            f"<h2 class='section-title blue'>Dates :</h2>\n<p>\n {tournament.start_date} "
+            f"—— {tournament.end_date}\n</p>\n"
             f"<h2 class='section-title blue'>Description :</h2>\n<p>\n{tournament.description}\n</p>\n"
             f"</div>"
         )

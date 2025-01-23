@@ -14,13 +14,14 @@ class TournamentManager:
 
     def __init__(self, file_path="data/tournaments/tournaments.json"):
         self.file_path = file_path
-        self.tournaments = []
-        self.load_all()
+        self.tournaments = self.load_all()
+
 
     def load_all(self):
         """
         Loads information from a JSON file and recreates objects.
         """
+        self.tournaments = []
         try:
 
             data = load_from_json(self.file_path)

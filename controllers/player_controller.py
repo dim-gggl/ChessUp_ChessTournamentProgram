@@ -1,4 +1,3 @@
-from utils.ansify import ansify
 from utils.validators import confirm_date_format, confirm_chess_id, confirm_name_format
 from views.player_views import PlayerView
 from models.player import Player

@@ -9,11 +9,12 @@ class PlayerManager:
 
     def __init__(self, file_path="data/players/players.json"):
         self.file_path = file_path
-        self.players = []
-        self.load_all()
+        self.players = self.load_all()
+
 
     def load_all(self):
         """Loads information from a JSON file and recreates objects."""
+        self.players = []
 
         players_data = load_from_json(self.file_path)
         if players_data:

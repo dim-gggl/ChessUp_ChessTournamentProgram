@@ -20,6 +20,7 @@ def is_valid_name(name, digits_ok=False):
         pattern = r"^[A-Za-zÀ-ÖØ-öø-ÿ\s-]+$"
         return bool(re.match(pattern, name))
 
+
 def confirm_name_format(name, digits_ok=False):
     """
     Confirms the format of a name.
@@ -35,8 +36,8 @@ def confirm_name_format(name, digits_ok=False):
         else:
             print(
                 ansify(
-                    "\n\t\t\tred_err([ERREUR]) \n" 
-                    "\t\tSaisie incorrecte (nom vide ou au format inhabituel).\n\n"
+                    "\n\t\t\tred_err([ERREUR]) \n\t\tSaisie incorrecte "
+                    "(nom vide ou au format inhabituel).\n\n"
                 )
             )
         input("\tAppuie sur ENTRÉE pour continuer...")
@@ -94,10 +95,7 @@ def confirm_date_format(date_str):
     """
     while not is_valid_date(date_str):
         print(
-            ansify(
-                "\n\t\t\tred_err([ERREUR]) \n" 
-                "\t\tDate invalide. Format attendu : whte(JJ/MM/AAAA).\n\n"
-            )
+            ansify("\n\t\t\tred_err([ERREUR]) \n\t\tDate invalide. Format attendu : whte(JJ/MM/AAAA).\n\n")
         )
         input("\tAppuie sur ENTRÉE pour continuer...")
         date_str = input(ansify("\n\n\tbld(Entrez une date valide :) "))

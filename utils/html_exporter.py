@@ -29,7 +29,8 @@ class HTMLExporter:
             )
             f.write(f"\n<header class='header-banner''>\n<h1>{title}</h1>\n</header>\n <main class='main-content'>\n")
             f.write(content)
-            f.write("\n</main>\n<footer class='footer-brand'>\n𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎\n</footer>\n</body>\n</html>")
+            f.write(f"\n</main>\n<p class='info'>{exported_at}</p>\n"
+                    f"<footer class='footer-brand'>\n𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎\n</footer>\n</body>\n</html>")
         print("\n" * 50)
         print(f"\t\t[SUCCÈS] Rapport exporté dans {filepath}.\n\n\n\n\n")
         input("\tAppuyez sur ENTRÉE pour continuer")
