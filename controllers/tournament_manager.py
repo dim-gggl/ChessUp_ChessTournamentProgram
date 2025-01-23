@@ -24,18 +24,18 @@ class TournamentManager:
         try:
 
             data = load_from_json(self.file_path)
-            print(f"DEBUG: tour_man l29 : data : {data}")
             for t_data in data:
 
-                loaded_tournament =  Tournament(
-                    name = t_data["name"],
-                    location = t_data["location"],
-                    start_date = t_data["start_date"],
-                    end_date = t_data["end_date"],
-                    description = t_data["description"],
+                loaded_tournament = Tournament(
+                    name=t_data["name"],
+                    location=t_data["location"],
+                    start_date=t_data["start_date"],
+                    end_date=t_data["end_date"],
+                    description=t_data["description"],
                     num_rounds=t_data["num_rounds"],
-                    current_round = t_data.get("current_round", 0),
-                    rankings= t_data.get("rankings"))
+                    current_round=t_data.get("current_round", 0),
+                    rankings=t_data.get("rankings"),
+                )
 
                 players_data = t_data.get("players", [])
 
@@ -77,12 +77,12 @@ class TournamentManager:
         for player_data in players_data:
 
             player_obj = Player(
-                first_name = player_data["first_name"],
-                last_name = player_data["last_name"],
-                birth_date = player_data["birth_date"],
-                chess_id = player_data["chess_id"],
-                points = player_data["points"],
-                rank = player_data["rank"]
+                first_name=player_data["first_name"],
+                last_name=player_data["last_name"],
+                birth_date=player_data["birth_date"],
+                chess_id=player_data["chess_id"],
+                points=player_data["points"],
+                rank=player_data["rank"],
             )
 
             players_list.append(player_obj)
@@ -108,11 +108,7 @@ class TournamentManager:
                     p1 = players_by_id.get(p1_id)
                     p2 = players_by_id.get(p2_id)
 
-                    new_match = Match(
-                        player1=p1, player2=p2,
-                        score1=match_data["score1"],
-                        score2=match_data["score2"]
-                    )
+                    new_match = Match(player1=p1, player2=p2, score1=match_data["score1"], score2=match_data["score2"])
 
                     new_round.matches.append(new_match)
 
