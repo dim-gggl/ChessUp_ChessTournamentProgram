@@ -1,3 +1,4 @@
+from models.tournament import Tournament
 from utils.html_exporter import HTMLExporter
 from utils.sort_tournaments import sort_tournaments
 from views.player_views import PlayerView
@@ -175,6 +176,10 @@ class ReportController:
         """
         Exports the details of the tournament selected by the user in HTML format.
         """
+        if not isinstance(tournament, Tournament) or not tournament:
+            TournamentView.wrong_menu_input()
+            return
+
         filename = f"{tournament.name.lower().replace(' ', '_')}_details_report.html"
         title = f"{tournament.name}"
         content = (

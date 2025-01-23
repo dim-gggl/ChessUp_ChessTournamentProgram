@@ -16,7 +16,6 @@ class TournamentManager:
         self.file_path = file_path
         self.tournaments = self.load_all()
 
-
     def load_all(self):
         """
         Loads information from a JSON file and recreates objects.

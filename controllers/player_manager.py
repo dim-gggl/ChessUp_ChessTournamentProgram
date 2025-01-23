@@ -11,7 +11,6 @@ class PlayerManager:
         self.file_path = file_path
         self.players = self.load_all()
 
-
     def load_all(self):
         """Loads information from a JSON file and recreates objects."""
         self.players = []
