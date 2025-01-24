@@ -174,7 +174,7 @@ class TournamentView:
             )
         )
         for i, match in enumerate(tournament_round.matches, start=1):
-            print(ansify(f"\t\t    b_blue(Match {i})\n\t whte({match.player1.name})"
+            print(ansify(f"\t\t     b_blue(Match {i})\n\t whte({match.player1.name})"
                          f"\t ch_up( vs ) \twhte({match.player2.name})"))
         input(ansify("\n\tch_up(Appuyez sur Entrée pour continuer.)"))
 
@@ -192,13 +192,13 @@ class TournamentView:
                 f"\tb_blue(Description) : {tournament.description}\n"
             )
         )
-        print(ansify("\t\t~~~~~  b_blue(Joueurs inscrits)  ~~~~~ \n"))
+        print(ansify("\t~~~~~  b_blue(Participant.e.s)  ~~~~~ "))
         for idx, player in enumerate(players, start=1):
             print(
                 ansify(
                     f"\tb_blue(|)whte({player.last_name.upper()}), {player.first_name}    "
-                    f"\tb_blue(ID) : whte({player.chess_id}) - "
-                    f"\tb_blue(Points) : gldn({player.points})"
+                    f"b_blue(ID) : whte({player.chess_id}) - "
+                    f"b_blue(Points) : gldn({player.points})"
                 )
             )
         input(ansify("\n\tbld(Appuyez sur Entrée pour continuer.)"))
@@ -212,12 +212,12 @@ class TournamentView:
         TournamentView().clear_screen()
         print(
             ansify(
-                f"\n\t\t\tttl_blu(Joueurs du tournoi :) \n\n\n"
+                f"\n\t\tttl_blu(Joueurs du tournoi) \n\n\n"
                 f"\t\t whte({tournament.name})\n\n"
             )
         )
         if not tournament_players:
-            print(ansify("\t\t\tch_up([INFO]) \n\tdisc_b_blue(Aucun joueur dans ce tournoi.)"))
+            print(ansify("\t\tch_up([INFO]) \n\tdisc_b_blue(Aucun joueur dans ce tournoi.)"))
             input("\tAppuyez sur ENTRÉE pour continuer")
             return
 
@@ -239,12 +239,11 @@ class TournamentView:
         TournamentView().header(closing_round.name)
         print(
             ansify(
-                "\t      whte(Qui a gagné ?) \n"
-                "\n"
-                f"\t{match.player1.name} \tch_up(vs) \t{match.player2.name} \n\n\n"
-                f"\tb_blue(1.) whte({match.player1.name}) a gagné gldn(?)\n"
-                f"\tb_blue(2.) whte({match.player2.name}) a gagné gldn(?)\n"
-                f"\tb_blue(3.) cppr(Ou match nul ?)\n\n\n"
+                "\t      whte(Qui a gagné ?)\n\n"
+                f"\twhte({match.player1.name.upper()})\tch_up(vs)\twhte({match.player2.name.upper()}) \n\n"
+                f"\tb_blue(1.) whte({match.player1.name.upper()}) a gagné gldn(?)\n"
+                f"\tb_blue(2.) whte({match.player2.name.upper()}) a gagné gldn(?)\n"
+                f"\n\tb_blue(3.) Ou... ch_up(match nul) ?\n"
             )
         )
         return input("\n\tChoisissez une option : ")

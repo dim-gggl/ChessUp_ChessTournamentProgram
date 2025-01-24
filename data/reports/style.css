@@ -7,34 +7,109 @@
 
 body {
   font-family: Arial, sans-serif;
-  color: #f0f0f0;
+  color: #b5b7bd;
   background-color: #1e1e21;
   line-height: 1.4;
+  margin-bottom: 0;
 }
 
 .header-banner {
-  background-color: #f5eccf;
-  padding: 1rem 2rem;
-  border-bottom: 3px solid #222;
+ background-color: #cab0a8;
+  border-bottom: 3px solid #434242;
+  padding-top: 4rem;
+  min-height: 12rem;
+  justify-content: center;
+  text-align: center;
 }
 
 .header-banner h1 {
   font-family: 'Special Elite', monospace;
   color: #222;
   font-size: 2.5rem;
-  letter-spacing: 2px;
+  letter-spacing: 1.3px;
+  text-transform: capitalize;
 }
 
 .main-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   padding: 2rem;
+  min-height: 90%;
+}
+
+.all_players, .all_tournaments {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.all_tournaments > h2 {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.all_tournaments > p {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.blue > p > strong {
+  font-weight: bold;
+  background-color: rgba(245,236,207,0.9);
+  color: #1e1e21;
+}
+
+.holding {
+  color: #1fffc2;
+
+}
+
+.running {
+  color: rgb(255, 52, 0);
+}
+
+.finished {
+  color: rgb(57, 170, 255);
+}
+
+.open {
+  color: rgb(255, 5, 67);
 }
 
 .left-col,
 .right-col {
+  display: block;
   flex: 1;
-  padding: 0 1rem;
+  justify-content: space-around;
+}
+
+.left-col {
+    padding: 6rem 2rem;
+}
+
+.right-col {
+  padding: 3rem 2rem;
+}
+
+ul {
+  list-style: none;
+  text-align: left;
+  letter-spacing: 1.5px;
+  padding: 1rem;
+}
+
+li {
+  padding : 0.7rem;
+}
+
+li > strong {
+  color: #fe5f00;
+}
+
+li > span {
+  font-style: italic;
 }
 
 .separator {
@@ -54,27 +129,45 @@ body {
 
 .blue {
   color: #1ea7fd;
+  margin-bottom: 1rem;
+  margin-left: 2rem;
+}
+
+.left-col > p {
+  margin-left: 3.5rem;
+  margin-bottom: 3rem;
 }
 
 .yellow {
-  color: #ffd700
+  color: #ffd700;
+  text-align: center;
+  margin-bottom: 2rem;
 }
-
-.left-col p {
-  margin-bottom: 1rem;
+.yellow h2 {
+  margin-bottom: 2rem;
 }
 
 .ranking-list {
   list-style: none;
 }
-.ranking-list li {
+.ranking-list > li {
   margin-bottom: 0.5rem;
-  color: #fff;
+  padding-left: 1.5rem;
+  text-align: left;
 }
 
 .ranking-list li.highlight {
   color: #ffd700;
   font-weight: bold;
+  padding-left: 0.5rem;
+}
+
+.info {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  color: rgba(97, 97, 97, 0.65);
+  font-size: 0.7rem;
 }
 
 .footer-brand {

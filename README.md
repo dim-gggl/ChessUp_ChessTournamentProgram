@@ -53,20 +53,38 @@ Avant de lancer le programme, on installe un environnement virtuel :
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```  
-  
+```
 
-### Sous Windows :  
-  
+puis
+
+```bash
+source .venv/bin/activate
+```
+
+et installe les dépendances :
+
+```bash
+pip install -r requirements.txt
+```
+
+
+#### Sous Windows :
 
 ```bash
 python -m venv .venv
+```
+
+Ensuite :
+
+```bash
 .venv\Scripts\activate
+```
+
+et enfin, installe les dépendances avec 
+
+```bash
 pip install -r requirements.txt
-```  
-  
+```
 
 > **Note** : Sur certaines versions de Python 3, il faut préciser `python3` au lieu de `python`.  
   
@@ -77,7 +95,7 @@ pip install -r requirements.txt
 ## <div align="center"> 3. Générer un rapport flake8</div>  
   
 
-Pour vérifier que le code est aux normes PEP8, on va utiliser **flake8** + **flake8-html** :  
+Pour vérifier que le code est aux normes PEP8, on va utiliser **flake8** + **flake8-html** :
 
 1. **Installer** les deux outils :
   
@@ -110,10 +128,10 @@ Ajoute les dossiers que tu veux que flake8 ignore à cette liste.
 flake8 . --format=html --htmldir=flake8_report
 ```
 
-Un dossier `flake8_report`, déjà dans le dossier racine du projet, accueillera le rapport détaillé.  
-Tu n'auras qu'à ouvrir le fichier "index.html" et tout y sera très clair.  
+Un dossier `flake8_report` sera créé dans le dossier racine du projet, contenant le rapport détaillé.  
+Tu n'auras qu'à ouvrir le fichier "index.html" et tout y sera très clair.
 
----  
+---
 
 ## <div align="center"> 4. Lancer **ChessUp⬆︎**</div>  
   

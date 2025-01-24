@@ -171,3 +171,4 @@ cython_debug/
 .pypirc
 /data/players/players.json
 /data/tournaments/tournaments.json
+flake8_report.html

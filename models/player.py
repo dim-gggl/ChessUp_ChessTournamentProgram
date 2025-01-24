@@ -17,10 +17,12 @@ class Player:
     def __eq__(self, other):
         if not isinstance(other, Player):
             return NotImplemented
-        return self.name == other.name and self.birth_date == other.birth_date
+        if self.chess_id != "":
+            return self.chess_id == other.chess_id
+        return self.first_name == other.first_name and self.last_name == other.last_name and self.birth_date == other.birth_date
 
     def __hash__(self):
-        return hash(self.chess_id if self.chess_id else f"{self.name} {self.birth_date}")
+        return hash(self.chess_id if self.chess_id else f"{self.first_name} {self.last_name} {self.birth_date}")
 
     def __repr__(self):
         return f"\t{self.first_name} {self.last_name} ({self.birth_date}),  \tID : ({self.chess_id})"

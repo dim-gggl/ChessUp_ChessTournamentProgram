@@ -168,6 +168,8 @@ class TournamentController:
 
         for player in chosen_players:
             if player not in tournament.players:
+                player.points = 0.0
+                player.rank = 0
                 tournament.players.append(player)
 
         self.view.registration_succeed()

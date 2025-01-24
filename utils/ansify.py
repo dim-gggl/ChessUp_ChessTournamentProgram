@@ -1,15 +1,9 @@
 def ansify(text):
     """
-    Replaces any occurrence of style(arg) in 'text' with the ANSI sequence defined in 'styles'.
+    Replaces any occurrence of style(arg) in 'text'
     with the ANSI sequence defined in 'styles'.
-
-    Examples :
-       - ch_up(ChessUp Orange)    -> \033[1;38;5;202mChessUp Orange\033[0m
-       - rpt_gr(Report Green Theme)  -> \033[1;38;5;118mReport Green Theme\033[0m
-
     """
 
-    # Style dictionary: associate "style_name" -> "ANSI codes".
     styles = {
         "ttl_blu": "1;94",  # Title Blue
         "it_ttl": "3;94",  # Italic Title

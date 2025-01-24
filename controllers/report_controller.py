@@ -149,28 +149,35 @@ class ReportController:
         content = "\n<div class='all_players'>\n<ul class='all_players'>\n"
         for player in sorted_players:
             player_content = (
-                f"\n<li><strong>{player.last_name.upper()}</strong> {player.first_name} ({player.birth_date}), "
-                f" <strong>ID</strong> : {player.chess_id}</li>"
+                f"\n<li><strong>{player.last_name.upper()}</strong> <span>{player.first_name}</span>"
+                f"  ({player.birth_date}), <strong>ID :</strong> <span>{player.chess_id}</span></li>"
             )
             content += player_content
         content += "\n</ul>\n</div>\n"
-        self.exporter.export_to_html("all_players_list.html", "Liste de tous les Joueurs", content)
+        self.exporter.export_to_html("all_players_list.html", "Les Joueurs", content)
 
     def export_all_tournaments(self, tournaments):
         """
         Exports the list of all tournaments in HTML format.
         """
-        html_content = "\n<div>\n<ul class='all_tournaments'>\n"
+        html_content = "\n<div class='all_tournaments'>\n"
         for tournament in tournaments:
             html_content += (
-                f"\n<li><strong>{tournament.name}</strong>, "
-                f"Ouverture : {tournament.start_date}. Fin: {tournament.end_date}."
-                f"Lieu :{tournament.location}, {tournament.num_rounds} "
-                f"rounds au total, {len(tournament.players)} participants\n"
-                f"État : {str(tournament)}</li>\n"
+                f"\n<h2 class='section-title blue'>{tournament.name}</h2> "
+                f"<p>{tournament.start_date} —— {tournament.end_date}</br> "
+                f"à {tournament.location}, en {tournament.num_rounds} rounds.</br>"
+                f"<strong>État :"
             )
-        html_content += "\n</ul>\n</div>\n"
-        self.exporter.export_to_html("all_tournaments_list.html", "Liste de tous les tournois", html_content)
+            if tournament.is_finished:
+                html_content += " <span class='finished'>Terminé</span></strong>"
+            elif tournament.is_running:
+                html_content += " <span class='running'>En cours</span></strong>"
+            elif tournament.is_holding:
+                html_content += " <span class='holding'>En attente</span></strong>"
+            else:
+                html_content += "<span class='open'>Inscriptions ouvertes</span></strong>"
+        html_content += "\n</div>\n"
+        self.exporter.export_to_html("all_tournaments_list.html", "Les tournois", html_content)
 
     def export_tournament_details(self, tournament):
         """
@@ -198,9 +205,8 @@ class ReportController:
             )
             clear_rankings = self.clear_rankings(tournament.rankings)
             content += "<ul class='ranking-list'>"
-            players_str = clear_rankings
-            for player_str in enumerate(players_str):
-                if player_str == players_str[0]:
+            for index, player_str in enumerate(clear_rankings):
+                if index == 0:
                     content += f"\n<li class='highlight'>{player_str}</li>"
                 else:
                     content += f"\n<li>{player_str}</li>"
@@ -227,6 +233,6 @@ class ReportController:
                 clear_rankings.append(ranking.replace("gldn(", "").replace(")", ""))
             elif ranking.startswith("whte("):
                 clear_rankings.append(ranking.replace("whte(", "").replace(")", ""))
-            elif ranking.startswith("bld("):
-                clear_rankings.append(ranking.replace("bld(", "").replace(")", ""))
+            elif ranking.startswith("cppr("):
+                clear_rankings.append(ranking.replace("cppr(", "").replace(")", ""))
         return clear_rankings

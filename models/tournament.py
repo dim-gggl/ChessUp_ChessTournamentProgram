@@ -93,17 +93,17 @@ class Tournament:
         others = [p for p in self.players if p.rank >= 3]
         for player in champions:
             self.rankings.append(
-                f"gldn({player.rank}er) ~ gldn(Champion) : gldn({player.last_name} {player.first_name}) ~"
+                f"gldn({player.rank}er) ~ gldn(Champion) : gldn({player.last_name} "
+                f"{player.first_name}) gldn({player.chess_id}) ~ gldn({player.points} pts)"
             )
         for player in vice_champions:
             self.rankings.append(
-                f"whte({player.rank}nd) ~ whte(Vice-champion) : whte({player.last_name} {player.first_name}) ~"
+                f"cppr({player.rank}nd) : cppr({player.last_name} {player.first_name}) "
+                f"cppr({player.chess_id}) ~  cppr({player.points} pts)"
             )
         for player in others:
-            self.rankings.append(f"bld({player.rank}e) ~ bld({player.last_name} {player.first_name}) ~")
-        for player in self.players:
-            player.points = 0
-            player.rank = 0
+            self.rankings.append(f"whte({player.rank}e) ~ whte({player.last_name} {player.first_name}) "
+                                 f"whte({player.chess_id}) ~ whte({player.points} pts)")
         return self.rankings
 
     def __str__(self):
