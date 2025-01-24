@@ -172,6 +172,8 @@ N’hésite pas à explorer les Menus **Rapports** pour générer des stats ou e
 
 
 # <div align="center"> 🇬🇧README ChessUp⬆︎</div>
+
+(At least, documentation is available in english ! ) 
   
 Welcome to **ChessUp⬆︎**, the app for managing chess tournaments with complete peace of mind.  
 
