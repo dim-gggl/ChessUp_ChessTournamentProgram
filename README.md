@@ -1,4 +1,4 @@
-# <div align="center">README ChessUp⬆︎</div>    
+# <div align="center"> 🇫🇷README ChessUp⬆︎</div>    
   
 Bienvenue sur **ChessUp⬆︎**, l'appli pour gérer des tournois d'échecs en toute sérénité.  
 
@@ -165,4 +165,184 @@ Après quoi tu arrives au Menu Principal.
 3. Lance les rounds, saisis les résultats, et poursuis jusqu’à la fin.  
   
   
-N’hésite pas à explorer les Menus **Rapports** pour générer des stats ou exporter des listes.  
+N’hésite pas à explorer les Menus **Rapports** pour générer des stats ou exporter des listes. 
+
+---
+---
+
+
+# <div align="center"> 🇬🇧README ChessUp⬆︎</div>
+  
+Welcome to **ChessUp⬆︎**, the app for managing chess tournaments with complete peace of mind.  
+
+
+In this doc, you'll find out how to install it, check the quality of the code style, and how to run it locally.
+
+  
+
+---
+
+
+> **Recommendations** :
+>
+> To get the most out of the app, activate the colour display in your terminal (see the `Preferences/Profiles/Colors` option on macOS, for example) and choose a theme with a dark background. It'll be a much more pleasant experience!  
+
+---
+  
+
+## <div align="center">1. Clone the Github repo</div>
+  
+
+Open your terminal and go to the folder that will contain the **ChessUp⬆︎** github repo.
+
+```bash
+cd the/path/to/my_folder
+```
+
+Then run the git clone command:
+
+```bash
+git clone https://github.com/dim-gggl/ChessUp_ChessTournamentProgram.git
+```
+
+And that's it, you should have received the code.
+
+---
+
+## <div align="center">2. Installing a virtual environment</div>
+  
+
+Go to the repo folder **ChessUp⬆︎** with the command :
+
+```bash
+cd ChessUp_ChessTournamentProgram
+```
+
+Before running the program, we install a virtual environment:
+  
+
+### Under macOS / Linux :
+  
+
+```bash
+python -m venv .venv
+```
+
+then
+
+```bash
+source .venv/bin/activate
+```
+
+and install the dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+
+#### On Windows :
+
+```bash
+python -m venv .venv
+```
+
+Then :
+
+```bash
+.venv\Scripts\activate
+```
+
+and finally, install the dependencies with
+
+```bash
+pip install -r requirements.txt
+```
+
+> **Note** : On some versions of Python 3, you must specify `python3` instead of `python`.  
+  
+  
+---
+  
+
+## <div align="center">3. Generate a flake8 report</div>
+  
+
+To check that the code is PEP8 compliant, we'll use **flake8** + **flake8-html** :
+
+1. **Install** both tools:
+  
+
+```bash
+pip install flake8 flake8-html
+```
+
+2. **Configure** flake8 :
+  
+
+To save a specific configuration, create a ".flake8" file in the project's root folder.
+In this file, start by pasting the following:
+
+```ini
+[flake8]
+max-line-length = 119
+exclude =
+    .venv,
+    .git,
+    __pycache__
+```
+
+Add the folders you want flake8 to ignore to this list.
+
+3. **Launch** flake8 in HTML mode:  
+  
+
+```bash
+flake8 . --format=html --htmldir=flake8_report
+```
+
+A `flake8_report` folder will be created in the project root folder, containing the detailed report.  
+All you have to do is open the "index.html" file and everything will be very clear.
+
+---
+
+## <div align="center"> 4. Run **ChessUp⬆︎**</div>
+  
+
+Still from the "ChessUp_ChessTournamentProgram" repo folder, run :
+
+```bash
+python chess_up.py
+```
+> Or `python3 chess_up.py`
+
+And the ChessUp home page should appear.  
+Then you arrive at the Main Menu.
+
+---
+
+## <div align="center"> Advice on use</div>
+  
+
+- Adding **new players** is done via the **PLAYERS** Menu: you will be asked for first name, surname, date of birth, etc.
+- Registering players for a **tournament** is done via the **TOURNAMENTS** Menu, once you have created or selected a tournament.
+- Manage **rounds** and enter **scores**: you can launch each round from the Tournament menu, then enter the results match by match.  
+  
+---
+  
+## <div align="center"> Overall operation</div>
+  
+1. Create a tournament (Menu **Tournaments**).  
+  
+2. Add players (**Player Menu**) then register them in your tournament (still in the **Tournaments Menu**).  
+  
+3. Start the rounds, enter the results and continue to the end.  
+  
+  
+Feel free to explore the **Reports** Menus to generate stats or export lists.
+
+
+
+
+
+
