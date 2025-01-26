@@ -20,6 +20,7 @@ def ansify(text):
         "gld": "1;93",  # Gold
         "gldn": "1;38;5;226",  # Gold "Champion Style"
         "whte": "1;97",  # White
+        "it_whte": "3;97", # Italic + White
         "fade_": "38;5;243",  # fading Grey
         "pnk": "1;95",  # Pink
         "disc_pnk": "2;95",  # Discreet Pink

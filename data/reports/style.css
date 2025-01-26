@@ -26,7 +26,7 @@ body {
   font-family: 'Special Elite', monospace;
   color: #222;
   font-size: 2.5rem;
-  letter-spacing: 1.3px;
+  letter-spacing: 0.7px;
   text-transform: capitalize;
 }
 
@@ -47,12 +47,14 @@ body {
 .all_tournaments > h2 {
   text-align: center;
   margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0.7rem;
+  letter-spacing: 1.7px;
 }
 
 .all_tournaments > p {
     text-align: center;
     margin-bottom: 1rem;
+  letter-spacing: 1.3px;
 }
 
 .blue > p > strong {
@@ -75,7 +77,8 @@ body {
 }
 
 .open {
-  color: rgb(255, 5, 67);
+  color: rgba(126, 86, 255, 0.9);
+  margin-left: 5px;
 }
 
 .left-col,
@@ -98,6 +101,7 @@ ul {
   text-align: left;
   letter-spacing: 1.5px;
   padding: 1rem;
+  letter-spacing: 1.5px;
 }
 
 li {
@@ -110,6 +114,7 @@ li > strong {
 
 li > span {
   font-style: italic;
+  margin-left: 5px;
 }
 
 .separator {

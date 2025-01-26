@@ -26,7 +26,7 @@ class TournamentController:
 
             menu_options = {
                 "1": self.create_new_tournament,
-                "2": self.manage_existing_tournament,
+                "2": self.select_tournament_to_manage,
                 "3": self.pick_tournament_for_new_players,
                 "4": self.list_tournaments,
             }
@@ -77,7 +77,7 @@ class TournamentController:
         if self.view.ask_to_register_candidates().lower() == "y":
             self.recruit_players(new_tournament)
 
-    def manage_existing_tournament(self):
+    def select_tournament_to_manage(self):
         """
         Allows user to manage an existing tournament (add players, start a round, etc.).
         """
@@ -90,7 +90,12 @@ class TournamentController:
             self.view.no_tournament_ready_msg()
             return
 
-        choice_index = self.view.display_tournament_list(tournaments_to_manage, select_option=True).strip().lower()
+        choice_index = self.view.display_tournament_list(tournaments_to_manage, select_option=True)
+        if choice_index:
+            choice_index = choice_index.strip().lower()
+        else:
+            self.view.wrong_menu_input()
+            return
         if choice_index == "r":
             return
 
@@ -111,9 +116,18 @@ class TournamentController:
             if tournament.current_round == 0:
                 available_tournaments.append(tournament)
 
-        if available_tournaments:
+        if not available_tournaments:
+            self.view.no_tournament_ready_msg()
+            return
+        else:
             sorted_tournaments = sort_tournaments(available_tournaments)
-            choice = self.view.display_tournament_list(sorted_tournaments, select_option=True).lower()
+            choice = self.view.display_tournament_list(sorted_tournaments, select_option=True)
+            if choice:
+                choice = choice.strip().lower()
+            else:
+                self.view.wrong_menu_input()
+                return
+
             if choice == "r":
                 return
 
@@ -180,7 +194,7 @@ class TournamentController:
         Manages the internal menu of a tournament.
         """
         selected = ""
-        while selected != "r" and selected != "q":
+        while selected != "r":
 
             game_menu_options = {
                 "1": lambda: self.start_new_round(tournament),

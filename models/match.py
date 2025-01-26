@@ -18,6 +18,6 @@ class Match:
 
     def __str__(self):
         return (
-            f"\tbld({self.player1.first_name} {self.player1.last_name}) ~ gld({self.score1}) ~~ \tch_up(vs) "
-            f"\t~~ gld({self.score2}) ~ bld({self.player2.first_name} {self.player2.last_name})"
+            f" | bld({self.player1.first_name} {self.player1.last_name}) ~ gld({self.score1}) ~~ \t \tch_up(vs) "
+            f"\t \t~~ gld({self.score2}) ~ bld({self.player2.first_name} {self.player2.last_name})"
         )

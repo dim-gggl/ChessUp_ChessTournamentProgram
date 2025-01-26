@@ -15,9 +15,9 @@ class PlayerManager:
         """Loads information from a JSON file and recreates objects."""
         self.players = []
 
-        players_data = load_from_json(self.file_path)
-        if players_data:
-            for player_data in players_data:
+        all_players_data = load_from_json(self.file_path)
+        if all_players_data:
+            for player_data in all_players_data:
 
                 player_inst = Player(
                     first_name=player_data["first_name"],
@@ -26,6 +26,7 @@ class PlayerManager:
                     chess_id=player_data["chess_id"],
                     points=player_data["points"],
                     rank=player_data["rank"],
+                    _player_id=player_data["_player_id"],
                 )
 
                 self.players.append(player_inst)
@@ -41,6 +42,6 @@ class PlayerManager:
         if not os.path.exists(self.file_path.rstrip(file_name)):
             os.makedirs(os.path.dirname(self.file_path.rstrip(file_name)), exist_ok=True)
 
-        players_data = serialize_players(self.players)
+        all_players_data = serialize_players(self.players)
 
-        save_to_json(self.file_path, players_data, overwrite=True)
+        save_to_json(self.file_path, all_players_data, overwrite=True)

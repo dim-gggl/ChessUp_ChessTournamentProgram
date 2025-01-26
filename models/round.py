@@ -5,10 +5,9 @@ from utils.ansify import ansify
 
 
 class Round:
-    def __init__(self, number: int = 0, tournament=None, **kwargs):
-        self.number = number
+    def __init__(self, tournament, number: int = 0, **kwargs):
         self.tournament = tournament
-        self.previous_matches = kwargs.get("previous_matches", [])
+        self.number = number
         self.name = f"Round {self.number}"
         self.matches = kwargs.get("matches", [])
         self.start_time = kwargs.get("start_time", datetime.now().strftime("%x - %X"))
@@ -32,11 +31,11 @@ class Round:
     def match_players(self):
         """Public method: simply delegates to private methods."""
         if self.is_first:
-            return self.pairing_as_first_round()
+            return self._as_first_round()
         else:
-            return self.pairing_while_not_first()
+            return self._while_not_first()
 
-    def pairing_as_first_round(self):
+    def _as_first_round(self):
         """Logic reserved for the first round."""
         shuffled = self.tournament.players[:]
         random.shuffle(shuffled)
@@ -57,9 +56,9 @@ class Round:
         for i in range(0, len(shuffled), 2):
             matches.append(Match(shuffled[i], shuffled[i + 1]))
         self.matches = matches
-        return matches
+        return self.matches
 
-    def pairing_while_not_first(self):
+    def _while_not_first(self):
         """Logical for all subsequent rounds."""
         players_sorted = self.tournament.rank_players()[:]
         matches = []
@@ -91,14 +90,14 @@ class Round:
                 input("\tAppuyez sur ENTRÉE pour continuer")
 
         self.matches = matches
-        return matches
+        return self.matches
 
     def __str__(self):
         description = ""
         if self.is_finished:
             description += f"\t\t\tttl_blu({self.name}) :\n\t\tbld_it(Matches) : \n"
             for i, match in enumerate(self.matches):
-                description += f"\n\tttl_blu({i + 1}) ~ {str(match)}"
+                description += f"\nttl_blu({i + 1}) ~ {str(match)}"
             return ansify(description)
         else:
             description += f"\tb_blue({self.name}) en cours. " f"\n\tEn attente des résultats.\n\n"

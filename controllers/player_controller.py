@@ -2,6 +2,7 @@ from utils.validators import confirm_date_format, confirm_chess_id, confirm_name
 from views.player_views import PlayerView
 from models.player import Player
 from views.tournament_views import TournamentView
+from controllers.player_manager import PlayerManager
 
 
 class PlayerController:
@@ -9,7 +10,7 @@ class PlayerController:
     Manages the player menu and submenus service.
     """
 
-    def __init__(self, manager=None):
+    def __init__(self, manager: PlayerManager):
         self.view = PlayerView()
         self.manager = manager
 
@@ -63,7 +64,12 @@ class PlayerController:
 
     def edit_selected_player(self):
         """Selects a player to edit their details."""
-        selected_idx = self.view.select_player_to_edit(self.manager.players).strip().lower()
+        selected_idx = self.view.select_player_to_edit(self.manager.players)
+        if selected_idx:
+            selected_idx = selected_idx.strip().lower()
+        else:
+            return
+        
         if selected_idx == "r":
             return
 

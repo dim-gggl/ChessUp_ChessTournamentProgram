@@ -1,4 +1,4 @@
-# <div align="center"> 🇫🇷README ChessUp⬆︎</div>    
+# <div align="center"> 🇫🇷 README ChessUp⬆︎  ♟</div>    
   
 Bienvenue sur **ChessUp⬆︎**, l'appli pour gérer des tournois d'échecs en toute sérénité.  
 
@@ -171,7 +171,9 @@ N’hésite pas à explorer les Menus **Rapports** pour générer des stats ou e
 ---
 
 
-# <div align="center"> 🇬🇧README ChessUp⬆︎</div>
+# <div align="center"> 🇬🇧 README ChessUp⬆︎ ♟</div>
+
+(At least, documentation is available in english ! ) 
   
 Welcome to **ChessUp⬆︎**, the app for managing chess tournaments with complete peace of mind.  
 

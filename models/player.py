@@ -1,5 +1,8 @@
+import uuid
+
+
 class Player:
-    def __init__(self, first_name, last_name, birth_date, chess_id: str = "", points: float = 0.0, rank: int = 0):
+    def __init__(self, first_name, last_name, birth_date, chess_id: str = "", points: float = 0.0, rank: int = 0, _player_id= None):
         self.first_name = first_name
         self.last_name = last_name
         self.birth_date = birth_date
@@ -7,6 +10,7 @@ class Player:
         self.name = f"{self.first_name[0].upper()}.{self.last_name}"
         self.points = points
         self.rank = rank
+        self._player_id = _player_id if _player_id else str(uuid.uuid4())
 
     def update_player_info(self, **kwargs):
         """Updates player info"""
@@ -17,13 +21,11 @@ class Player:
     def __eq__(self, other):
         if not isinstance(other, Player):
             return NotImplemented
-        if self.chess_id != "":
-            return self.chess_id == other.chess_id
-        return self.first_name == other.first_name and self.last_name == other.last_name and self.birth_date == other.birth_date
-
+        return self._player_id == other._player_id 
+    
     def __hash__(self):
-        return hash(self.chess_id if self.chess_id else f"{self.first_name} {self.last_name} {self.birth_date}")
-
+        return hash(self._player_id)
+    
     def __repr__(self):
         return f"\t{self.first_name} {self.last_name} ({self.birth_date}),  \tID : ({self.chess_id})"
 

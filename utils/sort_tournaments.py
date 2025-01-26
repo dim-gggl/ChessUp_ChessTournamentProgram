@@ -1,4 +1,4 @@
-def sort_tournaments(tournaments):
+def sort_tournaments(tournaments, reverse=False):
     """
     Sorts tournaments according to the following criteria:
       - First, tournaments open for registration (current_round == 0)
@@ -7,7 +7,7 @@ def sort_tournaments(tournaments):
       - And lastly, those with is_finished == True
     """
 
-    def status_rank(tournament, reverse=False):
+    def status_rank(tournament):
         if tournament.current_round == 0 and not (tournament.is_holding or tournament.is_finished):
             return 0
         elif tournament.is_holding:

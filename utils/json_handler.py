@@ -1,5 +1,6 @@
 import json
 import os
+from typing import Union
 from models.player import Player
 from models.tournament import Tournament
 from utils.ansify import ansify
@@ -57,13 +58,21 @@ def load_from_json(file_path):
             return []
 
 
-def serialize_players(players: list[Player] or Player):
-    """JSON serialization of Player objects."""
+def serialize_players(players) -> list[dict]:
+    """
+    Takes one or more instances of Player and returns a dict list of their arguments.
+    If receives None, returns an empty list
+    """
 
-    json_players = []
+    if not players:
+        return []
+
+    all_players_data = []
+
     for player in players:
 
-        json_player = {
+        player_data = {
+            "_player_id": player._player_id,
             "first_name": player.first_name,
             "last_name": player.last_name,
             "birth_date": player.birth_date,
@@ -72,12 +81,12 @@ def serialize_players(players: list[Player] or Player):
             "rank": player.rank,
         }
 
-        json_players.append(json_player)
+        all_players_data.append(player_data)
 
-    return json_players
+    return all_players_data
 
 
-def serialize_tournaments(tournaments: list[Tournament]):
+def serialize_tournaments(tournaments):
     """JSON serialization of Tournament objects."""
 
     all_tournaments_data = []
@@ -110,8 +119,8 @@ def serialize_tournaments(tournaments: list[Tournament]):
                 for match_obj in round_obj.matches:
 
                     match_data = {
-                        "player1": hash(match_obj.player1),
-                        "player2": hash(match_obj.player2),
+                        "player1_id": match_obj.player1._player_id,
+                        "player2_id": match_obj.player2._player_id,
                         "score1": match_obj.score1,
                         "score2": match_obj.score2,
                     }

@@ -128,8 +128,8 @@ class TournamentView:
         for idx, player in enumerate(unregistered_players, start=1):
             print(
                 ansify(
-                    f"\tb_blue({idx}.)\tb_blue({player.last_name.upper()}) "
-                    f"{player.first_name} b_blue(ID): whte({player.chess_id})"
+                    f"b_blue({idx}.) b_blue({player.last_name.upper()}) "
+                    f"{player.first_name}  \t  \tb_blue(ID): whte({player.chess_id})"
                 )
             )
 
@@ -174,8 +174,8 @@ class TournamentView:
             )
         )
         for i, match in enumerate(tournament_round.matches, start=1):
-            print(ansify(f"\t\t     b_blue(Match {i})\n\t whte({match.player1.name})"
-                         f"\t ch_up( vs ) \twhte({match.player2.name})"))
+            print(ansify(f"\t\t     b_blue(Match {i})\nwhte({match.player1.name})"
+                         f" \t  \tch_up(  vs  )\t\twhte({match.player2.name})\n"))
         input(ansify("\n\tch_up(Appuyez sur Entrée pour continuer.)"))
 
     @staticmethod
@@ -188,17 +188,16 @@ class TournamentView:
         print(
             ansify(
                 f"{str(tournament)}\n"
-                f"\tb_blue(Dates) : {tournament.start_date} b_blue(~) {tournament.end_date}\n"
-                f"\tb_blue(Description) : {tournament.description}\n"
+                f"\tit_b_blue({tournament.start_date} ~ {tournament.end_date})\n"
+                f"\tit_whte({tournament.description})\n"
             )
         )
         print(ansify("\t~~~~~  b_blue(Participant.e.s)  ~~~~~ "))
         for idx, player in enumerate(players, start=1):
             print(
                 ansify(
-                    f"\tb_blue(|)whte({player.last_name.upper()}), {player.first_name}    "
-                    f"b_blue(ID) : whte({player.chess_id}) - "
-                    f"b_blue(Points) : gldn({player.points})"
+                    f"b_blue(|)  whte({player.last_name.upper()}), {player.first_name}    "
+                    f" \t \t b_blue(Points) : gldn({player.points}) b_blue(|)"
                 )
             )
         input(ansify("\n\tbld(Appuyez sur Entrée pour continuer.)"))
@@ -240,7 +239,8 @@ class TournamentView:
         print(
             ansify(
                 "\t      whte(Qui a gagné ?)\n\n"
-                f"\twhte({match.player1.name.upper()})\tch_up(vs)\twhte({match.player2.name.upper()}) \n\n"
+                f"whte({match.player1.name.upper()}) \t  "
+                f"\tch_up( vs )\t\twhte({match.player2.name.upper()}) \n\n"
                 f"\tb_blue(1.) whte({match.player1.name.upper()}) a gagné gldn(?)\n"
                 f"\tb_blue(2.) whte({match.player2.name.upper()}) a gagné gldn(?)\n"
                 f"\n\tb_blue(3.) Ou... ch_up(match nul) ?\n"

@@ -39,14 +39,14 @@ class Tournament:
 
         if self.is_holding:
             self.current_round += 1
-            open_round = Round(self.current_round, self)
+            open_round = Round(self, self.current_round)
             open_round.match_players()
             self.rounds.append(open_round)
 
         elif self.current_round < self.num_rounds:
             self.current_round += 1
             self.rank_players()
-            open_round = Round(self.current_round, self)
+            open_round = Round(self, self.current_round)
             open_round.match_players()
             self.rounds.append(open_round)
 
@@ -93,12 +93,12 @@ class Tournament:
         others = [p for p in self.players if p.rank >= 3]
         for player in champions:
             self.rankings.append(
-                f"gldn({player.rank}er) ~ gldn(Champion) : gldn({player.last_name} "
+                f"gldn({player.rank}er) ~ gldn({player.last_name} "
                 f"{player.first_name}) gldn({player.chess_id}) ~ gldn({player.points} pts)"
             )
         for player in vice_champions:
             self.rankings.append(
-                f"cppr({player.rank}nd) : cppr({player.last_name} {player.first_name}) "
+                f"cppr({player.rank}nd) ~ cppr({player.last_name} {player.first_name}) "
                 f"cppr({player.chess_id}) ~  cppr({player.points} pts)"
             )
         for player in others:
@@ -112,7 +112,7 @@ class Tournament:
                     f"\t(ttl_blu({len(self.players)}) inscrits. ttl_blu({self.num_rounds}) rounds.)\n")
         if self.is_running and not self.rounds[-1].is_finished:
             return (f"\tch_up([EN COURS]) whte({self.name})\n"
-                    f"\tRound N°ch_up({self.current_round} ouvert)\n")
+                    f"\tRound n°ch_up({self.current_round}) whte(~OUVERT~)\n")
         if self.is_running and self.rounds[-1].is_finished:
             return (f"\tch_up([EN COURS]) whte({self.name})\n"
                     f"\tLe Round red_err({self.current_round + 1}) peut être lancé.\n")

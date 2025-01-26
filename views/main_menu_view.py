@@ -15,8 +15,8 @@ class MainMenuView:
         print("\n" * 100)
         print(
             ansify(
-                "\t\t  it_ttl( 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 ) \n\t\t\twhte(𝙩𝙤)"
-                "\n\t\t  ttl_blu(⏐𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎⏐)\n\n\n"
+                "\t\t  it_ttl(   𝗪𝗲𝗹𝗰𝗼𝗺𝗲 ) \n\t\t\twhte(𝙩𝙤)"
+                "\n\t\t  ttl_blu(  ⏐𝗖𝗵𝗲𝘀𝘀𝗨𝗽⬆︎⏐)\n\n\n"
                 "\n\n\n"
                 "\n "
             )

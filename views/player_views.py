@@ -118,8 +118,8 @@ class PlayerView:
         for player in players:
             print(
                 ansify(
-                    f"  ~ pnk({player.last_name.upper()}) whte({player.first_name})"
-                    f" pnk(ID:) whte({player.chess_id}) ~ pnk(Né.e) le {player.birth_date} ~ "
+                    f"|pnk({player.last_name.upper()}) whte({player.first_name})"
+                    f"\t \tpnk(ID:) whte({player.chess_id})\tpnk(Né.e) le {player.birth_date}| "
                 )
             )
         input("\tAppuyez sur ENTRÉE pour continuer")

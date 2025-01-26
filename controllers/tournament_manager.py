@@ -44,7 +44,7 @@ class TournamentManager:
                 else:
                     loaded_tournament.players = []
 
-                players_by_id = {p.__hash__(): p for p in loaded_tournament.players}
+                players_by_id = {p._player_id: p for p in loaded_tournament.players}
                 rounds_data = t_data.get("rounds", [])
                 if rounds_data:
                     loaded_tournament.rounds = self.recreate_rounds_and_matches(
@@ -70,22 +70,24 @@ class TournamentManager:
         save_to_json(self.file_path, all_tournaments_data, overwrite=True)
 
     @staticmethod
-    def recreate_players(players_data: dict = None):
+    def recreate_players(players_data):
         """Recreates Player objects from serialized data."""
 
         players_list = []
-        for player_data in players_data:
+        if players_data:
+            for player_data in players_data:
 
-            player_obj = Player(
-                first_name=player_data["first_name"],
-                last_name=player_data["last_name"],
-                birth_date=player_data["birth_date"],
-                chess_id=player_data["chess_id"],
-                points=player_data["points"],
-                rank=player_data["rank"],
-            )
+                player_obj = Player(
+                    first_name=player_data["first_name"],
+                    last_name=player_data["last_name"],
+                    birth_date=player_data["birth_date"],
+                    chess_id=player_data["chess_id"],
+                    points=player_data["points"],
+                    rank=player_data["rank"],
+                    _player_id=player_data["_player_id"],
+                )
 
-            players_list.append(player_obj)
+                players_list.append(player_obj)
         return players_list
 
     @staticmethod
@@ -103,8 +105,8 @@ class TournamentManager:
 
             if round_data["matches"]:
                 for match_data in round_data["matches"]:
-                    p1_id = match_data["player1"]
-                    p2_id = match_data["player2"]
+                    p1_id = match_data["player1_id"]
+                    p2_id = match_data["player2_id"]
                     p1 = players_by_id.get(p1_id)
                     p2 = players_by_id.get(p2_id)
 
