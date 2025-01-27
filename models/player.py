@@ -2,7 +2,10 @@ import uuid
 
 
 class Player:
-    def __init__(self, first_name, last_name, birth_date, chess_id: str = "", points: float = 0.0, rank: int = 0, _player_id= None):
+    def __init__(
+            self, first_name, last_name, birth_date, chess_id="",
+            points=0.0, rank=0, _player_id=None
+            ):
         self.first_name = first_name
         self.last_name = last_name
         self.birth_date = birth_date
@@ -21,11 +24,11 @@ class Player:
     def __eq__(self, other):
         if not isinstance(other, Player):
             return NotImplemented
-        return self._player_id == other._player_id 
-    
+        return self._player_id == other._player_id
+
     def __hash__(self):
         return hash(self._player_id)
-    
+
     def __repr__(self):
         return f"\t{self.first_name} {self.last_name} ({self.birth_date}),  \tID : ({self.chess_id})"
 

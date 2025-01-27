@@ -69,7 +69,7 @@ class PlayerController:
             selected_idx = selected_idx.strip().lower()
         else:
             return
-        
+
         if selected_idx == "r":
             return
 

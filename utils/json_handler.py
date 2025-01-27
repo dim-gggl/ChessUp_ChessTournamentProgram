@@ -1,8 +1,5 @@
 import json
 import os
-from typing import Union
-from models.player import Player
-from models.tournament import Tournament
 from utils.ansify import ansify
 
 
